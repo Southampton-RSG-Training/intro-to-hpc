@@ -242,12 +242,24 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         5. Introduction to Programmatic Parallelism
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#what-is-parallelisation">What is parallelisation?</a></li>
+<li><a href="#sequential-vs.-parallel-computing">Sequential vs. parallel computing</a></li>
+<li><a href="#key-parallelisation-concepts">Key parallelisation concepts</a></li>
+<li><a href="#processes-and-threads">Processes and threads</a></li>
+<li><a href="#shared-vs.-distributed-memory-parallelisation">Shared vs. distributed memory parallelisation</a></li>
+<li><a href="#synchronisation-and-race-conditions">Synchronisation and Race conditions</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -360,8 +372,164 @@ threads</li>
 </div>
 </div>
 </div>
-<p>Lesson content goes here</p>
-<div id="keypoints1" class="callout keypoints">
+<p>Parallel programming has been important to (scientific) computing for
+decades as a way to decrease program run times, making more complex
+computations possible, such as climate modelling, pharmaceutical
+development, aircraft design, AI and machine learning, etc. Without
+parallelisation, these computations which would take years to finish can
+be completed in hours or days. In this episode, we will cover the
+foundational concepts of parallel programming. But, before we get into
+the nitty-gritty details of parallelisation frameworks and techniques,
+let’s first familiarise ourselves with the key ideas behind parallel
+programming.</p>
+<section><h2 class="section-heading" id="what-is-parallelisation">What is parallelisation?<a class="anchor" aria-label="anchor" href="#what-is-parallelisation"></a></h2>
+<hr class="half-width"><p>At some point you, or someone you know, has probably asked “How can I
+make my code run faster?” The answer to this question will depend on the
+code, but there are a few approaches you might try:</p>
+<ul><li>Optimise the code.</li>
+<li>Move the computationally demanding parts of the code from a slower,
+interpreted language, such as Python, to a faster, compiled language
+such as C or Fortran.</li>
+<li>Use a different theoretical/computational or approximate method
+which requires less computational power.</li>
+</ul><p>Each of the above approaches is intended to reduce the total amount
+of work the processor does. A different strategy for speeding up code is
+parallelisation, which is where you split the computational workload
+across multiple processing units. The “processing units” are typically
+either central processing units (<strong>CPU</strong>s) or graphics
+processing units (<strong>GPU</strong>s).</p>
+</section><section><h2 class="section-heading" id="sequential-vs--parallel-computing">Sequential vs. parallel computing<a class="anchor" aria-label="anchor" href="#sequential-vs--parallel-computing"></a></h2>
+<hr class="half-width"><p>Classically, computers execute one operation/instruction at a time in
+the sequence specified by the code you have written. In other words, the
+software you have developed is converted–or compiled–into a series of
+instructions which are executed one after another. We call this serial
+execution.</p>
+<p>In contrast, with parallel computing, multiple instructions from the
+same program are executed simultaneously on different processing units
+which are working independently on their own set of instructions. This
+means more work is done at once, so we get the results quicker than if
+we were running an equivalent sequential program executing only one
+instruction at a time. The process of changing sequential code to
+parallel code is called parallelisation.</p>
+<div id="callout1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>The basic concept of parallel computing is simple: we divide our job
+in tasks that can be executed at the same time so that we finish the job
+in a fraction of the time that it would have taken if the tasks are
+executed one by one.</p>
+<p>Suppose that we want to paint the four walls in a room. This is our
+<strong>problem</strong>. We can divide our <strong>problem</strong>
+into 4 different <strong>tasks</strong>: paint each of the walls. In
+principle, our 4 tasks are independent of each other in the sense that
+we don’t need to finish one to start another. However, this does not
+mean that the tasks can be executed simultaneously or in parallel. It
+all depends on the amount of resources that we have for the tasks.</p>
+<p>If there is only one painter, they could work for a while in one
+wall, then start painting another one, then work a little bit on the
+third one, and so on. The tasks are being executed concurrently
+<strong>but not in parallel</strong> and only one task is being
+performed at a time. If we have 2 or more painters for the job, then the
+tasks can be performed in <strong>parallel</strong>.</p>
+<p>In our analogy, the painters represent a computer’s CPU cores. The
+number of CPU cores available determines the maximum number of tasks
+that can be performed in parallel. While we might have dozens of tasks
+(e.g. painting sections of each wall), we can only make progress on a
+number of them equal to the number of CPU cores (painters) we have. The
+process of managing many tasks with fewer resources is concurrency.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="key-parallelisation-concepts">Key parallelisation concepts<a class="anchor" aria-label="anchor" href="#key-parallelisation-concepts"></a></h2>
+<hr class="half-width"><p>There is, unfortunately, more to parallelisation than simply diving
+work across multiple processors. Whilst the idea of splitting tasks to
+achieve faster results is <em>conceptually</em> simple, the
+implementation requires an understand of how work is executed across
+multiple processors and how the memory that this work uses is
+organised.</p>
+<p>Consider a simple computer where you have a single CPU core, some RAM
+(fast primary memory), a storage device such as a hard disk (slower
+secondary memory), input devices (e.g. keyboard, mouse) and an output
+device (screen). Now, imagine you add more CPU cores. Suddenly, there
+are several additional things you need to think about:</p>
+<ul><li>If there are two cores, they might share the same RAM (shared
+memory) or each have their own dedicated RAM (private memory). This
+distinction affects how data can be accessed and shared.</li>
+<li>In a shared memory setup, what happens if two cores try to read or
+write the same memory location at the same time? This can cause a race
+condition, where the outcome depends on the timing of operations.
+Preventing these conflicts requires careful programming.</li>
+<li>How do we divide and distribute the computational tasks among the
+CPU cores? Dividing the workload evenly between the cores is essential
+for maximum speed-up.</li>
+<li>How will the cores exchange data and coordinate their actions?
+Mechanisms are now required to share data and coordinate actions to
+ensure results are consistent and correct.</li>
+<li>After the tasks are complete, where should the final results be
+stored? Should they remain in the memory of one core, be copied to a
+shared memory area, or written to disk? Additionally, which core handles
+producing the output on the screen?</li>
+</ul><p>To make effective use of multiple CPU cores, we must understand what
+<strong>processes</strong> and <strong>threads</strong> are, and how
+they interact with the computer’s memory.</p>
+</section><section><h2 class="section-heading" id="processes-and-threads">Processes and threads<a class="anchor" aria-label="anchor" href="#processes-and-threads"></a></h2>
+<hr class="half-width"><div class="section level3">
+<h3 id="processes">Processes<a class="anchor" aria-label="anchor" href="#processes"></a></h3>
+<p>A process is an individual running instance of a program. Each
+process operates independently and possesses its own set of resources,
+such as memory space and open files, managed by the operating system.
+Because of this separation, data in one processes is isolated and cannot
+be directly accessed by another.</p>
+<p>In one approach to parallel programming, the aim is to achieve
+parallel execution by running many coordinated processes at the same
+time. However, what if one processes needs information from another
+processes? Since processes are isolated and do not share memory, the
+information has to be explicitly communicated by the programmer. This is
+the role of parallel programming frameworks such as MPI (Message Passing
+Interface). MPI provides a standardised library of functions that allow
+processes to exchange messages, coordinate tasks and collectively work
+on a problem together.</p>
+<p>This style of parallelisation–spawning large numbers of independent
+processes–is the dominant form of parallelisation on HPC systems. By
+combining MPI with a cluster’s job or resource scheduler, it is possible
+to launch and coordinate processes are many compute nodes. Instead of
+having access to just a single CPU, our code can now use thousands or
+even tens of thousands of CPUs.</p>
+<figure><img src="../fig/multiprocess.svg" alt="Processes" class="figure mx-auto d-block"><div class="figcaption">Processes</div>
+</figure></div>
+<div class="section level3">
+<h3 id="threads">Threads<a class="anchor" aria-label="anchor" href="#threads"></a></h3>
+<p>A thread is a unit of execution which exists within a process. Unlike
+processes, threads share their parent process’ resources, including
+memory and open files, so they can directly read and write the same
+data. This shared access makes threads more efficiently than processes,
+since they do not have to communicate information between them.</p>
+<p>By running several threads across multiple CPU cores, program can
+dictate for each thread to work on their own tasks. For example, one
+thread may handle input/output whilst other threads perform some number
+crunching, or multiple threads might process different parts of a
+dataset simultaneously.</p>
+<p>A major advantage of using threads is their relative ease of use
+compared to processes. With frameworks such as OpenMP, existing code can
+often be adapted for parallel execution with relatively minor changes.
+Because threads share a memory space, there is no need for explicit
+message-passing mechanisms (as required with MPI). However, this shared
+memory model introduces the possibility of race conditions, where two or
+more threads attempt to update the same data at once. Careful
+synchronisation is therefore required.</p>
+<p>It is important to note, however, that threads a confined to a single
+process and therefore to a single computer. Programs which are
+parallelised using threads cannot span across compute nodes in a
+cluster.</p>
+<figure><img src="../fig/multithreading.svg" alt="Threads" class="figure mx-auto d-block"><div class="figcaption">Threads</div>
+</figure></div>
+</section><section><h2 class="section-heading" id="shared-vs--distributed-memory-parallelisation">Shared vs. distributed memory parallelisation<a class="anchor" aria-label="anchor" href="#shared-vs--distributed-memory-parallelisation"></a></h2>
+<hr class="half-width"></section><section><h2 class="section-heading" id="synchronisation-and-race-conditions">Synchronisation and Race conditions<a class="anchor" aria-label="anchor" href="#synchronisation-and-race-conditions"></a></h2>
+<hr class="half-width"><div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
@@ -376,10 +544,7 @@ threads</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-
-
-
-      </div> <!-- / div.lesson-content -->
+</section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/3_job_scheduling.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/5_hpc_technologies.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
