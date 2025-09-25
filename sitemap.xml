@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://carpentries.github.io/workbench-template-md/1_intro_to_hpc_systems.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-md/2_using_hpc_systems.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-md/3_job_scheduling.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries.github.io/workbench-template-md/404.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-md/4_programmatic_parallelism.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-md/5_hpc_technologies.html</loc>
   </url>
   <url>
     <loc>https://carpentries.github.io/workbench-template-md/CODE_OF_CONDUCT.html</loc>
@@ -19,7 +34,22 @@
     <loc>https://carpentries.github.io/workbench-template-md/index.html</loc>
   </url>
   <url>
+    <loc>https://carpentries.github.io/workbench-template-md/instructor/1_intro_to_hpc_systems.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-md/instructor/2_using_hpc_systems.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-md/instructor/3_job_scheduling.html</loc>
+  </url>
+  <url>
     <loc>https://carpentries.github.io/workbench-template-md/instructor/404.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-md/instructor/4_programmatic_parallelism.html</loc>
+  </url>
+  <url>
+    <loc>https://carpentries.github.io/workbench-template-md/instructor/5_hpc_technologies.html</loc>
   </url>
   <url>
     <loc>https://carpentries.github.io/workbench-template-md/instructor/CODE_OF_CONDUCT.html</loc>
