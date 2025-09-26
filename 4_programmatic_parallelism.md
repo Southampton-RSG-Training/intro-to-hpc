@@ -36,77 +36,63 @@ question will depend on the code, but there are a few approaches you might try:
   compiled language such as C or Fortran.
 - Use a different theoretical/computational or approximate method which requires less computational power.
 
-Each of the above approaches is intended to reduce the total amount of work the processor does. A different strategy for
-speeding up code is parallelisation, which is where you split the computational workload across multiple processing
-units. The "processing units" are typically either central processing units (**CPU**s) or graphics processing units
+All of these reduce the total amount of work the processor does. Parallelisation takes a different approach: splitting
+the workload across multiple processing units such as central processing units (**CPU**s) or graphics processing units
 (**GPU**s).
 
 ## Sequential vs. parallel computing
 
-Classically, computers execute one operation/instruction at a time in the sequence specified by the code you have
-written. In other words, the software you have developed is converted--or compiled--into a series of instructions which
-are executed one after another. We call this serial execution.
+Traditionally, computers execute one instruction at a time, in the sequence defined by the code you have written. In
+other words, the software you have developed is compiled into a series of instructions which are executed
+one after another. We call this serial execution.
 
-In contrast, with parallel computing, multiple instructions from the same program are executed simultaneously on
-different processing units which are working independently on their own set of instructions. This means more work is
-done at once, so we get the results quicker than if we were running an equivalent sequential program executing only one
-instruction at a time. The process of changing sequential code to parallel code is called parallelisation.
+With parallel computing, multiple instructions, from the same program, are carried out at the same time on different
+processing units. This means more work is being done at once, so we get the results quicker than if we were running the
+same instructions sequentially. The process of changing sequential code to parallel code is called parallelisation.
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-The basic concept of parallel computing is simple: we divide our job in tasks that can be executed at the same time so
-that we finish the job in a fraction of the time that it would have taken if the tasks are executed one by one.
+Parallel computing means dividing a job into tasks that can run at the same time.
 
-Suppose that we want to paint the four walls in a room. This is our **problem**. We can divide our **problem** into 4
-different **tasks**: paint each of the walls. In principle, our 4 tasks are independent of each other in the sense that
-we don't need to finish one to start another. However, this does not mean that the tasks can be executed simultaneously
-or in parallel. It all depends on the amount of resources that we have for the tasks.
+Imagine painting four walls in a room. The problem is painting the room. The four tasks are painting each wall. The
+tasks are independent—you do not need to finish one wall before starting another.
 
-If there is only one painter, they could work for a while in one wall, then start painting another one, then work a
-little bit on the third one, and so on. The tasks are being executed concurrently **but not in parallel** and only one
-task is being performed at a time. If we have 2 or more painters for the job, then the tasks can be performed in
-**parallel**.
+If there is only one painter, they must work on one wall at a time. The work is concurrent but not parallel. With two or
+more painters, walls can be painted at the same time—this is parallel work.
 
-In our analogy, the painters represent a computer's CPU cores. The number of CPU cores available determines the maximum
-number of tasks that can be performed in parallel. While we might have dozens of tasks (e.g. painting sections of
-each wall), we can only make progress on a number of them equal to the number of CPU cores (painters) we have. The
-process of managing many tasks with fewer resources is concurrency.
+In this analogy, the painters represent CPU cores. The number of cores limits how many tasks can run in parallel. Even
+if there are many tasks, only as many can progress simultaneously as there are cores. Managing many tasks with fewer
+cores is called concurrency.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Key parallelisation concepts
 
 There is, unfortunately, more to parallelisation than simply diving work across multiple processors. Whilst the idea of
-splitting tasks to achieve faster results is *conceptually* simple, the implementation requires an understand of how
-work is executed across multiple processors and how the memory that this work uses is organised.
-
-Consider a simple computer where you have a single CPU core, some RAM (fast primary memory), a storage device such as a
-hard disk (slower secondary memory), input devices (e.g. keyboard, mouse) and an output device (screen). Now, imagine
-you add more CPU cores. Suddenly, there are several additional things you need to think about:
+splitting tasks to achieve faster results is *conceptually* simple, the practical implementation is more complex. Adding
+additional CPU cores raises new issues:
 
 - If there are two cores, they might share the same RAM (shared memory) or each have their own dedicated RAM (private
   memory). This distinction affects how data can be accessed and shared.
 - In a shared memory setup, what happens if two cores try to read or write the same memory location at the same time?
-  This can cause a race condition, where the outcome depends on the timing of operations. Preventing these conflicts
-  requires careful programming.
-- How do we divide and distribute the computational tasks among the CPU cores? Dividing the workload evenly between the
-  cores is essential for maximum speed-up.
-- How will the cores exchange data and coordinate their actions? Mechanisms are now required to share data and
-  coordinate actions to ensure results are consistent and correct.
-- After the tasks are complete, where should the final results be stored? Should they remain in the memory of one core,
-  be copied to a shared memory area, or written to disk? Additionally, which core handles producing the output on the
-  screen?
+  This can cause a race condition, where the outcome depends on the timing of operations.
+- How do we divide and distribute the workload evenly among the CPU cores? Dividing the workload unevenly will result in
+  inefficient parallelisation.
+- How will the cores exchange data and coordinate their actions? Additional mechanisms are required to enable this.
+- After the tasks are complete, where should the final results be stored? Should they remain in the memory of one CPU
+  core, be copied to a shared memory area, or written to disk? Additionally, which core handles producing the output on
+  the screen?
 
-To make effective use of multiple CPU cores, we must understand what **processes** and **threads** are, and how they
-interact with the computer's memory.
+To answer these questions, we need to understand what a **processes** and what a **thread** is, how they are different,
+and how they interact with memory.
 
-## Processes and threads
-
-### Processes
+## Processes
 
 A process is an individual running instance of a program. Each process operates independently and possesses its own set
 of resources, such as memory space and open files, managed by the operating system. Because of this separation, data in
 one processes is isolated and cannot be directly accessed by another.
+
+![Processes](fig/multiprocess.svg)
 
 In one approach to parallel programming, the aim is to achieve parallel execution by running many coordinated processes
 at the same time. However, what if one processes needs information from another processes? Since processes are isolated
@@ -114,18 +100,17 @@ and do not share memory, the information has to be explicitly communicated by th
 parallel programming frameworks such as MPI (Message Passing Interface). MPI provides a standardised library of
 functions that allow processes to exchange messages, coordinate tasks and collectively work on a problem together.
 
-This style of parallelisation--spawning large numbers of independent processes--is the dominant form of parallelisation
-on HPC systems. By combining MPI with a cluster's job or resource scheduler, it is possible to launch and coordinate
-processes are many compute nodes. Instead of having access to just a single CPU, our code can now use thousands or even
-tens of thousands of CPUs.
+This style of parallelisation is the dominant form of parallelisation on HPC systems. By combining MPI with a cluster's
+job or resource scheduler, it is possible to launch and coordinate processes are many compute nodes. Instead of having
+access to just a single CPU, our code can now use thousands or even tens of thousands of CPUs.
 
-![Processes](fig/multiprocess.svg)
-
-### Threads
+## Threads
 
 A thread is a unit of execution which exists within a process. Unlike processes, threads share their parent process'
 resources, including memory and open files, so they can directly read and write the same data. This shared access makes
 threads more efficiently than processes, since they do not have to communicate information between them.
+
+![Threads](fig/multithreading.svg)
 
 By running several threads across multiple CPU cores, program can dictate for each thread to work on their own tasks.
 For example, one thread may handle input/output whilst other threads perform some number crunching, or multiple threads
@@ -140,11 +125,50 @@ Careful synchronisation is therefore required.
 It is important to note, however, that threads a confined to a single process and therefore to a single computer.
 Programs which are parallelised using threads cannot span across compute nodes in a cluster.
 
-![Threads](fig/multithreading.svg)
-
 ## Shared vs. distributed memory parallelisation
 
-## Synchronisation and Race conditions
+When writing parallel programs, a key distinction is whether there is a single shared memory space or if there are
+multiple private memory spaces. These two models are called shared memory and distributed memory.
+
+![Memory pattern](fig/memory-pattern.png)
+
+In a shared memory system, all processors (or cores) can directly access and modify the same pool of memory. Changes
+made by one processor are immediately visible to the others. This model aligns naturally with parallelisation using
+**threads**, which exist within a single process and share the process’s memory. However, shared memory has limitations:
+if multiple threads try to update the same data simultaneously, race conditions can occur. Correct results require
+careful synchronisation. Programming models such as OpenMP (Open Multi-Processing) provide mechanisms to divide work
+among threads and synchronise access to shared data. In general, shared memory approaches are generally limited to the
+cores within a single computer or node. The advantage of shared memory is its simplicity, making it easier to implement
+and debug. The main disadvantage is limited scalability, as performance gains are constrained by the number of cores in
+a single node and the complexity of synchronisation.
+
+In a distributed memory system, each processor has its own private memory. Data cannot be accessed directly by other
+processors, it must be explicitly sent and received. This model aligns with parallelisation using **processes** which
+each have their own private memory space. Communication between processes is typically handled using libraries such as
+MPI (Message Passing Interface), which provides a library of standardised functions to exchange messages and coordinate
+tasks. Distributed memory programming requires more effort than shared memory, but it enables programs to scale across
+multiple nodes in a cluster. The advantage of distributed memory is its high scalability, allowing computations across
+thousands of nodes. The disadvantages include increased programming complexity and additional overheads required for
+communication information, as data must be explicitly exchanged between processes (private memory spaces).
+
+The differences can be summarised:
+
+- Accessibility: Shared memory allows direct access to a common memory space. Distributed memory requires explicit
+  communication for data exchange.
+- Memory scope: Shared memory provides a global pool, while distributed memory isolates each processor’s memory.
+- Consistency: In shared memory, changes are immediately visible to all cores. In distributed memory, explicit
+  synchronisation is needed to keep results consistent.
+- Scalability: Shared memory is limited to one node. Distributed memory scales to thousands of nodes.
+- Programming complexity: Shared memory models are simpler to use but harder to scale. Distributed memory models scale
+  well but require more explicit programming.
+- Advantages/Disadvantages: Shared memory is easier to program , but is limited in scale and prone to synchronisation
+  issues. Distributed memory scales to more cores, but is more complex and requires explicit data communication.
+
+In sophisticated applications, a hybrid approach is used which combines using processes to spread the workload across
+multiple nodes, but uses shared-memory parallelisation on a node. This takes advantage of the scalability of distributed
+memory, and the efficiency of using shared-memory with threads.
+
+## Synchronisation and race conditions
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
