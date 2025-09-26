@@ -257,7 +257,7 @@
 <li><a href="#key-parallelisation-concepts">Key parallelisation concepts</a></li>
 <li><a href="#processes">Processes</a></li>
 <li><a href="#threads">Threads</a></li>
-<li><a href="#shared-vs.-distributed-memory-parallelisation">Shared vs. distributed memory parallelisation</a></li>
+<li><a href="#shared-vs-distributed-memory-parallelisation">Shared vs distributed memory parallelisation</a></li>
 <li><a href="#synchronisation-and-race-conditions">Synchronisation and race conditions</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -407,12 +407,13 @@ This means more work is being done at once, so we get the results
 quicker than if we were running the same instructions sequentially. The
 process of changing sequential code to parallel code is called
 parallelisation.</p>
-<div id="callout1" class="callout">
+<div id="painters-analogy" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div class="callout-inner">
+<div id="painters-analogy" class="callout-inner">
+<h3 class="callout-title">Painters analogy</h3>
 <div class="callout-content">
 <p>Parallel computing means dividing a job into tasks that can run at
 the same time.</p>
@@ -499,7 +500,7 @@ synchronisation is therefore required.</p>
 process and therefore to a single computer. Programs which are
 parallelised using threads cannot span across compute nodes in a
 cluster.</p>
-</section><section><h2 class="section-heading" id="shared-vs--distributed-memory-parallelisation">Shared vs. distributed memory parallelisation<a class="anchor" aria-label="anchor" href="#shared-vs--distributed-memory-parallelisation"></a></h2>
+</section><section><h2 class="section-heading" id="shared-vs-distributed-memory-parallelisation">Shared vs distributed memory parallelisation<a class="anchor" aria-label="anchor" href="#shared-vs-distributed-memory-parallelisation"></a></h2>
 <hr class="half-width"><p>When writing parallel programs, a key distinction is whether there is
 a single shared memory space or if there are multiple private memory
 spaces. These two models are called shared memory and distributed
@@ -558,7 +559,51 @@ but uses shared-memory parallelisation on a node. This takes advantage
 of the scalability of distributed memory, and the efficiency of using
 shared-memory with threads.</p>
 </section><section><h2 class="section-heading" id="synchronisation-and-race-conditions">Synchronisation and race conditions<a class="anchor" aria-label="anchor" href="#synchronisation-and-race-conditions"></a></h2>
-<hr class="half-width"><div id="keypoints1" class="callout keypoints">
+<hr class="half-width"><p>Synchronisation ensures that processing units can coordinate their
+actions correctly, particularly when threads are accessing or modifying
+shared data. Without proper synchronisation, multiple threads, for
+example, might attempt to update the same variable simultaneously,
+leading to unpredictable results known as a race condition.</p>
+<p>In a shared memory system, synchronisation mechanisms such as
+barriers, locks, and atomic operations are used to control access to
+shared data and to coordinate work. A barrier ensures that threads have
+reached a certain point before continuing, while locks prevent section
+of code being executed simultaneously which may cause conflicts or data
+issues. Atomic operations allow individual updates to shared variables
+without interference, meaning only one thread can update a variable at
+once. Proper use of these mechanisms ensures code correctness,
+maintaining consistent and valid results.</p>
+<p>In distributed memory systems, synchronisation is achieved by
+carefully coordinating communication between processes to order the
+workload and manage data dependencies. Even though processes have their
+own private memory space, race conditions can still occur if two
+processes write to the same output file. Effective synchronisation,
+whether with threads or processes, is crucial for ensuring that parallel
+programs produce correct, reproducible results.</p>
+<div id="painters-analogy-1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="painters-analogy-1" class="callout-inner">
+<h3 class="callout-title">Painters analogy</h3>
+<div class="callout-content">
+<p>Imagine several painters working on the same set of walls. If each
+painter tries to paint the same wall at the same time without
+coordinating, they might overwrite each other’s work creating a mess.
+This is like a race condition in parallel programming, where there is
+simultaneous memory access modifying the same data.</p>
+<p>To avoid this, painters might take turns for the shared wall, or
+divide walls so each painter works independently. In programming,
+mechanisms like barriers or atomic operations perform the same role:
+they synchronise access to shared resources.</p>
+<p>This coordination ensures that all parts of the task progress in the
+right order, whether you are updating a shared variable, writing results
+to disk, or aggregating data.</p>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
