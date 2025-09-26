@@ -52,6 +52,8 @@ same instructions sequentially. The process of changing sequential code to paral
 
 ::::::::::::::::::::::::::::::::::::: callout
 
+## Painters analogy
+
 Parallel computing means dividing a job into tasks that can run at the same time.
 
 Imagine painting four walls in a room. The problem is painting the room. The four tasks are painting each wall. The
@@ -125,7 +127,7 @@ Careful synchronisation is therefore required.
 It is important to note, however, that threads a confined to a single process and therefore to a single computer.
 Programs which are parallelised using threads cannot span across compute nodes in a cluster.
 
-## Shared vs. distributed memory parallelisation
+## Shared vs distributed memory parallelisation
 
 When writing parallel programs, a key distinction is whether there is a single shared memory space or if there are
 multiple private memory spaces. These two models are called shared memory and distributed memory.
@@ -169,6 +171,38 @@ multiple nodes, but uses shared-memory parallelisation on a node. This takes adv
 memory, and the efficiency of using shared-memory with threads.
 
 ## Synchronisation and race conditions
+
+Synchronisation ensures that processing units can coordinate their actions correctly, particularly when threads are
+accessing or modifying shared data. Without proper synchronisation, multiple threads, for example, might attempt to
+update the same variable simultaneously, leading to unpredictable results known as a race condition.
+
+In a shared memory system, synchronisation mechanisms such as barriers, locks, and atomic operations are used to control
+access to shared data and to coordinate work. A barrier ensures that threads have reached a certain point before
+continuing, while locks prevent section of code being executed simultaneously which may cause conflicts or data issues.
+Atomic operations allow individual updates to shared variables without interference, meaning only one thread can update
+a variable at once. Proper use of these mechanisms ensures code correctness, maintaining consistent and valid results.
+
+In distributed memory systems, synchronisation is achieved by carefully coordinating communication between processes to
+order the workload and manage data dependencies. Even though processes have their own private memory space, race
+conditions can still occur if two processes write to the same output file. Effective synchronisation, whether with
+threads or processes, is crucial for ensuring that parallel programs produce correct, reproducible results.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Painters analogy
+
+Imagine several painters working on the same set of walls. If each painter tries to paint the same wall at the same time
+without coordinating, they might overwrite each other’s work creating a mess. This is like a race condition in parallel
+programming, where there is simultaneous memory access modifying the same data.
+
+To avoid this, painters might take turns for the shared wall, or divide walls so each painter works independently. In
+programming, mechanisms like barriers or atomic operations perform the same role: they synchronise access to shared
+resources.
+
+This coordination ensures that all parts of the task progress in the right order, whether you are updating a shared
+variable, writing results to disk, or aggregating data.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
