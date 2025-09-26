@@ -52,12 +52,11 @@ same instructions sequentially. The process of changing sequential code to paral
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## Painters analogy
+## Painting a room
 
-Parallel computing means dividing a job into tasks that can run at the same time.
-
-Imagine painting four walls in a room. The problem is painting the room. The four tasks are painting each wall. The
-tasks are independent—you do not need to finish one wall before starting another.
+Parallel computing means dividing a job into tasks that can run at the same time. Imagine painting four walls in a room.
+The problem is painting the room. The four tasks are painting each wall. The tasks are independent—you do not need to
+finish one wall before starting another.
 
 If there is only one painter, they must work on one wall at a time. The work is concurrent but not parallel. With two or
 more painters, walls can be painted at the same time—this is parallel work.
@@ -70,9 +69,9 @@ cores is called concurrency.
 
 ## Key parallelisation concepts
 
-There is, unfortunately, more to parallelisation than simply diving work across multiple processors. Whilst the idea of
-splitting tasks to achieve faster results is *conceptually* simple, the practical implementation is more complex. Adding
-additional CPU cores raises new issues:
+There is, unfortunately, more to parallelisation than simply dividing work across multiple processors. Whilst the idea
+of splitting tasks to achieve faster results is *conceptually* simple, the practical implementation is more complex.
+Adding additional CPU cores raises new issues:
 
 - If there are two cores, they might share the same RAM (shared memory) or each have their own dedicated RAM (private
   memory). This distinction affects how data can be accessed and shared.
@@ -189,7 +188,7 @@ threads or processes, is crucial for ensuring that parallel programs produce cor
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## Painters analogy
+## Organising the painters
 
 Imagine several painters working on the same set of walls. If each painter tries to paint the same wall at the same time
 without coordinating, they might overwrite each other’s work creating a mess. This is like a race condition in parallel
