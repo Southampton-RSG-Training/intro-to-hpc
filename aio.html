@@ -785,18 +785,17 @@ This means more work is being done at once, so we get the results
 quicker than if we were running the same instructions sequentially. The
 process of changing sequential code to parallel code is called
 parallelisation.</p>
-<div id="painters-analogy" class="callout">
+<div id="painting-a-room" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="painters-analogy" class="callout-inner">
-<h3 class="callout-title">Painters analogy</h3>
+<div id="painting-a-room" class="callout-inner">
+<h3 class="callout-title">Painting a room</h3>
 <div class="callout-content">
 <p>Parallel computing means dividing a job into tasks that can run at
-the same time.</p>
-<p>Imagine painting four walls in a room. The problem is painting the
-room. The four tasks are painting each wall. The tasks are
+the same time. Imagine painting four walls in a room. The problem is
+painting the room. The four tasks are painting each wall. The tasks are
 independent—you do not need to finish one wall before starting
 another.</p>
 <p>If there is only one painter, they must work on one wall at a time.
@@ -812,7 +811,7 @@ Managing many tasks with fewer cores is called concurrency.</p>
 </section><section><h2 class="section-heading" id="key-parallelisation-concepts">Key parallelisation concepts<a class="anchor" aria-label="anchor" href="#key-parallelisation-concepts"></a>
 </h2>
 <hr class="half-width">
-<p>There is, unfortunately, more to parallelisation than simply diving
+<p>There is, unfortunately, more to parallelisation than simply dividing
 work across multiple processors. Whilst the idea of splitting tasks to
 achieve faster results is <em>conceptually</em> simple, the practical
 implementation is more complex. Adding additional CPU cores raises new
@@ -972,13 +971,13 @@ own private memory space, race conditions can still occur if two
 processes write to the same output file. Effective synchronisation,
 whether with threads or processes, is crucial for ensuring that parallel
 programs produce correct, reproducible results.</p>
-<div id="painters-analogy-1" class="callout">
+<div id="organising-the-painters" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="painters-analogy-1" class="callout-inner">
-<h3 class="callout-title">Painters analogy</h3>
+<div id="organising-the-painters" class="callout-inner">
+<h3 class="callout-title">Organising the painters</h3>
 <div class="callout-content">
 <p>Imagine several painters working on the same set of walls. If each
 painter tries to paint the same wall at the same time without
