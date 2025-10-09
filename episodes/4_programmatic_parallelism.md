@@ -45,6 +45,10 @@ work to be done by, e.g. optimising our code, we instead have multiple processor
 
 ### Sequential vs. parallel computing
 
+![On the left, a single processing unit executes one sequence of instructions for the whole problem. On the right, the
+problem is divided into independent tasks, each processed concurrently by separate processing
+units.](fig/serial-and-parallel-progs.png)
+
 Traditionally, computers execute one instruction at a time, in the sequence defined by the code you have written. In
 other words, your code is compiled into a series of instructions which are executed one after another. We call this
 serial execution.
