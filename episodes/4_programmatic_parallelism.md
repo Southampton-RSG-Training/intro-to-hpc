@@ -6,7 +6,9 @@ exercises: 0 # exercise time in minutes
 
 :::::::::::::::::::::::::::::::::::::: questions
 
-- Did you know you have to have this question section?
+- What is parallelisation and how does it improve performance?
+- What are the different types of parallelisation?
+- Why does synchronisation matter?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -99,7 +101,8 @@ A process is an individual running instance of a software program. Each process 
 own set of resources, such as memory space and open files, managed by the operating system. Because of this separation,
 data in one processes is typically isolated and cannot be directly accessed by another process.
 
-![Processes](fig/multiprocess.svg)
+![Multiple independent processes, each with their own private memory space, communicating through explicit message
+passing over a network.](fig/multiprocess.svg)
 
 One approach to achieve parallel execution is by running multiple coordinated processes at the same time. But what if
 one processes needs information from another processes? Since processes are isolated and have private memory spaces,
@@ -118,7 +121,7 @@ A thread is a unit of execution which exists within a process. Unlike processes,
 resources, including memory and open files, so they can directly read and write the same memory space. This shared
 access means threads can exchange data faster, since they do not have to communicate it between them.
 
-![Threads](fig/multithreading.svg)
+![Multiple threads within a single process, sharing the same memory space and resources.](fig/multithreading.svg)
 
 By running multiple threads, over multiple CPU cores, a program can coordinate for each thread to work on their own
 task(s). For example, one thread may handle input/output whilst other threads perform some number crunching, or multiple
@@ -137,7 +140,9 @@ compute nodes in a cluster.
 When writing parallel programs, a key distinction is whether there is a single shared memory space or if there are
 multiple private memory spaces. These two models are called shared memory and distributed memory.
 
-![Memory pattern](fig/memory-pattern.png)
+![Comparison of shared and distributed memory architectures: shared memory shows multiple processors accessing one
+memory pool, while distributed memory shows processors each with private memory connected by communication
+links.](fig/memory-pattern.png)
 
 In a shared memory system, all processors (or cores) can directly access and modify the same pool of memory. Changes
 made by one processor are immediately visible to the others. This model aligns naturally with parallelisation using
@@ -210,6 +215,9 @@ variable, writing results to disk, or aggregating data.
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- You need a list of key points
+- Parallelisation speeds up computation by dividing work across multiple processing units.
+- Processes use private memory and communicate information explicitly between them (distributed memory, e.g. MPI).
+- Threads share memory within a process and require synchronisation to prevent race conditions.
+- Shared memory parallelisation is simpler but limited in scale. Distributed memory scales better, but is more complex.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
