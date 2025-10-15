@@ -27,8 +27,95 @@ exercises: 0 # exercise time in minutes
 
 Lesson content goes here
 
+## CPU Parallelisation
+
+### OpenMP
+
+### MPI
+
+## GPU Parallelisation
+
+### OpenACC
+
+### CUDA
+
+## Measuring and improving parallel performance
+
+When we submit a job to run on a cluster, we have the option of specifying the amount of memory number of CPUs (and
+GPUs) that will be allocated. We need to consider to what extent that code is *scalable* with regards to how it uses the
+request resources, to avoid using more resources than can be effectively used. As part of the application process for
+having new code installed on DiRAC, its scalability characteristics need to be measured. This helps inform how best to
+assign CPU resources when configuring jobs to run with that code.
+
+There are two primary measures of execution time we need to consider for any given code:
+
+- **Wall clock time (or actual time)** - this is the time it takes to run from start of execution to the end, as
+  measured on a clock. In terms of scaling measurements, this does not include any time waiting for the job to start.
+- **CPU time** - this is the time actually spent running your code on a CPU, when it is processing instructions. This
+  does not include time waiting for input or output operations, such as reading in an input file, or any other waiting
+  caused by the program or operating system.
+
+### Strong Scaling
+
+### Weak Scaling
+
+### The dangers of premature optimisation
+
+If your code is still taking too long to run after parallelising it, or if it scales poorly, it's tempting to dive head
+first in and try to optimise everything you think is slow! But before you do that, you need to think about the [rules of
+optimisation](https://hackernoon.com/the-rules-of-optimization-why-so-many-performance-efforts-fail-cf06aad89099):
+
+1. Don't,
+2. Don't... *yet*, and,
+3. If you need to optimise your code, *profile* it first.
+
+For most code we write, premature optimisation is often bad practice which leads to long nights of debugging.
+Optimisation often leads to more complex code resulting in code which is more difficult to read, making it harder to
+understand and maintain; even with all the code comments in the world! Another issue is that your premature optimisation
+may change the result without you realising until much further down the line.
+
+It is often effort-intensive, and difficult at a low level, particularly with modern compilers and interpreters, to
+improve on or anticipate the optimisations that they already automatically implement for us. It is often better to focus
+on writing understandable code which does what you want and then *only* optimise if it too slow. You will often find
+that code you think is going to be slow, is often fast enough to not be a problem!
+
+Once you have measured the strong and weak scaling profiles of your code, you can also *profile* your code to find where
+the majority of time is being spent to best optimise it. Only then should you start thinking about optimising. If you
+want to take this philosophy further, consider the [Rules of Optimisation
+Club](https://perlbuzz.com/2008/02/19/the_rules_of_optimization_club/).
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## What is profiling?
+
+Profiling your code is all about understanding its complexity and performance characteristics. The usual intent of
+profiling is to work out how best to *optimise* your code to improve its performance in some way, typically in terms of
+speedup or memory and disk usage. In particular, profiling helps identify *where* bottlenecks exist in your code, and
+helps avoid summary judgments and guesses which will often lead to unnecessary optimisations.
+
+Each programming language will typically offer some open-source and/or free tools on the web, with you can use to
+profile your code. Here are some examples of tools. Note though, depending on the nature of the language of choice,
+the results can be hard or easy to interpret. In the following we will only list open and free tools:
+
+- Python: [line_profiler](https://github.com/pyutils/line_profiler),
+  [prof](https://docs.python.org/3.9/library/profile.html)
+- C/C++: [xray](https://llvm.org/docs/XRay.html), [perf](https://perf.wiki.kernel.org/index.php/Main_Page),
+  [gprof](https://ftp.gnu.org/old-gnu/Manuals/gprof-2.9.1/html_mono/gprof.html)
+- R: [profvis](https://github.com/rstudio/profvis)
+- MATLAB: [profile](https://www.mathworks.com/help/matlab/ref/profile.html)
+- Julia: [Profile](https://docs.julialang.org/en/v1/manual/profile/)
+
+[Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth) said *"we should forget about small efficiencies, say about
+97% of the time: premature optimization is the root of all evil. Yet we should not pass up our opportunities in that
+critical 3%."* Optimise the obvious trivial things, but avoid non-trivial optimisations until you've understood what
+needs to change. Optimisation is often difficult and time consuming. Pre-mature optimization may be a waste of your
+time!
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- You need a list of key points
+- Premature optimisation is often dangerous. You should first profile and assess the scaling of your code before you
+  decide to optimise it.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
