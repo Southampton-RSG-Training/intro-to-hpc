@@ -111,8 +111,9 @@ passing over a network.](fig/multiprocess.svg)
 One approach to achieve parallel execution is by running multiple coordinated processes at the same time. But what if
 one processes needs information from another processes? Since processes are isolated and have private memory spaces,
 information has to be explicitly communicated by the programmer between processes. This is the role of parallel
-programming frameworks and libraries such as MPI (Message Passing Interface). MPI provides a standardised library of
-functions that allow processes to exchange messages, coordinate tasks and collectively work on a problem together.
+programming frameworks and libraries such as [MPI](https://www.mpi-forum.org/) (Message Passing Interface). MPI provides
+a standardised library of functions that allow processes to exchange messages, coordinate tasks and collectively work on
+a problem together.
 
 This style of parallelisation is the dominant form of parallelisation on HPC systems. By combining MPI with a cluster's
 job scheduler, it is possible to launch and coordinate processes across many compute nodes. Instead of having access to
@@ -131,13 +132,14 @@ By running multiple threads, over multiple CPU cores, a program can coordinate f
 task(s). For example, one thread may handle input/output whilst other threads perform some number crunching, or multiple
 threads might process different parts of a dataset simultaneously.
 
-A major advantage of using threads is their relative ease of use compared to processes. With frameworks such as OpenMP,
-existing code can often be adapted for parallel execution with relatively small changes. Because threads share a memory
-space, there is no need for explicit message-passing mechanisms (as required with processes). However, this shared
-memory model introduces the possibility of race conditions, where two or more threads attempt to update the same data at
-once. Careful synchronisation is therefore required. It is important to note, however, that threads are confined to a
-single process and therefore to a single computer. Programs which are parallelised using threads cannot span across
-compute nodes in a cluster.
+A major advantage of using threads is their relative ease of use compared to processes. With frameworks such as
+[OpenMP](https://www.openmp.org/)), which provides a set of compiler extensions and libraries for paralleling code using
+threads, existing code can be adapted for parallel execution with, often, relatively small changes. Because threads
+share a memory space, there is no need for explicit message-passing mechanisms (as required with processes). However,
+this shared memory model introduces the possibility of race conditions, where two or more threads attempt to update the
+same data at once. Careful synchronisation is therefore required. It is important to note, however, that threads are
+confined to a single process and therefore to a single computer. Programs which are parallelised using threads cannot
+span across compute nodes in a cluster.
 
 ## Shared vs distributed memory parallelisation
 
