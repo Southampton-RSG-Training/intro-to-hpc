@@ -41,13 +41,11 @@ Lesson content goes here
 
 ## Measuring and improving parallel performance
 
-When we submit a job to run on a cluster, we have the option of specifying the amount of memory number of CPUs (and
-GPUs) that will be allocated. We need to consider to what extent that code is *scalable* with regards to how it uses the
-request resources, to avoid using more resources than can be effectively used. As part of the application process for
-having new code installed on DiRAC, its scalability characteristics need to be measured. This helps inform how best to
-assign CPU resources when configuring jobs to run with that code.
-
-There are two primary measures of execution time we need to consider for any given code:
+When we submit a job to run on a cluster, we have the option of specifying the amount of memory and the number of CPUs
+(and GPUs) that will be allocated. We need to consider to what extent that code is *scalable* with regards to how it
+uses the requested resources, to avoid asking for, and wasting, more resources than can be used efficiently. So before
+we start asking for lots of resources, we need to know how the performance of our scales with the number of CPUs (or
+GPUs) made available to it. There are two primary measures of execution time we need need to measure:
 
 - **Wall clock time (or actual time)** - this is the time it takes to run from start of execution to the end, as
   measured on a clock. In terms of scaling measurements, this does not include any time waiting for the job to start.
@@ -55,9 +53,48 @@ There are two primary measures of execution time we need to consider for any giv
   does not include time waiting for input or output operations, such as reading in an input file, or any other waiting
   caused by the program or operating system.
 
+In most cases, measuring just the wall clock time is usually sufficient for working out how your code scales. But what
+is code scalability?
+
+### What is scalability?
+
+Scalability describes how efficiently a program can use additional resources to solve a problem faster, or to handle
+larger problems. A scalable code continues to achieve performance improvements as more resources are allocated to it.
+Programs which don't scale well show diminishing returns as more resources are allocated, often due to bottlenecks such
+as serial code sections or other overheads. It's important to note that not all programs need to scale perfectly or to
+hundreds of thousands of processors. Every program has a practical scaling limit beyond which performance gains level
+off or even decline. What matters is understanding where the limit lies for your application and what the bottleneck is.
+
+Bottlenecks are the parts of a program that limit its scalability. Even small sections of serial code, or operations
+that require coordination between processors, can dominate the total runtime. According to [Amdahl’s
+Law](https://en.wikipedia.org/wiki/Amdahl%27s_law), the speedup of a parallel program is constrained by its serial
+fraction, so perfect scaling is impossible when any part of the program must execute sequentially. Typical bottlenecks
+include communication overhead, synchronisation delays, I/O operations, and load imbalance. As processor count
+increases, these costs can outweigh the benefits of parallel execution, leaving some resources idle.
+
+Scalability is measured by observing how the program's execution time changes as the number of processors increases.
+This can be quantified through speedup (the ratio of single-processor runtime to multi-processor runtime) and efficiency
+(the ratio of achieved speedup to the number of processors used). These are calculated through measurements of wall
+clock time and plotted against the processor count to show how performance scales.
+
+Measuring scalability helps identify whether performance limitations stem from the code itself, the problem size, or the
+system architecture. Because computing resources are finite, measuring scalability is essential to ensure they are used
+efficiently. It allows you to determine when adding more cores no longer provides meaningful benefits, preventing wasted
+resources.
+
 ### Strong Scaling
 
+Strong scaling measures how execution time changes when the problem size *stays constant* but the number of processors
+increases. Ideally, when doubling the processor count we should see expect for the runtime to be halved. In practise,
+performance gains are limited by serial code and overheads such as communication, synchronisation or I/O operations
+limited by the file or operating system.
+
 ### Weak Scaling
+
+Weak scaling measures show runtime changes when both the problem size and number of processors increase proportionally,
+keeping the workload per processor constant; in contrast, when measuring strong scaling, the workload per processors
+decreases. Ideally, the runtime should remain constant as more processors are added. Weak scaling is important for large
+simulations which would be functionally impossible without a large number of resources.
 
 ### The dangers of premature optimisation
 
