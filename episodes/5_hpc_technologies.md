@@ -6,7 +6,12 @@ exercises: 0 # exercise time in minutes
 
 :::::::::::::::::::::::::::::::::::::: questions
 
-- Did you know you have to have this question section?
+- What are the main ways we can parallelise a program on modern HPC systems?
+- How do OpenMP and MPI differ in how they achieve parallelism?
+- What role do GPUs play in HPC, and how do approaches like CUDA and OpenACC use them?
+- Why might we combine OpenMP and MPI in the same program?
+- Why is it important for code to scale well on large HPC systems?
+- What can go wrong if we try to optimise too early in the development process?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -31,13 +36,93 @@ Lesson content goes here
 
 ### OpenMP
 
+- Concept: shared-memory model.
+- Common directives (`parallel`, `for`, `reduction`).
+- Compilation (`gcc -fopenmp`).
+- Simple Slurm job example with `--cpus-per-task`.
+- Strengths (simple to add) and limits (single-node memory).
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=openmp_test
+#SBATCH --partition=batch
+#SBATCH --time=00:10:00
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=4G
+
+module load gcc
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+./test_openmp_exe
+```
+
 ### MPI
+
+- Concept: distributed-memory model using message passing.
+- Key functions (`MPI_Init`, `MPI_Send`, `MPI_Recv`, `MPI_Finalize`).
+- Compilation (`mpicc`).
+- Example Slurm job with `--ntasks`.
+- Benefits (scales across nodes) and challenges (communication overhead).
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=mpi_test
+#SBATCH --partition=batch
+#SBATCH --time=00:10:00
+#SBATCH --ntasks=8
+#SBATCH --mem=4G
+
+module load openmpi
+
+mpiexec ./test_mpi_exe
+# Alternative:
+# srun ./test_mpi_exe
+```
+
+### Hybrid OpenMP + MPI
+
+- Concept: combining intra-node threads with inter-node processes.
+- Compilation (`mpicc -fopenmp`).
+- Launching with `--ntasks-per-node` and `--cpus-per-task`.
+- Advantages (balance memory and compute) and drawbacks (complex tuning).
 
 ## GPU Parallelisation
 
+```bash
+#!/bin/bash
+#SBATCH --job-name=openacc_test
+#SBATCH --partition=gpu
+#SBATCH --time=00:10:00
+#SBATCH --gres=gpu:1
+#SBATCH --mem=8G
+
+module load nvhpc
+
+./test_openacc_exe
+```
+
 ### OpenACC
 
+- Directive-based GPU offload.
+- Example directive (`#pragma acc parallel loop`).
+- Compilation (`nvc -acc`).
+- Slurm example with `--gres=gpu:1`.
+- Advantages: incremental acceleration; limits: less control.
+
 ### CUDA
+
+- Explicit GPU programming model (kernels, threads, memory).
+- Example kernel declaration (`__global__ void kernel(...)`).
+- Compilation (`nvcc`).
+- Slurm job example with `--gres=gpu:1`.
+- Benefits (fine-grained control) and drawbacks (complexity, vendor lock-in).
+
+## Putting It Together
+
+- Comparing OpenMP, MPI, OpenACC, and CUDA at a high level.
+- Typical use cases (e.g. CFD, ML, simulations).
+- Choosing the right model for the problem.
+- Preview of scaling and optimisation (to follow).
 
 ## Measuring and improving parallel performance
 
