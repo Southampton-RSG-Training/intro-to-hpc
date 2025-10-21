@@ -32,6 +32,7 @@ void vector_add(int *a, int *b, int *c, int n)
 
     MPI_Finalize();
 }
+
 int main(void)
 {
     int *a = malloc(N * sizeof(int));

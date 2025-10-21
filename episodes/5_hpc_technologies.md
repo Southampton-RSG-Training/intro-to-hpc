@@ -30,9 +30,61 @@ exercises: 0 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Lesson content goes here
+High-performance computing relies on parallelism. Modern systems combine thousands of processors, each capable of
+working on part of a problem. To use this power effectively, we must understand the main models of parallel
+programming—shared memory, distributed memory, and accelerator-based computing—and how each fits into real workloads.
 
-## CPU Parallelisation
+In this lesson, we explore the core HPC technologies: OpenMP for threading, MPI for message passing, and GPU frameworks
+such as CUDA and OpenACC. We will see how they differ, where they overlap, and why combining them often produces the
+best results. We will also touch on performance measurement and scalability—vital concepts for making efficient use of
+large systems.
+
+## Common languages
+
+You can use any programming language you want to run code on a HPC cluster. However, there are good and bad choices. For
+example, whilst Python is easy to write and develop, the slow performance makes it a less desirable language to write a
+program in which demands high performance. Because of this, it's usually best to use a compiled language. The most
+common compiled languages in research are C, C++ and Fortran.
+
+This doesn't mean you can't run Python on HPC. In fact, it is very common. However, it is often used in a way where the
+computationally tough bits of the code are written in other languages. An example of this is PyTorch, where the
+computational bits are written in C++ and accelerated using CUDA. Python libraries such a Numpy and Numba also take
+advantage of compiled code to speed up computation. Furthermore, MPI is also available for Python.
+
+## Landscape of technologies
+
+The intention of this section is to give an idea of how the popular libraries and frameworks are used to paralleise code
+and how they are run on HPC clusters.
+
+We will be taking this short program to add together two vectors and showing how they are parallelised. We won't go over
+the details of the implementation, giving only a high level overview of what's happening.
+
+The function which we will parallelise is `vector_add`
+
+[vector.c](files/vector_serial.c)
+
+```c
+void vector_add(float *a, float *b, float *c, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        c[i] = a[i] + b[i];
+    }
+}
+```
+
+```bash
+#!/bin/bash
+
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:01:00
+
+module load gcc
+gcc vector_serial.exe -o vector_serial.exe
+./vector_serial.exe
+```
 
 ### OpenMP
 
@@ -42,18 +94,32 @@ Lesson content goes here
 - Simple Slurm job example with `--cpus-per-task`.
 - Strengths (simple to add) and limits (single-node memory).
 
+```c
+void vector_add(int *a, int *b, int *c, int n)
+{
+#pragma omp parallel for
+    for (int i = 0; i < n; i++)
+    {
+        c[i] = a[i] + b[i];
+    }
+}
+```
+
 ```bash
 #!/bin/bash
-#SBATCH --job-name=openmp_test
-#SBATCH --partition=batch
-#SBATCH --time=00:10:00
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=4G
 
-module load gcc
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --time=00:01:00
+
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
-./test_openmp_exe
+module load gcc
+gcc -fopenmp vector_openmp.exe -o vector_openmp.exe
+./vector_openmp.exe
+
 ```
 
 ### MPI
@@ -64,52 +130,100 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 - Example Slurm job with `--ntasks`.
 - Benefits (scales across nodes) and challenges (communication overhead).
 
-```bash
-#!/bin/bash
-#SBATCH --job-name=mpi_test
-#SBATCH --partition=batch
-#SBATCH --time=00:10:00
-#SBATCH --ntasks=8
-#SBATCH --mem=4G
+```c
+void vector_add(int *a, int *b, int *c, int n)
+{
+    int rank, size;
+    MPI_Init(NULL, NULL);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-module load openmpi
+    int n_local = n / size;
+    int *a_local = malloc(n_local * sizeof(int));
+    int *b_local = malloc(n_local * sizeof(int));
+    int *c_local = malloc(n_local * sizeof(int));
 
-mpiexec ./test_mpi_exe
-# Alternative:
-# srun ./test_mpi_exe
+    MPI_Scatter(a, n_local, MPI_INT, a_local, n_local, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatter(b, n_local, MPI_INT, b_local, n_local, MPI_INT, 0, MPI_COMM_WORLD);
+
+    for (int i = 0; i < n_local; i++)
+    {
+        c_local[i] = a_local[i] + b_local[i];
+    }
+
+    MPI_Gather(c_local, n_local, MPI_INT, c, n_local, MPI_INT, 0, MPI_COMM_WORLD);
+
+    free(a_local);
+    free(b_local);
+    free(c_local);
+
+    MPI_Finalize();
+}
 ```
 
-### Hybrid OpenMP + MPI
+```bash
+#!/bin/bash
 
-- Concept: combining intra-node threads with inter-node processes.
-- Compilation (`mpicc -fopenmp`).
-- Launching with `--ntasks-per-node` and `--cpus-per-task`.
-- Advantages (balance memory and compute) and drawbacks (complex tuning).
+#SBATCH --partition=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks=8
+#SBATCH --time=00:01:00
 
-## GPU Parallelisation
+# Load a MPI library, which give access to the library files and tools part of
+# MPI
+module load openmpi
+mpicc vector_mpi.exe -o vector_mpi.exe
+
+# Using the srun command is the easiest way to launch an MPI program on Iridis.
+# It is part of Slurm and gives lots of flexibility on how to launch programs
+# on multiple nodes. It uses the values in the SBATCH directives above to configure
+# how to launch our program
+srun ./vector_mpi.exe
+
+# Alternatively, you can use mpirun/mpiexec which is part of the MPI library. Functionally
+# it does the same thing as srun, but requires more manual setup as it is has no
+# knowledge of Slurm and the resources Slurm allocated
+mpirun -np $SLURM_NTASKS ./vector_mpi.exe
+```
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### Hybrid MPI+OpenMP
+
+MPI and OpenMP don’t have to be competing choices. They can be used together in a hybrid parallel model, where MPI
+distributes work across nodes and OpenMP manages threads within each node. This combination allows applications to scale
+beyond a single machine while using memory and cores more efficiently.
+
+Hybrid parallelism reduces data duplication between processes and improves load balancing through OpenMP’s flexible
+scheduling. It also helps lower communication costs by keeping shared-memory operations local to a node.
+
+The main drawbacks are added complexity and potential overheads from managing both models. Code becomes harder to write,
+debug, and port between systems. Still, hybrid MPI+OpenMP programs are often the best solution for large-scale workloads
+where pure MPI or OpenMP alone falls short.
+
+:::::::::::::::::::::::::::::::::::::::::::::
+
+### GPU Parallelisation
 
 ```bash
 #!/bin/bash
-#SBATCH --job-name=openacc_test
-#SBATCH --partition=gpu
-#SBATCH --time=00:10:00
-#SBATCH --gres=gpu:1
-#SBATCH --mem=8G
 
+#SBATCH --partition=a100
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --gres=gpu:1
+#SBATCH --time=00:01:00
+
+# The NVHPC module includes the libraries required for GPU parallelisation
 module load nvhpc
 
-./test_openacc_exe
+nvcc vector_cuda.cu -o vector_cuda.exe
+nvidia-smi
+./vector_cuda.exe
+xe
 ```
 
-### OpenACC
-
-- Directive-based GPU offload.
-- Example directive (`#pragma acc parallel loop`).
-- Compilation (`nvc -acc`).
-- Slurm example with `--gres=gpu:1`.
-- Advantages: incremental acceleration; limits: less control.
-
-### CUDA
+CUDA:
 
 - Explicit GPU programming model (kernels, threads, memory).
 - Example kernel declaration (`__global__ void kernel(...)`).
@@ -117,12 +231,59 @@ module load nvhpc
 - Slurm job example with `--gres=gpu:1`.
 - Benefits (fine-grained control) and drawbacks (complexity, vendor lock-in).
 
+```cpp
+__global__ void vector_add_kernel(int *a, int *b, int *c, int n)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i < n)
+    {
+        c[i] = a[i] + b[i];
+    }
+}
+
+void vector_add(int *a, int *b, int *c, int n)
+{
+    int *d_a, *d_b, *d_c;
+    cudaMalloc(&d_a, n * sizeof(int));
+    cudaMalloc(&d_b, n * sizeof(int));
+    cudaMalloc(&d_c, n * sizeof(int));
+
+    cudaMemcpy(d_a, a, n * sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, b, n * sizeof(int), cudaMemcpyHostToDevice);
+
+    int grid = (n + BLOCK_SIZE - 1) / BLOCK_SIZE;
+    vector_add_kernel<<<grid, BLOCK_SIZE>>>(d_a, d_b, d_c, n);
+
+    cudaMemcpy(c, d_c, n * sizeof(int), cudaMemcpyDeviceToHost);
+
+    cudaFree(d_a);
+    cudaFree(d_b);
+    cudaFree(d_c);
+}
+```
+
+OpenACC:
+
+- Directive-based GPU offload, similar to OpenMP: `#pragma acc parallel loop`.
+- Compilation also similar to OpenMP `nvc -acc`.
+- Advantages: incremental acceleration; limits: less control.
+
+```c
+void vector_add(int *a, int *b, int *c, int n)
+{
+#pragma acc parallel loop
+    for (int i = 0; i < n; i++)
+    {
+        c[i] = a[i] + b[i];
+    }
+}
+```
+
 ## Putting It Together
 
 - Comparing OpenMP, MPI, OpenACC, and CUDA at a high level.
 - Typical use cases (e.g. CFD, ML, simulations).
 - Choosing the right model for the problem.
-- Preview of scaling and optimisation (to follow).
 
 ## Measuring and improving parallel performance
 
