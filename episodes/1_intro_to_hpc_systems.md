@@ -6,7 +6,10 @@ exercises: 0 # exercise time in minutes
 
 :::::::::::::::::::::::::::::::::::::: questions
 
-- Did you know you have to have this question section?
+- What is a High Performance Computing cluster?
+- What is the difference between a HPC cluster and the cloud?
+- How can I use a HPC cluster to do my research?
+- What HPC clusters are available to me and how do I get access to them?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -22,18 +25,8 @@ exercises: 0 # exercise time in minutes
 - Summarise key capabilities of national HPC resources and how to access them
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-From the draft syllabus:
-* What are supercomputers?
 
-* What is HPC? How does it differ from the cloud?
 
-* Why do we need HPC systems and how are they used?
-
-* What is an HPC system? [inc. typical infrastructure/architecture, explanation of tiers 1-3, how to access these resources]
-
-* What are the main capabilities of NOCS HPC, IRIDIS6 / OpenOnDemand and the support for typical NOCS applications?
-
-* What are the tier 2 facilities such as the UK's National HPC system ARCHER2 and DiRAC, and how can I access them?
 
 
 ## High Performance Computing
@@ -43,25 +36,24 @@ From the draft syllabus:
 
 High Performace Computing (HPC) refers to the use of powerful computers and programming techniques to solve computationally intensive tasks. An HPC Cluster, or supercomputer, is one which harnesses the **aggregated** power of groups of advanced computing systems. These high performance computers are grouped together in a network as a unified system, hence the name cluster. HPC clusters provide extremely high computational capabilities, significantly surpasssing that of a general personal computer. 
  
-:::::::: discussion
-With your colleagues discuss some examples of computational problems that could benefit from the aggregated computational power of High Performance Computing.
-::::::::
 
-:::::::: solution
-Some suggestions - consider several research scenarios:
+:::::::: callout
+Lets consider some computational research problems that could benefit from the aggregated computational power of High Performnace Computing:
 
 - A oceanography research student is modelling ocean circulation by processing seismic reflection datasets. They have thousands of these datasets - but each processing run takes an hour. Running the model on a laptop will take over a month! In this research problem, final results are calculated after all 1000 models have run, but typically only one model is run at a time (in serial) on the laptop. Since each of the 1000 runs is independent of all others, and given enough computers, it’s theoretically possible to run them all at once (in parallel).
 
-- The seismic reflection datasets are extremely large and the student is already finding it challenging to process the datasets on their computer. The researcher has just received datasets that are 10 times as large - analyzing these larger datasets will certainly crash their computer. In this research problem, the calculations required might be impossible to parallelize, but a computer with more memory would be required to analyze the much larger future data set.
+- The seismic reflection datasets are extremely large and the student is already finding it challenging to process the datasets on their computer. The researcher has just received datasets that are 10 times as large - analysing these larger datasets will certainly crash their computer. In this research problem, the calculations required might be impossible to parallelise, but a computer with more memory would be required to analyse the much larger future data set.
 
 - An ocean modeller is using a numerical modelling system such as NEMO that supports parallel computation. While this option has not been used previously, moving from 2D to fully 3D ocean simulations has significantly increased the run time. In such models, calculations within each ocean subdomain are largely independent, allowing them to be solved simultaneously across processors while exchanging boundary information between adjacent regions. Because 3D simulations involve far more data and calculations, distributing the workload across multiple processors or computers connected via a shared network can substantially reduce runtime and make large-scale ocean simulations practical.
 ::::::::
 
 HPC clusters fundamentally perform simple numerical computations, but on an extremely large scale. In our examples we can see where HPC clusters excel, using hundreds or thousands of processors to complete a numerical task that would take a desktop or laptop days, months or years to complete. They can also tackle problems that are too large or complex for a PC to fit in their memory, such as modelling the ocean dynamics or the Earth's climate. 
 
-HPC allows you as researchers to scale up your computational research and data processing, allowing you to do more research or to solve problems that would be infeasible to solve on your own computer.
+**High Performance Computing allows you as researchers to scale up your computational research and data processing, allowing you to do more research or to solve problems that would be infeasible to solve on your own computer.**
 
-## Architecture: PC vs HPC Cluster
+## HPC vs PC
+Before we discuss High Performance Computing clusters in more detail let's start with a computational resource we are all familiar with, the PC:
+
 ### PC
 
 <table style="width:100%; border-collapse:collapse; margin-bottom:1em;">
@@ -88,28 +80,40 @@ HPC allows you as researchers to scale up your computational research and data p
 </table>
 
 
+
+
 ### If Our PC isnt Powerful Enough?
 
-When the task to solve become heavy on computations, the operations are typically out-sourced from your local laptop or desktop to elsewhere. Take for example the task to find the directions for your next conference. The capabilities of your laptop are typically not enough to calculate that route in real time, so you use a website, which in turn runs on a computer that is almost always a machine that is not in the same room as you are. Such a remote machine is generically called a server.
 
 ![Outsourcing Computational Tasks: many of the tasks we perform daily using computers are outsourced to remote servers ](fig/server.svg){width="20%"}
 
+When the task to solve becomes too computationally heavy, the operations are typically out-sourced from your local laptop or desktop to elsewhere. 
+
+Take for example the task to find the directions for your next conference. The capabilities of your laptop are typically not enough to calculate that route in real time, so you use a website, which in turn runs on a computer that is almost always a machine that is not in the same room as you are. Such a remote machine is generically called a server.
+
 The internet made it possible for these data centers to be far remote from your laptop. The server itself has no direct display or input methods attached to it. But most importantly, it has much more storage, memory and compute capacity than your laptop will ever have. However, you still need a local device (laptop, workstation, mobile phone or tablet) to interact with this remote machine. 
 
-There is a direct parallel between this and running computational workloads on HPC clusters, in that you outsource computational tasks to a remote computer. However there is a distinct difference between the "cloud" and an HPC cluster. What people call the cloud is mostly a web-service where you can rent such servers by providing your credit card details and by clicking together the specs of a remote resource. The cloud is a generic term commonly used to refer to remote computing resources of any kind – that is, any computers that you use but are not right in front of you. Cloud can refer to machines serving websites, providing shared storage, providing webservices (such as e-mail or social media platforms), as well as more traditional “compute” resources. 
+There is a direct parallel between this and running computational workloads on HPC clusters, in that you outsource computational tasks to a remote computer. 
 
-## HPC Cluster
+However there is a distinct difference between the "cloud" and an HPC cluster. What people call the cloud is mostly a web-service where you can rent such servers by providing your credit card details and by clicking together the specs of a remote resource. The cloud is a generic term commonly used to refer to remote computing resources of any kind – that is, any computers that you use but are not right in front of you. Cloud can refer to machines serving websites, providing shared storage, providing webservices (such as e-mail or social media platforms), as well as more traditional “compute” resources. 
 
-If the computational task or analysis is too large or complex for a single server, larger agglomerations of servers are used. These HPC systems are known as **supercomputers** or described as **HPC clusters** as they are made up of a cluster of computers, or compute nodes. Distinct to the cloud, these clusters networked together share a common purpose and are used to solve tasks that might otherwise be too big for any one computer. Each individual compute node is typically a lot more powerful than any PC - i.e. more memory, many more and faster CPU cores. The figure below shows the basic architecture of an HPC cluster. 
+### HPC Cluster
+
+If the computational task or analysis is too large or complex for a single server, larger agglomerations of servers are used. These HPC systems are known as **supercomputers** or described as **HPC clusters** as they are made up of a cluster of computers, or compute nodes. 
+
+Distinct to the cloud, these clusters networked together share a common purpose and are used to solve tasks that might otherwise be too big for any one computer. Each individual compute node is typically a lot more powerful than any PC - i.e. more memory, many more and faster CPU cores. 
+However you access HPC clusters remotely, through the internet. 
+
+The figure below shows the basic architecture of an HPC cluster.
 
 ![High Performance Computing System Architecture: Simplified schematic of a HPC cluster.](fig/HPC.png){width="80%"}
 
-Lets go through each part of the figure.
+Lets go through each part of the figure:
 
 
 #### Interactive Login Nodes
 
-When you are given an account on an HPC cluster you will get some login credentials. For example on Iridis, the University's HPC cluster, these are your University username and password. Using these credentials you can remotely logon to of the interactive login nodes from your local PC over the internet. There may be several login nodes, make sure that all the users are not trying to access one single machine at the same time.
+When you are given an account on an HPC cluster you will get some login credentials. For example on Iridis, the University's HPC cluster, these are your University username and password. Using these credentials you can remotely logon to of the interactive login nodes from your local PC over the internet. There may be several login nodes, to make sure that all the users are not trying to access one single machine at the same time.
 
 Once you have logged onto the login node you can now run HPC workloads, or jobs, on the HPC cluster. **BUT you typically do not directly access the CPU/GPU cores that do the hard work**. Supercomputers typically operate in batch mode, where you submit your workload to a resource manager which places it in a queue (resource management and job submission will be discussed in more detail later). The login node is where you prepare and submit your HPC jobs to the queue to be run. 
 
@@ -117,7 +121,7 @@ The login nodes provides:
 
 * Interactive access point to the HPC resources. 
 * Transferring data onto/off the system.
-* Compiling code and lightweight development tasks
+* Compiling code and lightweight development tasks.
 * Preparing and submitting HPC workload job scripts to the scehduler. 
 * Running short lightweight scripts for setup or testing.
 * **Not for heavy computation** — they have limited resources, so running heavy computation here will affect other users!
@@ -137,6 +141,25 @@ An HPC system may be made up of different types of compute node, for example a t
 #### Storage
 
 These nodes are equipped with large disk arrays to manage the vast amounts of data produced by HPC workloads. In most systems, multiple storage nodes and disk arrays are linked together to form a parallel file system, designed to handle the high input/output (I/O) demands of large-scale computations. Users do not access storage nodes directly; instead, their file systems are mounted on the login and compute nodes, allowing access to data across the cluster. 
+
+
+### HPC vs PC
+
+OK, now we have had a look at what makes up the basic components of a HPC cluster lets summarise the key features and differences between your personal computer and a HPC cluster. 
+
+| **Feature**              | **Local PC**                                                                 | **HPC Cluster**                                                                                 |
+|---------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| **Hardware**              | Single standalone computer                                                  | Many interconnected compute nodes forming one system                                            |
+| **Processors (CPU)**       | Few cores (4–16 typical)                                                   | Many CPUs per node; hundreds or thousands of cores total across the cluster                                 |
+| **Memory (RAM)**          | Limited (8–128 GB)                                                         | Large aggregated memory (hundreds GB – several TB)                                              |
+| **GPU (Accelerators)**    | Typically one consumer or workstation GPU (e.g., NVIDIA RTX)                 | Typically can have multiple high-end GPUs on GPU nodes (e.g., NVIDIA A100/H100), designed for massive parallel workloads |
+| **Storage**               | Local SSD/HDD; limited capacity                                            | Shared large capacity high-speed parallel file system, and local SSD on compute nodes                                    |
+| **Networking**            | Standard Ethernet; used mainly for internet or file sharing                | High-speed interconnects for low-latency communication                  |
+| **Maintenance**           | User-maintained                                                           | Admin-maintained; centrally monitored and secured                                               |
+| **Storage Access**        | Local file access only                                                    | Shared network storage accessible to all nodes                                                  |
+| **Typical Use Case**      | Small-scale data analysis, development, or prototyping                     | Large-scale simulations, data-intensive computing, ML/AI training                               |
+| **User Interaction**      | Direct, interactive sessions                                               | Typically accessed through the command line; Batch jobs submitted to queue; limited interactive use                                          |
+
 
 
 
@@ -211,7 +234,7 @@ There is a team of HPC system adminstrators that look after Iridis, including su
 
 ## Tier 2: Regional HPC Clusters
 
-There are 9 EPSRC Tier 2 clusters in the UK:
+There are 9 EPSRC Tier 2 clusters in the UK. Access to the Tier 2 Facilities is free for academic researchers based in the UK, though getting on to any particular system may be dependent on your institution and the research you do. Typically getting compute time is through public access calls, such as the <a href=https://www.ukri.org/opportunity/access-to-high-performance-computing-facilities-autumn-2025/ >UKRI Access to High Performance Computing Facilities Call</a>. Which is a "funding" call to get computational support for projects across the entire UK Research and Innovation (UKRI) remit. Each system may have also other routes to gaining access, such as including resources of the facility in research grant proposals.
 
 
 <table style="width:100%; border-collapse:collapse; margin-bottom:1em;">
@@ -298,16 +321,16 @@ There are 9 EPSRC Tier 2 clusters in the UK:
   </tr>
 </table>
 
-Access to the Tier 2 Facilities is free for academic researchers based in the UK, though getting on to any particular system may be dependent on your institution and the research you do. Typically getting compute time is through public access calls, such as the <a href=https://www.ukri.org/opportunity/access-to-high-performance-computing-facilities-autumn-2025/ >UKRI Access to High Performance Computing Facilities Call</a>. Which is a "funding" call to get computational support for projects across the entire UK Research and Innovation (UKRI) remit. Each system may have also other routes to gaining access, such as including resources of the facility in research grant proposals.
+
 
 ## Tier 1: National HPC Systems
 
-There are three
+There are four National HPC facilities in the UK, each of which have different architecture and will be suitable for different computational research problems. 
 
 <table style="width:100%; border-collapse:collapse; margin-bottom:1em;">
   <tr>
     <td style="width:120px; text-align:center; vertical-align:middle;">
-      <img src="fig/hpc_system_logos/dirac.png" width="150">
+      <img src="fig/hpc_system_logos/archer2.png" width="150">
     </td>
     <td style="padding-left:12px; vertical-align:middle;">
       <strong><a href="https://www.archer2.ac.uk/" target="_blank">ARCHER2</a></strong>  — the UK's national supercomputing service offers a capability resource for running very large parallel jobs. Based around an HPE Cray EX supercomputing system with an estimated peak performance of 28 PFLOP/s, the machine will have 5,860 compute nodes, each with dual AMD EPYC Zen2 (Rome) 64 core CPUs at 2.2GHz, giving 750,080 cores in total. The service includes a service desk staffed by HPC experts from EPCC with support from HPE Cray. Access is free at point of use for academic researchers working in the EPSRC and NERC domains. Users will also be able to purchase access at a variety of rates. 
@@ -315,7 +338,7 @@ There are three
   </tr>
   <tr>
     <td style="text-align:center; vertical-align:middle;">
-      <img src="fig/hpc_system_logos/archer2.png" width="150">
+      <img src="fig/hpc_system_logos/dirac.png" width="150">
     </td>
     <td style="padding-left:12px; vertical-align:middle;">
       <strong><a href="https://www.dirac.ac.uk/" target="_blank">DiRAC</a></strong>  — HPC for particle physics and astronomy, comprising multiple architectures. Including: Data Intensive Cambridge - DIAC (746,496 GPU Cores), Data Intensive Leicester - DIAL (40,288 CPU cores), Extreme Scaling Edinburgh - ES (4,921,344 GPU Cores), Memory Intensive Durham - DI (80,240 CPU Cores with 731TB memory). Free for STFC-domain academics; purchasable and industry access available.
@@ -326,7 +349,7 @@ There are three
       <img src="fig/hpc_system_logos/isambard.jpeg" width="150">
     </td>
     <td style="padding-left:12px; vertical-align:middle;">
-      <strong><a href="https://docs.isambard.ac.uk/specs/#system-specifications-isambard-ai-phase-1" target="_blank">Isamnbard AI</a></strong>  — As well as the Isambard 3 tier 2 system the GW4 also manages Isambard-AI National AI Research Resource (AIRR), a tier 1 AI HPC system. It is composed of 5448 GH200 Grace Hopper sSUperchips containing one Grace CPU and one Hopper H100 GPU. It is ranked 11th in the TOP500 list of the fastest supercomputers in the world.
+      <strong><a href="https://docs.isambard.ac.uk/specs/#system-specifications-isambard-ai-phase-1" target="_blank">Isamnbard AI</a></strong>  — As well as the Isambard 3 tier 2 system the GW4 also manages Isambard-AI: National AI Research Resource (AIRR), a tier 1 AI HPC system aimed at supporting AI and GPU enabled computational research. It is composed of 5448 GH200 Grace Hopper superchips containing one Grace CPU and one Hopper H100 GPU. It is ranked 11th in the TOP500 list of the fastest supercomputers in the world.
     </td>
   </tr>
     <tr>
@@ -334,10 +357,17 @@ There are three
       <img src="fig/hpc_system_logos/dawn.png" width="150">
     </td>
     <td style="padding-left:12px; vertical-align:middle;">
-      <strong><a href="https://www.hpc.cam.ac.uk/d-w-n target=" target="_blank">Dawn</a></strong>  — The AI Research Resource (AIRR) also includes Dawn, a tier 1 AI HPC cluster. The Cambridge Dawn facility is made up of 1,024 Intel Data Centre GPU Max 1550 GPUs.
+      <strong><a href="https://www.hpc.cam.ac.uk/d-w-n target=" target="_blank">Dawn</a></strong>  — The AI Research Resource (AIRR) also includes Dawn, a tier 1 AI HPC cluster aimed at supporting AI and GPU enabled computational research. The Cambridge Dawn facility is made up of 1,024 Intel Data Centre GPU Max 1550 GPUs.
     </td>
     </tr>
   </table>
+
+Access to the National Facilities is through public access calls:
+
+* ARCHER2: access for UK acadmeics is typically through the <a href=https://www.ukri.org/opportunity/access-to-high-performance-computing-facilities-autumn-2025/ >UKRI Access to High Performance Computing Facilities Call</a>. 
+* AIRR (Isambard-AI & DAWN): access for UK academics is typically through the <a href="https://www.gov.uk/government/publications/ai-research-resource/airr-gateway-route-ukri-guidance">AIRR Gateway route</a>, offering up to 10,000 GPU hours, designed for researchers from academia, industry, or other UK organisations.
+* DiRAC: access for UK academics is typically through the <a href="https://dirac.ac.uk/getting-access/">STFC’s Resource Allocation Committee</a> calls.
+
 
 ### Open On Demand
 
