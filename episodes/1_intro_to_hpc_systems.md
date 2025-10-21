@@ -369,15 +369,21 @@ Access to the National Facilities is through public access calls:
 * DiRAC: access for UK academics is typically through the <a href="https://dirac.ac.uk/getting-access/">STFC’s Resource Allocation Committee</a> calls.
 
 
-### Open On Demand
+## Iridis On Demand
 
-The methodology of providing the input data, communicating options and flags as well as retrieving the results is quite different to using a plain laptop. Moreover, using a GUI style interface is often discarded in favor of using the command line. This imposes a double paradigm shift for prospective  users:
-they work with the command line (not a GUI style user interface)
-they work with a distributed set of computers (called nodes)
+From your bash session this morning you will now be aware of the power the programmatic capabilities of a scripting language from the command line. User interaction with High Performance Computing clusters has typically always been done using the command line, and leveraging a scripting language from the command line can be extremely efficient when manipulating data and interacting with the cluster's resources. 
+
+However there is an alternative for Iridis, the HPC cluster at the University of Southampton, which is Iridis On Demand. Iridis on Demand provides a web based interface to HPC system, allowing you to create job scripts, transfer data on/off the system, submit and manage jobs and even run some interactive apps on the compute nodes, such as Jupyter notebooks and remote desktops. 
+
+![Iridis On Demand: A web portal to the University of Southampton's HPC Cluster, Iridis](fig/OOD.png){width="80%"}
 
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- You need a list of key points
+
+- High Performance Computing (HPC) combines many powerful computers (nodes) into clusters that work together to solve large or complex computational problems faster than a personal computer.
+- HPC is essential when problems are too big, data too large, or computations too slow for a single machine — for example, large-scale simulations, modelling, or machine learning training.
+- HPC facilities in the UK are divided into tiers: the largest systems categorised in higher tiers. The University of Southampton's HPC system is a local tier 3 facility and you can get access to use it.
+- Iridis On Demand: Provides a web interface to the Iridis cluster, enabling file management, job submission, and interactive applications (like Jupyter notebooks) without command-line use.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
