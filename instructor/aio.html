@@ -726,7 +726,7 @@ job</li>
 </div>
 </div></section><section id="aio-4_programmatic_parallelism"><p>Content from <a href="4_programmatic_parallelism.html">Introduction to Programmatic Parallelism</a></p>
 <hr>
-<p>Last updated on 2025-09-26 |
+<p>Last updated on 2025-10-22 |
 
         <a href="https://github.com/carpentries/workbench-template-md/edit/main/episodes/4_programmatic_parallelism.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 0 minutes</p>
@@ -741,7 +741,9 @@ job</li>
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>Did you know you have to have this question section?</li>
+<li>What is parallelisation and how does it improve performance?</li>
+<li>What are the different types of parallelisation?</li>
+<li>Why does synchronisation matter?</li>
 </ul>
 </div>
 </div>
@@ -753,10 +755,10 @@ job</li>
 <ul>
 <li>Describe the concept of parallelisation and its significance in
 improving performance</li>
-<li>Compare and contrast the operations and benefits of shared and
-distributed memory systems</li>
 <li>Differentiate between parallelising programs via processes and
 threads</li>
+<li>Compare and contrast the operation and benefits of shared and
+distributed memory systems</li>
 <li>Define a race condition and how to avoid them</li>
 </ul>
 </div>
@@ -764,7 +766,279 @@ threads</li>
 </div>
 </div>
 </div>
-<p>Lesson content goes here</p>
+<p>Parallel programming has been important to (scientific) computing for
+decades as a way to decrease how long a piece of code takes to run
+making more complex computations possible, such as in climate modelling,
+pharmaceutical development, aircraft design, AI and machine learning,
+and etc. Without parallelisation, these computations which would take
+years to finish can instead be completed in hours or days! In this
+episode, we will cover the foundational concepts of parallel
+programming. But, before we get into the nitty-gritty details of
+parallelisation frameworks and techniques, let’s first familiarise
+ourselves with the key ideas behind parallel programming.</p>
+<section><h2 class="section-heading" id="what-is-parallelisation">What is parallelisation?<a class="anchor" aria-label="anchor" href="#what-is-parallelisation"></a>
+</h2>
+<hr class="half-width">
+<p>At some point you, or someone you know, has probably asked “how can I
+make my code faster?” The answer to this question will depend on the
+code, but there are a few approaches you might try:</p>
+<ul>
+<li>Optimise the code.</li>
+<li>Move the computationally demanding parts of the code from a slower,
+interpreted language, such as Python, to a faster, compiled language
+such as C, C++ or Fortran.</li>
+<li>Use a different theoretical/computational or approximate method
+which requires less computation.</li>
+</ul>
+<p>All of these reduce the total amount of work the processor does.
+Parallelisation takes a different approach: splitting the workload
+across multiple processing units such as central processing units
+(<strong>CPU</strong>s) or graphics processing units
+(<strong>GPU</strong>s). Each processing unit works on a smaller batch
+of work simultaneously. Instead of reducing the amount of work to be
+done by, e.g. optimising our code, we instead have multiple processors
+working on the task at the same time.</p>
+<div class="section level3">
+<h3 id="sequential-vs--parallel-computing">Sequential vs. parallel computing<a class="anchor" aria-label="anchor" href="#sequential-vs--parallel-computing"></a>
+</h3>
+<figure><img src="../fig/serial-and-parallel-progs.png" alt="On the left, a single processing unit executes one sequence of instructions for the whole problem. On the right, the problem is divided into independent tasks, each processed concurrently by separate processing units." class="figure mx-auto d-block"><div class="figcaption">On the left, a single processing unit executes
+one sequence of instructions for the whole problem. On the right, the
+problem is divided into independent tasks, each processed concurrently
+by separate processing units.</div>
+</figure><p>Traditionally, computers execute one instruction at a time, in the
+sequence defined by the code you have written. In other words, your code
+is compiled into a series of instructions which are executed one after
+another. We call this serial execution.</p>
+<p>With parallel computing, multiple instructions, from the same
+program, are carried out at the same time on different processing units.
+This means more work is being done at once, so we get the results
+quicker than if we were running the same set of instructions
+sequentially on a single processor. The process of changing sequential
+code to parallel code is called parallelisation.</p>
+<div id="painting-a-room" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="painting-a-room" class="callout-inner">
+<h3 class="callout-title">Painting a room</h3>
+<div class="callout-content">
+<p>Parallel computing means dividing a job into tasks that can run at
+the same time. Imagine painting four walls in a room. The problem is
+painting the room. The tasks are painting each wall. The tasks are
+independent, you don’t need to finish one wall before starting
+another.</p>
+<p>If there is only one painter, they must work on one wall at a time.
+With one painter, painting the walls is <em>sequential</em>, because
+they paint one wall at the time. But since each wall is independent, the
+painter can switch between painting them in any order. This is
+<em>concurrent</em> work, where they are making progress on multiple
+walls over time, but not simultaneously.</p>
+<p>With two or more painters, walls can be painted at the same time.
+This is <em>parallel</em> work, because the painters are making painting
+the room by painting multiple walls at the same time.</p>
+<p>In this analogy, the painters represent CPU cores. The number of
+cores limits how many tasks can run in parallel. Even if there are many
+tasks, only as many can progress simultaneously as there are cores.
+Managing many tasks with fewer cores is called concurrency.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="key-parallelisation-concepts">Key parallelisation concepts<a class="anchor" aria-label="anchor" href="#key-parallelisation-concepts"></a>
+</h2>
+<hr class="half-width">
+<p>There is, unfortunately, more to parallelisation than simply dividing
+work across multiple processors. Whilst the idea of splitting tasks to
+achieve faster results is <em>conceptually</em> simple, the practical
+implementation is more complex. Adding additional CPU cores raises new
+issues:</p>
+<ul>
+<li>If there are two cores, they might share the same RAM (shared
+memory) or each have their own dedicated RAM (private memory). This
+distinction affects how data can be accessed and shared between
+processors.</li>
+<li>In a shared memory setup, what happens if two cores try to read or
+write the same memory location at the same time? This can cause a race
+condition, where the outcome depends on the timing of operations.</li>
+<li>How do we divide and distribute the workload evenly among the CPU
+cores? Dividing the workload unevenly will result in inefficient
+parallelisation.</li>
+<li>How will the cores exchange data and coordinate their actions?
+Additional mechanisms are required to enable this.</li>
+<li>After the tasks are complete, where should the final results be
+stored? Should they remain in the memory of one CPU core, be copied to a
+shared memory area, or written to disk? Additionally, which core handles
+producing the output?</li>
+</ul>
+<p>To answer these questions, we need to understand what a
+<strong>process</strong> and what a <strong>thread</strong> is, how they
+are different, and how they interact with the computer’s resources
+(memory, file system, etc.).</p>
+</section><section><h2 class="section-heading" id="processes">Processes<a class="anchor" aria-label="anchor" href="#processes"></a>
+</h2>
+<hr class="half-width">
+<p>A process is an individual running instance of a software program.
+Each process operates independently and possesses its own set of
+resources, such as memory space and open files, managed by the operating
+system. Because of this separation, data in one processes is typically
+isolated and cannot be directly accessed by another process.</p>
+<figure><img src="../fig/multiprocess.svg" alt="Multiple independent processes, each with their own private memory space, communicating through explicit message passing over a network." class="figure mx-auto d-block"><div class="figcaption">Multiple independent processes, each with their
+own private memory space, communicating through explicit message passing
+over a network.</div>
+</figure><p>One approach to achieve parallel execution is by running multiple
+coordinated processes at the same time. But what if one processes needs
+information from another processes? Since processes are isolated and
+have private memory spaces, information has to be explicitly
+communicated by the programmer between processes. This is the role of
+parallel programming frameworks and libraries such as <a href="https://www.mpi-forum.org/" class="external-link">MPI</a> (Message Passing Interface).
+MPI provides a standardised library of functions that allow processes to
+exchange messages, coordinate tasks and collectively work on a problem
+together.</p>
+<p>This style of parallelisation is the dominant form of parallelisation
+on HPC systems. By combining MPI with a cluster’s job scheduler, it is
+possible to launch and coordinate processes across many compute nodes.
+Instead of having access to just a single CPU or computer, our code can
+now use thousands or even tens of thousands of CPUs across many
+computers which are connected together.</p>
+</section><section><h2 class="section-heading" id="threads">Threads<a class="anchor" aria-label="anchor" href="#threads"></a>
+</h2>
+<hr class="half-width">
+<p>A thread is a unit of execution which exists within a process. Unlike
+processes, threads share their parent process’ resources, including
+memory and open files, so they can directly read and write the same
+memory space. This shared access means threads can exchange data faster,
+since they do not have to communicate it between them.</p>
+<figure><img src="../fig/multithreading.svg" alt="Multiple threads within a single process, sharing the same memory space and resources." class="figure mx-auto d-block"><div class="figcaption">Multiple threads within a single process,
+sharing the same memory space and resources.</div>
+</figure><p>By running multiple threads, over multiple CPU cores, a program can
+coordinate for each thread to work on their own task(s). For example,
+one thread may handle input/output whilst other threads perform some
+number crunching, or multiple threads might process different parts of a
+dataset simultaneously.</p>
+<p>A major advantage of using threads is their relative ease of use
+compared to processes. With frameworks such as <a href="https://www.openmp.org/" class="external-link">OpenMP</a>), which provides a set of
+compiler extensions and libraries for paralleling code using threads,
+existing code can be adapted for parallel execution with, often,
+relatively small changes. Because threads share a memory space, there is
+no need for explicit message-passing mechanisms (as required with
+processes). However, this shared memory model introduces the possibility
+of race conditions, where two or more threads attempt to update the same
+data at once. Careful synchronisation is therefore required. It is
+important to note, however, that threads are confined to a single
+process and therefore to a single computer. Programs which are
+parallelised using threads cannot span across compute nodes in a
+cluster.</p>
+</section><section><h2 class="section-heading" id="shared-vs-distributed-memory-parallelisation">Shared vs distributed memory parallelisation<a class="anchor" aria-label="anchor" href="#shared-vs-distributed-memory-parallelisation"></a>
+</h2>
+<hr class="half-width">
+<p>When writing parallel programs, a key distinction is whether there is
+a single shared memory space or if there are multiple private memory
+spaces. These two models are called shared memory and distributed
+memory.</p>
+<figure><img src="../fig/memory-pattern.png" alt="Comparison of shared and distributed memory architectures: shared memory shows multiple processors accessing one memory pool, while distributed memory shows processors each with private memory connected by communication links." class="figure mx-auto d-block"><div class="figcaption">Comparison of shared and distributed memory
+architectures: shared memory shows multiple processors accessing one
+memory pool, while distributed memory shows processors each with private
+memory connected by communication links.</div>
+</figure><p>In a shared memory system, all processors (or cores) can directly
+access and modify the same pool of memory. Changes made by one processor
+are immediately visible to the others. This model aligns naturally with
+parallelisation using <strong>threads</strong>, which exist within a
+single process and share the parent process’ memory. However, shared
+memory has limitations: if multiple threads try to update the same data
+simultaneously, race conditions can occur. Correct results require
+careful synchronisation. Programming models such as OpenMP (Open
+Multi-Processing) provide mechanisms to divide work among threads and
+synchronise access to shared data. In general, shared memory approaches
+are generally limited to the cores within a single computer or node. The
+advantage of shared memory is its simplicity, making it easier to
+implement and debug. The main disadvantage is limited scalability, as
+performance gains are constrained by the number of cores in a single
+node and the complexity of synchronisation.</p>
+<p>In a distributed memory system, each processor has its own private
+memory. Data cannot be accessed directly by other processors, it must be
+explicitly sent and received. This model aligns with parallelisation
+using <strong>processes</strong> which each have their own private
+memory space. Communication between processes is typically handled using
+libraries such as MPI. Distributed memory programming requires more
+effort than shared memory, but it enables programs to scale across
+multiple nodes in a cluster. The advantage of distributed memory is its
+high scalability, allowing computations across thousands of nodes. The
+disadvantages include increased programming complexity and additional
+overheads required for communication information, as data must be
+explicitly exchanged between processes (private memory spaces).</p>
+<p>The differences can be summarised:</p>
+<ul>
+<li>Accessibility: Shared memory allows direct access to a common memory
+space. Distributed memory requires explicit communication for data
+exchange.</li>
+<li>Memory scope: Shared memory provides a global pool, while
+distributed memory isolates each processor’s memory.</li>
+<li>Consistency: In shared memory, changes are immediately visible to
+all cores. In distributed memory, explicit synchronisation is needed to
+keep results consistent.</li>
+<li>Scalability: Shared memory is limited to one node. Distributed
+memory scales to thousands of nodes.</li>
+<li>Programming complexity: Shared memory models are simpler to use but
+harder to scale. Distributed memory models scale well but require more
+explicit programming.</li>
+<li>Advantages/Disadvantages: Shared memory is easier to program , but
+is limited in scale and prone to synchronisation issues. Distributed
+memory scales to more cores, but is more complex and requires explicit
+data communication.</li>
+</ul>
+<p>In sophisticated applications, a hybrid approach is used which
+combines using processes to spread the workload across multiple nodes,
+but uses shared-memory parallelisation on a node. This takes advantage
+of the scalability of distributed memory, and the efficiency of using
+shared-memory with threads.</p>
+</section><section><h2 class="section-heading" id="synchronisation-and-race-conditions">Synchronisation and race conditions<a class="anchor" aria-label="anchor" href="#synchronisation-and-race-conditions"></a>
+</h2>
+<hr class="half-width">
+<p>Synchronisation ensures that processing units can coordinate their
+actions correctly, particularly when threads are accessing or modifying
+shared data. Without proper synchronisation, multiple threads, for
+example, might attempt to update the same variable simultaneously,
+leading to unpredictable results known as a race condition.</p>
+<p>In a shared memory system, synchronisation mechanisms such as
+barriers, locks, and atomic operations are used to control access to
+shared data and to coordinate work. A barrier ensures that threads have
+reached a certain point before continuing, while locks prevent sections
+of code from being executed simultaneously, preventing race conditions.
+Atomic operations allow individual updates to shared variables without
+interference, meaning only one thread can update a variable at once.
+Proper use of these mechanisms ensures code correctness, maintaining
+consistent and valid results.</p>
+<p>In distributed memory systems, synchronisation is achieved by
+coordinating communication between processes to order the workload and
+manage data dependencies. Even though processes have their own private
+memory space, race conditions can still occur if two processes write to
+the same file. Effective synchronisation, whether with threads or
+processes, is crucial for ensuring that parallel programs produce
+correct, reproducible results.</p>
+<div id="organising-the-painters" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="organising-the-painters" class="callout-inner">
+<h3 class="callout-title">Organising the painters</h3>
+<div class="callout-content">
+<p>Imagine several painters working on the same set of walls. If each
+painter tries to paint the same wall at the same time without
+coordinating, they might overwrite each other’s work creating a mess.
+This is like a race condition in parallel programming, where there is
+simultaneous memory access modifying the same data.</p>
+<p>To avoid this, painters might take turns for the shared wall, or
+divide walls so each painter works independently. In programming,
+mechanisms like barriers or atomic operations perform the same role:
+they synchronise access to shared resources.</p>
+<p>This coordination ensures that all parts of the task progress in the
+right order, whether you are updating a shared variable, writing results
+to disk, or aggregating data.</p>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -773,11 +1047,23 @@ threads</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>You need a list of key points</li>
+<li>Parallelisation speeds up computation by dividing work across
+multiple processing units.</li>
+<li>Processes use private memory and communicate information explicitly
+between them (distributed memory, e.g. MPI).</li>
+<li>Threads share memory within a process and require synchronisation to
+prevent race conditions.</li>
+<li>Shared memory parallelisation is simpler but limited in scale.
+Distributed memory scales better, but is more complex.</li>
 </ul>
 </div>
 </div>
-</div></section><section id="aio-5_hpc_technologies"><p>Content from <a href="5_hpc_technologies.html">Introduction to HPC Technologies</a></p>
+</div>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</section></section><section id="aio-5_hpc_technologies"><p>Content from <a href="5_hpc_technologies.html">Introduction to HPC Technologies</a></p>
 <hr>
 <p>Last updated on 2025-09-25 |
 
@@ -885,9 +1171,9 @@ resources</li>
   "creativeWorkStatus": "active",
   "url": "https://carpentries.github.io/workbench-template-md/instructor/aio.html",
   "identifier": "https://carpentries.github.io/workbench-template-md/instructor/aio.html",
-  "dateCreated": "2025-10-10",
-  "dateModified": "2025-10-21",
-  "datePublished": "2025-10-21"
+  "dateCreated": "2025-10-22",
+  "dateModified": "2025-10-22",
+  "datePublished": "2025-10-22"
 }
 
   </script><script>
