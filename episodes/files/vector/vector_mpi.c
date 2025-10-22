@@ -26,6 +26,16 @@ void vector_add(int *a, int *b, int *c, int n)
 
     MPI_Gather(c_local, n_local, MPI_INT, c, n_local, MPI_INT, 0, MPI_COMM_WORLD);
 
+    if (rank == 0)
+    {
+        printf("Verification (first 5 elements):\n");
+        for (int i = 0; i < 5; i++)
+        {
+            int expected = 3 * i;
+            printf("c[%d] = %3d (expected: %3d)\n", i, c[i], expected);
+        }
+    }
+
     free(a_local);
     free(b_local);
     free(c_local);
@@ -46,13 +56,6 @@ int main(void)
     }
 
     vector_add(a, b, c, N);
-
-    printf("Verification (first 5 elements):\n");
-    for (int i = 0; i < 5; i++)
-    {
-        int expected = 3 * i;
-        printf("c[%d] = %3d (expected: %3d)\n", i, c[i], expected);
-    }
 
     free(a);
     free(b);

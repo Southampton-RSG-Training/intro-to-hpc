@@ -9,5 +9,5 @@
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 module load gcc
-gcc -fopenmp vector_openmp.exe -o vector_openmp.exe
+gcc -fopenmp vector_openmp.c -o vector_openmp.exe
 ./vector_openmp.exe

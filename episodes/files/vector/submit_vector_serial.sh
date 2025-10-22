@@ -6,5 +6,5 @@
 #SBATCH --time=00:01:00
 
 module load gcc
-gcc vector_serial.exe -o vector_serial.exe
+gcc vector_serial.c -o vector_serial.exe
 ./vector_serial.exe
