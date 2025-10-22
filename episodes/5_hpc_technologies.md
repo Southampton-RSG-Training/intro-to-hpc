@@ -35,21 +35,43 @@ working on part of a problem. To use this power effectively, we must understand 
 programming—shared memory, distributed memory, and accelerator-based computing—and how each fits into real workloads.
 
 In this lesson, we explore the core HPC technologies: OpenMP for threading, MPI for message passing, and GPU frameworks
-such as CUDA and OpenACC. We will see how they differ, where they overlap, and why combining them often produces the
-best results. We will also touch on performance measurement and scalability—vital concepts for making efficient use of
-large systems.
+such as CUDA and OpenACC. We will see how they differ and where they overlap. We will also touch on performance
+measurement and scalability—vital concepts for making efficient use of large systems.
 
-## Common languages
+## Common programming languages used in HPC
 
-You can use any programming language you want to run code on a HPC cluster. However, there are good and bad choices. For
-example, whilst Python is easy to write and develop, the slow performance makes it a less desirable language to write a
-program in which demands high performance. Because of this, it's usually best to use a compiled language. The most
-common compiled languages in research are C, C++ and Fortran.
+Any programming language can, in principle, be used on an HPC cluster, but some are better suited to writing highly
+performant code than others. Interpreted languages, like Python, are easy to develop in, but is much slower to execute
+the code than compiled languages, making them less ideal for computation-heavy tasks. For this reason, compiled
+languages such as C, C++, and Fortran are the most common choices in high performance applications as they produce fast,
+optimised executables.
 
-This doesn't mean you can't run Python on HPC. In fact, it is very common. However, it is often used in a way where the
-computationally tough bits of the code are written in other languages. An example of this is PyTorch, where the
-computational bits are written in C++ and accelerated using CUDA. Python libraries such a Numpy and Numba also take
-advantage of compiled code to speed up computation. Furthermore, MPI is also available for Python.
+Python does, however, remain widely used in HPC, typically outsourcing the performance-critical components to code
+written in compiled languages and accessed through Python interfaces. Frameworks like PyTorch, NumPy, and Numba rely on
+underlying C, Fortran and/or CUDA code to accelerate computation, while libraries such as mpi4py make it possible to use
+MPI for distributed parallelism directly from Python. This hybrid approach combines Python’s ease of use with the speed
+of compiled code.
+
+Other specialised languages and frameworks are also used in HPC, depending on the application area. CUDA and ROCm are
+employed for GPU programming, while newer languages such as Julia aim to combine ease of development with high
+performance. Domain-specific tools like MATLAB, and R appear in HPC environments, though they often rely on compiled
+extensions or external libraries for parallel execution.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### Which compiler should you use?
+
+Iridis and most HPC systems offer a choice of compilers to use. But which one should you use? In most cases, you would
+want to use the compiler specific to the type of CPU you are using on the system, because these implement architecture
+specific optimisations e.g. use AMD's `aocc` on Iridis 6. If you are using GPUs, you have little choice in using
+anything other than NVIDIA's `nvc`, `nvcc` or `nvfortran` compilers.
+
+However, the code you are using may only have been tested on a specific compiler such as GCC. In those cases, it's often
+best to stick with what is known to work. However, there is nothing stopping you using Intel's compilers on an AMD based
+system, if the code is only tested or depends on the Intel compilers.
+
+
+:::::::::::::::::::::::::::::::::::::::::::::
 
 ## Landscape of technologies
 
