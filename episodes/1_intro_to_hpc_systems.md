@@ -34,7 +34,7 @@ exercises: 0 # exercise time in minutes
 
 ![Iridis 6: One of Southampton’s High Performance Computing clusters](fig/Iridis_6.jpeg){width="100%" .noinvert}
 
-High Performace Computing (HPC) refers to the use of powerful computers and programming techniques to solve computationally intensive tasks. An HPC cluster, or supercomputer, is one which harnesses the **aggregated** power of groups of advanced computing systems. These high performance computers are grouped together in a network as a unified system, hence the name cluster. HPC clusters provide extremely high computational capabilities, significantly surpasssing that of a general personal computer. 
+High Performance Computing (HPC) refers to the use of powerful computers and programming techniques to solve computationally intensive tasks. An HPC cluster, or supercomputer, is one which harnesses the **aggregated** power of groups of advanced computing systems. These high performance computers are grouped together in a network as a unified system, hence the name cluster. HPC clusters provide extremely high computational capabilities, significantly surpasssing that of a general personal computer. 
  
 
 :::::::: callout
@@ -112,7 +112,7 @@ Lets go through each part of the figure:
 
 #### Interactive Login Nodes
 
-When you are given an account on an HPC cluster you will get some login credentials. For example on Iridis, the University of Southampton's HPC cluster, these are your University username and password. Using these credentials you can remotely log-on to of the interactive login nodes from your local PC over the internet. There may be several login nodes, to make sure that all the users are not trying to access one single machine at the same time.
+When you are given an account on an HPC cluster you will get some login credentials. Using these credentials you can remotely log-on to of the interactive login nodes from your local PC over the internet. There may be several login nodes, to make sure that all the users are not trying to access one single machine at the same time.
 
 Once you have logged onto the login node you can now run HPC workloads, or jobs, on the HPC cluster. **BUT you typically do not directly access the CPU/GPU cores that do the hard work**. Supercomputers tend to operate in batch mode, where you submit your workload to a resource manager which places it in a queue (resource management and job submission will be discussed in more detail later). The login node is where you prepare and submit your HPC jobs to the queue to be scheduled to run. 
 
@@ -207,14 +207,14 @@ Iridis X an hetereogeneous GPU cluster encompassing the University's GPU offerin
 **Iridis X Specification**
 
 * AMD mi300x: 1 node — 128 CPU, 8× MI300X (192 GB each), 2.3 TB RAM
-* Nvidia H200: 
+* NVIDIA H200: 
     - Quad h200: 4 nodes — 48 CPU, 4× H200 (141 GB each), 1.5 TB RAM per node
     - Dual h200: 2 nodes — 48 CPU, 2× H200 (141 GB each), 768 GB RAM per node
-* Nvidia A100:
+* NVIDIA A100:
     - 12 nodes — 48 CPU (Intel Xeon Gold), 2× A100 (80 GB each), 4.5 TB RAM per node
     - 1 Maths Node (Can be scavenged when idle)
-* Nvidia L40: 1 node — 48 CPU, 8× L40 (48 GB each), 768 GB RAM
-* Nvidia L4: 2 nodes — 48 CPU, 8× L4 (24 GB each), 768 GB RAM per node
+* NVIDIA L40: 1 node — 48 CPU, 8× L40 (48 GB each), 768 GB RAM
+* NVIDIA L4: 2 nodes — 48 CPU, 8× L4 (24 GB each), 768 GB RAM per node
 * CPU Only:
     - AMD Dual AMD EPYC 7452: : 74 nodes (64 CPU), 240 GB RAM per node
     - AMD Dual AMD EPYC 7502 Serial Partition : 16 nodes (64 CPU), 240 GB RAM per node
@@ -222,8 +222,8 @@ Iridis X an hetereogeneous GPU cluster encompassing the University's GPU offerin
 
 There is also departmental cluster within Iridis X, known as Swarm. It is for the use of the Electronics and Computer Science department, but it can be scavenged (i.e. used when idle). It contains:
 
-* Nvidia A100: 5 nodes — 96 CPU, 4× A100 SXM (80 GB each), 900 GB RAM per node
-* Nvidia H100: 2 nodes — 192 CPU, 8× H100 SXM (80 GB each), 1.9 TB RAM per node
+* NVIDIA A100: 5 nodes — 96 CPU, 4× A100 SXM (80 GB each), 900 GB RAM per node
+* NVIDIA H100: 2 nodes — 192 CPU, 8× H100 SXM (80 GB each), 1.9 TB RAM per node
  
 :::
 
@@ -374,7 +374,7 @@ Access to the National Facilities is through public access calls:
 
 From your bash session this morning you will now be aware of the power of the programmatic capabilities of a scripting language from the command line. User interaction with High Performance Computing clusters has typically always been done using the command line, and leveraging a scripting language from the command line can be extremely efficient when manipulating data and interacting with the cluster's resources. 
 
-However there is an alternative for Iridis, the HPC cluster at the University of Southampton, which is Iridis On Demand. Iridis on Demand provides a web based interface to HPC system, allowing you to create job scripts, transfer data on/off the system, submit and manage jobs and even run some interactive apps on the compute nodes, such as Jupyter notebooks and remote desktops. 
+However there is an alternative for Iridis,  which is Iridis On Demand. Iridis on Demand provides a web based interface to HPC system, allowing you to create job scripts, transfer data on/off the system, submit and manage jobs and even run some interactive apps on the compute nodes, such as Jupyter notebooks and remote desktops. 
 
 You can request access to Iridis on Demand through an <a href="https://sotonac.sharepoint.com/teams/HPCCommunityWiki/SitePages/Connecting-to-Iridis5.aspx#requesting-access-to-iridis-ondemand">application form</a>. 
 
