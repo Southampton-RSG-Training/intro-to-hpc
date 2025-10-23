@@ -1,15 +1,15 @@
 ---
-title: "Introduction to HPC Technologies"
+title: "Landscape of HPC Technologies"
 teaching: 0 # teaching time in minutes
 exercises: 0 # exercise time in minutes
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions
 
+- Which programming language should I use?
 - What are the main ways we can parallelise a program on modern HPC systems?
 - How do OpenMP and MPI differ in how they achieve parallelism?
 - What role do GPUs play in HPC, and how do approaches like CUDA and OpenACC use them?
-- Why might we combine OpenMP and MPI in the same program?
 - Why is it important for code to scale well on large HPC systems?
 - What can go wrong if we try to optimise too early in the development process?
 
@@ -17,45 +17,50 @@ exercises: 0 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Differentiate at a high level between the features of OpenMP, MPI, CUDA and AI/ML approaches and what they are used for
+- Differentiate at a high level between the features of OpenMP, MPI, CUDA and OpenACC
 - Briefly summarise the main OpenMP compiler directives and what they do
 - Describe how to compile and run an OpenMP program
 - Briefly summarise the main MPI message-passing features and how they are used
 - Describe how to compile and run an MPI program
-- Describe the advantages and drawbacks for using a hybrid OpenMP/MPI approach
 - Briefly summarise how a CUDA program is written
+- Briefly summarise how an OpenACC program is written and compiled
 - Describe why code scalability is important when using HPC resources
 - Describe the differences between strong and weak scaling
 - Summarise the dangers of premature optimisation
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-High-performance computing relies on parallelism. Modern systems combine thousands of processors, each capable of
-working on part of a problem. To use this power effectively, we must understand the main models of parallel
-programming—shared memory, distributed memory, and accelerator-based computing—and how each fits into real workloads.
+To get the most performance possible, high-performance computing relies on parallelism. Modern systems combines tens of
+thousands of processors, each working on their own part of the problem. To be able to wield this power, we need to
+understand how to write parallel code. This is far more complicated than the scope of this episode. Therefore we will,
+instead, look at the landscape of the core HPC technologies used today. In particular, we will look at the following
+parallel frameworks: OpenMP, MPI, CUDA and OpenACC. We'll additionally also look at the programming languages used in
+HPC and touch briefly on how we measure the performance and scalability of our code.
 
-In this lesson, we explore the core HPC technologies: OpenMP for threading, MPI for message passing, and GPU frameworks
-such as CUDA and OpenACC. We will see how they differ and where they overlap. We will also touch on performance
-measurement and scalability—vital concepts for making efficient use of large systems.
+## Common programming languages
 
-## Common programming languages used in HPC
+In principle, any programming language can be used to write code which runs on an HPC cluster. In practise, however,
+there are some languages which are better suited to writing highly performant code. Interpreted languages, such as
+Python, are easy to develop in, but are much slower to execute than compile languages, making them less suitable for
+computation-heavy applications. For this reason, compiled languages such as C, C++ and Fortran are some of the most
+common choices of programming language when writing high performance applications as they produce fast, optimised
+executables.
 
-Any programming language can, in principle, be used on an HPC cluster, but some are better suited to writing highly
-performant code than others. Interpreted languages, like Python, are easy to develop in, but is much slower to execute
-the code than compiled languages, making them less ideal for computation-heavy tasks. For this reason, compiled
-languages such as C, C++, and Fortran are the most common choices in high performance applications as they produce fast,
-optimised executables.
-
-Python does, however, remain widely used in HPC, typically outsourcing the performance-critical components to code
-written in compiled languages and accessed through Python interfaces. Frameworks like PyTorch, NumPy, and Numba rely on
-underlying C, Fortran and/or CUDA code to accelerate computation, while libraries such as mpi4py make it possible to use
-MPI for distributed parallelism directly from Python. This hybrid approach combines Python’s ease of use with the speed
-of compiled code.
+Python does, however, remain widely used in HPC, typically by performance-critical sections of code being written in
+compiled languages and accessed through a low-level Python interface. Frameworks such as PyTorch, NumPy, SciPy and Numa
+all rely on underlying C, Fortran and/or CUDA code to accelerate computation, while libraries such as mpi4py or
+multiprocessing make it possible for distributed parallelism directly from Python. Hybrid approaches like this have
+become more common because they combine Python's ease of use with the speed of compiled code.
 
 Other specialised languages and frameworks are also used in HPC, depending on the application area. CUDA and ROCm are
 employed for GPU programming, while newer languages such as Julia aim to combine ease of development with high
-performance. Domain-specific tools like MATLAB, and R appear in HPC environments, though they often rely on compiled
+performance. Domain-specific tools like MATLAB, and R also appear in HPC environments, though they often rely on compiled
 extensions or external libraries for parallel execution.
+
+So which language should you use? There is no simple answer. The best choice depends heavily on your specific
+application, the target hardware (like CPUs or GPUs), and the trade-offs you are willing to make between raw
+computational performance and ease of development. Ultimately, the right language is the one that allows you to solve
+your problem efficiently, leveraging the available libraries and expertise within your team.
 
 ::::::::::::::::::::::::::::::::::::: callout
 
@@ -70,42 +75,59 @@ However, the code you are using may only have been tested on a specific compiler
 best to stick with what is known to work. However, there is nothing stopping you using Intel's compilers on an AMD based
 system, if the code is only tested or depends on the Intel compilers.
 
-
 :::::::::::::::::::::::::::::::::::::::::::::
 
 ## Landscape of technologies
 
-The intention of this section is to give an idea of how the popular libraries and frameworks are used to paralleise code
-and how they are run on HPC clusters.
+We'll now take a high level look at a selection of some of the most used libraries and frameworks used to parallelise
+code in research. In particular, we will see how to use them, the code changes required and how to run them on Iridis.
+The intention is not to make you proficient with these frameworks--or even dangerous--but to give a high level
+appreciation on what is being used and how.
 
-We will be taking this short program to add together two vectors and showing how they are parallelised. We won't go over
-the details of the implementation, giving only a high level overview of what's happening.
-
-The function which we will parallelise is `vector_add`
-
-[vector.c](files/vector_serial.c)
+To illustrate this, we will use a simple program, written in C, which adds together two vectors to explore the code
+changes required. More specifically, we'll care be modifying the following function `vector_add`. We have chosen to use
+C here, but the language does not really matter.
 
 ```c
-void vector_add(float *a, float *b, float *c, int n)
-{
-    for (int i = 0; i < n; i++)
-    {
+// *a, *b, and *c are arrays and n is the length of them.
+// The result of the addition is returned back in *c
+void vector_add(int *a, int *b, int *c, int n) {
+    // This is the loop which we'll parallelise
+    for (int i = 0; i < n; i++) {
         c[i] = a[i] + b[i];
     }
 }
 ```
 
+You can find the entire program in [vector_serial.c](files/vector/vector_serial.c). To run this code on Iridis X, we'll
+use the following [submission script](files/vector/submit_vector_serial.sh).
+
 ```bash
 #!/bin/bash
-
-#SBATCH --partition=batch
+#SBATCH --partition=amd
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --time=00:01:00
 
+# Load the gcc module, which is the compiler we'll use
 module load gcc
-gcc vector_serial.exe -o vector_serial.exe
+
+# Compile the program using gcc
+gcc vector_serial.c -o vector_serial.exe
+
+# Run the compiled executable
 ./vector_serial.exe
+```
+
+After the program has run, we should see the following output.
+
+```output
+Verification (first 5 elements):
+c[0] =   0 (expected:   0)
+c[1] =   3 (expected:   3)
+c[2] =   6 (expected:   6)
+c[3] =   9 (expected:   9)
+c[4] =  12 (expected:  12)
 ```
 
 ### OpenMP
