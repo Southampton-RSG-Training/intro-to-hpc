@@ -10,8 +10,6 @@ exercises: 0 # exercise time in minutes
 - What are the main ways we can parallelise a program on modern HPC systems?
 - How do OpenMP and MPI differ in how they achieve parallelism?
 - What role do GPUs play in HPC, and how do approaches like CUDA and OpenACC use them?
-- Why is it important for code to scale well on large HPC systems?
-- What can go wrong if we try to optimise too early in the development process?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -22,11 +20,8 @@ exercises: 0 # exercise time in minutes
 - Describe how to compile and run an OpenMP program
 - Briefly summarise the main MPI message-passing features and how they are used
 - Describe how to compile and run an MPI program
-- Briefly summarise how a CUDA program is written
 - Briefly summarise how an OpenACC program is written and compiled
-- Describe why code scalability is important when using HPC resources
-- Describe the differences between strong and weak scaling
-- Summarise the dangers of premature optimisation
+- Briefly summarise how a CUDA program is written
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -34,8 +29,7 @@ To get the most performance possible, high-performance computing relies on paral
 thousands of processors, each working on their own part of the problem. To be able to wield this power, we need to
 understand how to write parallel code. This is far more complicated than the scope of this episode. Therefore we will,
 instead, look at the landscape of the core HPC technologies used today. In particular, we will look at the following
-parallel frameworks: OpenMP, MPI, CUDA and OpenACC. We'll additionally also look at the programming languages used in
-HPC and touch briefly on how we measure the performance and scalability of our code.
+parallel frameworks: OpenMP, MPI, OpenACC and CUDA.
 
 ## Common programming languages
 
@@ -76,8 +70,6 @@ best to stick with what is known to work. However, there is nothing stopping you
 system, if the code is only tested or depends on the Intel compilers.
 
 :::::::::::::::::::::::::::::::::::::::::::::
-
-## Landscape of technologies
 
 We'll now take a high level look at a selection of some of the most used libraries and frameworks used to parallelise
 code in research. In particular, we will see how to use them, the code changes required and how to run them on Iridis.
@@ -130,7 +122,7 @@ c[3] =   9 (expected:   9)
 c[4] =  12 (expected:  12)
 ```
 
-### OpenMP
+## OpenMP
 
 The first framework we'll look at is OpenMP. As mentioned in the previous episode, OpenMP is an industry-standard
 framework designed for parallel programming in a shared-memory environment. OpenMP spawns threads with each one,
@@ -265,7 +257,7 @@ provides a wide range of straightforward directives, making it easy to adapt ser
 program for parallel execution from the start. Its main limitation is that it uses a shared-memory model, which requires
 careful management of thread synchronisation and restricts scalability to a single compute node.
 
-### MPI
+## MPI
 
 - Concept: distributed-memory model using message passing.
 - Key functions (`MPI_Init`, `MPI_Send`, `MPI_Recv`, `MPI_Finalize`).
@@ -346,22 +338,107 @@ where pure MPI or OpenMP alone falls short.
 
 :::::::::::::::::::::::::::::::::::::::::::::
 
-### OpenACC
+## Using GPUs instead of CPUs
 
-- Directive-based GPU offload, similar to OpenMP: `#pragma acc parallel loop`.
-- Compilation also similar to OpenMP `nvc -acc`.
-- Advantages: incremental acceleration; limits: less control.
+Besides using multiple CPUs, we can also use Graphical Processing Units (GPUs) to do calculations in parallel. GPUs
+were originally designed to speed up the creation of images for computer screens, a task that involves performing
+millions of simple, repetitive calculations at once. Researchers soon realised this design was also perfect for many
+scientific problems.
+
+GPUs are highly parallel, built to perform thousands of operations at the same time. This makes them ideal for work that
+can be split into many identical, independent tasks. While CPUs are designed to tackle complex tasks one after another,
+GPUs are optimised for doing the exact same operation on large amounts of data simultaneously. This is perfect for
+problems like matrix operations, where every element can be processed in the same way.
+
+However, *offloading* work to a GPU is more complicated than parallelising using CPUs. The main reason is that the CPU and
+the GPU have their own separate memory spaces. Data stored in the CPU's memory is not visible to the GPU, and
+vice-versa. This setup is similar to the separate spaces for each process in MPI application. Data must be copied from
+the CPU's memory to the GPU's memory. This transfer step is slow
+compared to the speed of the calculations themselves. Therefore, efficient GPU programs must minimise data
+transfers, often by keeping data on the GPU as long as possible. While optimising CPU code often focuses on reducing the
+total number of calculations, optimising GPU code is usually more about reducing data transfers and organising data
+efficiently in the GPU's memory.
+
+This level of detail is beyond the scope of this introduction. As before, we will only give a broad overview of two
+popular frameworks: OpenACC and CUDA. You can think of these as being similar to OpenMP and MPI.
+
+- OpenACC is like OpenMP: you can often add it to existing code, using compiler directives to automatically handle the
+  parallelisation.
+
+- CUDA is similar to MPI: it is a more complex framework that requires you to design your program around it from the
+  start to achieve the best performance.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### CPU and GPUs, what's the difference?
+
+![](fig/cpu_gpu_arch.png)
+
+This diagram illustrates the key difference between a CPU and a GPU. On the left, the CPU is shown with a few, large
+"Cores" (green). Each core is complex, paired with significant "Control" logic (yellow) and large, fast memory caches
+(purple and blue). This design makes each CPU core very "smart" and powerful, ideal for handling complex instructions
+and varied tasks one after another, as mentioned earlier.
+
+On the right, the GPU has a completely different structure. It is composed of hundreds or even thousands of tiny, simple
+cores (the large green grid). Notice how much less space is dedicated to "Control" logic and complex caches. This
+architecture is not designed for complex, sequential tasks. Instead, it is a massive parallel workforce, built to
+execute the same simple operation (like `c[i] = a[i] + b[i]`) at the same time across thousands of different pieces of
+data. This visual "many-core" design is what allows it to perform thousands of operations concurrently.
+
+:::::::::::::::::::::::::::::::::::::::::::::
+
+## OpenACC
+
+The next framework we'll look at is OpenACC, which is a framework for parallel programming on
+accelerators such as GPUs. Just like OpenMP, it is directive-based, so we use compiler directives to tell the compiler which
+parts of the code should be executed on a GPU. The OpenACC runtime and compiler handle the low-level details such as
+kernel generation, thread scheduling, and memory transfers between the CPU and GPU. This allows incremental acceleration
+of existing CPU code with minimal modification.
+
+As with OpenMP, OpenACC relies heavily on compiler directives. These are special commands for the compiler, not the
+program itself. In C and C++, they start with `#pragma`. A typical OpenACC directive looks like:
 
 ```c
-void vector_add(int *a, int *b, int *c, int n)
-{
 #pragma acc parallel loop
-    for (int i = 0; i < n; i++)
-    {
+```
+
+This tells the compiler to parallelise the following loop and offload it to the GPU. The compiler then generates the
+necessary GPU kernels and data transfers automatically.
+
+Most of the work in OpenACC is done with these compiler directives, though a runtime library is also available for finer
+control over device selection, data movement, and synchronisation. To offload our `vector_add` function to a GPU, we
+only need to add a single line of code:
+
+```c
+void vector_add(int *a, int *b, int *c, int n) {
+// Let's put a comment here to explain something
+#pragma acc parallel loop
+    for (int i = 0; i < n; ++i) {
         c[i] = a[i] + b[i];
     }
 }
 ```
+
+The directive `#pragma acc parallel loop` tells the compiler to parallelise the loop and execute it on the accelerator.
+Each GPU thread performs part of the vector addition. OpenACC takes care of allocating memory on the GPU, transferring
+data from the host (CPU) to the device (GPU), and copying results back to the host when the loop completes.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### Memory model and data movement
+
+GPUs use a separate memory space from the CPU. OpenACC automatically manages data transfers between host and device
+memory based on the regions you annotate. However, explicit data management is possible using directives such as
+`#pragma acc data`, `copy`, `copyin`, and `copyout` for more control. Efficient GPU acceleration often depends on
+minimising unnecessary data movement between host and device.
+
+:::::::::::::::::::::::::::::::::::::::::::::
+
+To compile an OpenACC program, you must use a compiler that supports it, such as NVIDIA’s HPC compiler (`nvc`), and
+enable GPU offloading with the `-acc` flag, e.g. `nvc -acc vector_acc.c -o vector_acc.exe`. Without the flag, the
+OpenACC directives are ignored and GPU code is not generated.
+
+The following is an example of how you would compile and launch an OpenACC program on Iridis X.
 
 ```bash
 #!/bin/bash
@@ -372,16 +449,23 @@ void vector_add(int *a, int *b, int *c, int n)
 #SBATCH --gres=gpu:1
 #SBATCH --time=00:01:00
 
-# The NVHPC module includes the libraries required for GPU parallelisation
+# Load the NVIDIA HPC SDK module, which provides OpenACC support
 module load nvhpc
 
-nvcc vector_cuda.cu -o vector_cuda.exe
+# Compile the program with GPU offloading enabled
+nvc -acc vector_acc.c -o vector_acc.exe
+
+# Check GPU availability and run the program
 nvidia-smi
-./vector_cuda.exe
-xe
+./vector_acc.exe
 ```
 
-### CUDA
+The main advantage of OpenACC is that it allows rapid GPU acceleration with minimal code changes. It is particularly
+useful for incrementally porting existing CPU applications to GPUs. However, compared to lower-level models like CUDA,
+it offers less fine-grained control over GPU execution and memory management. OpenACC is therefore well suited for
+scientific and engineering applications where productivity and portability are more important than maximal performance.
+
+## CUDA
 
 - Explicit GPU programming model (kernels, threads, memory).
 - Example kernel declaration (`__global__ void kernel(...)`).
@@ -427,120 +511,8 @@ void vector_add(int *a, int *b, int *c, int n)
 - Typical use cases (e.g. CFD, ML, simulations).
 - Choosing the right model for the problem. -->
 
-## Measuring and improving parallel performance
-
-When we submit a job to run on a cluster, we have the option of specifying the amount of memory and the number of CPUs
-(and GPUs) that will be allocated. We need to consider to what extent that code is *scalable* with regards to how it
-uses the requested resources, to avoid asking for, and wasting, more resources than can be used efficiently. So before
-we start asking for lots of resources, we need to know how the performance of our scales with the number of CPUs (or
-GPUs) made available to it. There are two primary measures of execution time we need need to measure:
-
-- **Wall clock time (or actual time)** - this is the time it takes to run from start of execution to the end, as
-  measured on a clock. In terms of scaling measurements, this does not include any time waiting for the job to start.
-- **CPU time** - this is the time actually spent running your code on a CPU, when it is processing instructions. This
-  does not include time waiting for input or output operations, such as reading in an input file, or any other waiting
-  caused by the program or operating system.
-
-In most cases, measuring just the wall clock time is usually sufficient for working out how your code scales. But what
-is code scalability?
-
-### What is scalability?
-
-Scalability describes how efficiently a program can use additional resources to solve a problem faster, or to handle
-larger problems. A scalable code continues to achieve performance improvements as more resources are allocated to it.
-Programs which don't scale well show diminishing returns as more resources are allocated, often due to bottlenecks such
-as serial code sections or other overheads. It's important to note that not all programs need to scale perfectly or to
-hundreds of thousands of processors. Every program has a practical scaling limit beyond which performance gains level
-off or even decline. What matters is understanding where the limit lies for your application and what the bottleneck is.
-
-Bottlenecks are the parts of a program that limit its scalability. Even small sections of serial code, or operations
-that require coordination between processors, can dominate the total runtime. According to [Amdahl’s
-Law](https://en.wikipedia.org/wiki/Amdahl%27s_law), the speedup of a parallel program is constrained by its serial
-fraction, so perfect scaling is impossible when any part of the program must execute sequentially. Typical bottlenecks
-include communication overhead, synchronisation delays, I/O operations, and load imbalance. As processor count
-increases, these costs can outweigh the benefits of parallel execution, leaving some resources idle.
-
-Scalability is measured by observing how the program's execution time changes as the number of processors increases.
-This can be quantified through speedup (the ratio of single-processor runtime to multi-processor runtime) and efficiency
-(the ratio of achieved speedup to the number of processors used). These are calculated through measurements of wall
-clock time and plotted against the processor count to show how performance scales.
-
-Measuring scalability helps identify whether performance limitations stem from the code itself, the problem size, or the
-system architecture. Because computing resources are finite, measuring scalability is essential to ensure they are used
-efficiently. It allows you to determine when adding more cores no longer provides meaningful benefits, preventing wasted
-resources.
-
-### Strong Scaling
-
-Strong scaling measures how execution time changes when the problem size *stays constant* but the number of processors
-increases. Ideally, when doubling the processor count we should see expect for the runtime to be halved. In practise,
-performance gains are limited by serial code and overheads such as communication, synchronisation or I/O operations
-limited by the file or operating system.
-
-### Weak Scaling
-
-Weak scaling measures show runtime changes when both the problem size and number of processors increase proportionally,
-keeping the workload per processor constant; in contrast, when measuring strong scaling, the workload per processors
-decreases. Ideally, the runtime should remain constant as more processors are added. Weak scaling is important for large
-simulations which would be functionally impossible without a large number of resources.
-
-### The dangers of premature optimisation
-
-If your code is still taking too long to run after parallelising it, or if it scales poorly, it's tempting to dive head
-first in and try to optimise everything you think is slow! But before you do that, you need to think about the [rules of
-optimisation](https://hackernoon.com/the-rules-of-optimization-why-so-many-performance-efforts-fail-cf06aad89099):
-
-1. Don't,
-2. Don't... *yet*, and,
-3. If you need to optimise your code, *profile* it first.
-
-For most code we write, premature optimisation is often bad practice which leads to long nights of debugging.
-Optimisation often leads to more complex code resulting in code which is more difficult to read, making it harder to
-understand and maintain; even with all the code comments in the world! Another issue is that your premature optimisation
-may change the result without you realising until much further down the line.
-
-It is often effort-intensive, and difficult at a low level, particularly with modern compilers and interpreters, to
-improve on or anticipate the optimisations that they already automatically implement for us. It is often better to focus
-on writing understandable code which does what you want and then *only* optimise if it too slow. You will often find
-that code you think is going to be slow, is often fast enough to not be a problem!
-
-Once you have measured the strong and weak scaling profiles of your code, you can also *profile* your code to find where
-the majority of time is being spent to best optimise it. Only then should you start thinking about optimising. If you
-want to take this philosophy further, consider the [Rules of Optimisation
-Club](https://perlbuzz.com/2008/02/19/the_rules_of_optimization_club/).
-
-::::::::::::::::::::::::::::::::::::: callout
-
-## What is profiling?
-
-Profiling your code is all about understanding its complexity and performance characteristics. The usual intent of
-profiling is to work out how best to *optimise* your code to improve its performance in some way, typically in terms of
-speedup or memory and disk usage. In particular, profiling helps identify *where* bottlenecks exist in your code, and
-helps avoid summary judgments and guesses which will often lead to unnecessary optimisations.
-
-Each programming language will typically offer some open-source and/or free tools on the web, with you can use to
-profile your code. Here are some examples of tools. Note though, depending on the nature of the language of choice,
-the results can be hard or easy to interpret. In the following we will only list open and free tools:
-
-- Python: [line_profiler](https://github.com/pyutils/line_profiler),
-  [prof](https://docs.python.org/3.9/library/profile.html)
-- C/C++: [xray](https://llvm.org/docs/XRay.html), [perf](https://perf.wiki.kernel.org/index.php/Main_Page),
-  [gprof](https://ftp.gnu.org/old-gnu/Manuals/gprof-2.9.1/html_mono/gprof.html)
-- R: [profvis](https://github.com/rstudio/profvis)
-- MATLAB: [profile](https://www.mathworks.com/help/matlab/ref/profile.html)
-- Julia: [Profile](https://docs.julialang.org/en/v1/manual/profile/)
-
-[Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth) said *"we should forget about small efficiencies, say about
-97% of the time: premature optimization is the root of all evil. Yet we should not pass up our opportunities in that
-critical 3%."* Optimise the obvious trivial things, but avoid non-trivial optimisations until you've understood what
-needs to change. Optimisation is often difficult and time consuming. Pre-mature optimization may be a waste of your
-time!
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- Premature optimisation is often dangerous. You should first profile and assess the scaling of your code before you
-  decide to optimise it.
+- Nothing yet.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
