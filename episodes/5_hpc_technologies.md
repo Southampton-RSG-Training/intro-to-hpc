@@ -340,10 +340,10 @@ where pure MPI or OpenMP alone falls short.
 
 ## Using GPUs instead of CPUs
 
-Besides using multiple CPUs, we can also use Graphical Processing Units (GPUs) to do calculations in parallel. GPUs
-were originally designed to speed up the creation of images for computer screens, a task that involves performing
-millions of simple, repetitive calculations at once. Researchers soon realised this design was also perfect for many
-scientific problems.
+Besides using multiple CPUs, we can also use Graphical Processing Units (GPUs) to do calculations in parallel. GPUs were
+originally designed to speed up rendering to display images to a screen, a task that involves performing millions of
+simple, repetitive calculations at once. Researchers soon realised this design was also perfect for many scientific
+problems.
 
 GPUs are highly parallel, built to perform thousands of operations at the same time. This makes them ideal for work that
 can be split into many identical, independent tasks. While CPUs are designed to tackle complex tasks one after another,
@@ -360,7 +360,7 @@ total number of calculations, optimising GPU code is usually more about reducing
 efficiently in the GPU's memory.
 
 This level of detail is beyond the scope of this introduction. As before, we will only give a broad overview of two
-popular frameworks: OpenACC and CUDA. You can think of these as being similar to OpenMP and MPI.
+popular frameworks: OpenACC and CUDA. You can think of these as being similar to OpenMP and MPI:
 
 - OpenACC is like OpenMP: you can often add it to existing code, using compiler directives to automatically handle the
   parallelisation.
@@ -385,33 +385,32 @@ architecture is not designed for complex, sequential tasks. Instead, it is a mas
 execute the same simple operation (like `c[i] = a[i] + b[i]`) at the same time across thousands of different pieces of
 data. This visual "many-core" design is what allows it to perform thousands of operations concurrently.
 
+GPUs also use a different memory model. Each GPU core can access the large global memory, which is shared across the
+entire GPU. It is slower to read and write to this. To improve performance, groups of cores are organised into blocks
+which shared a small, but very fast, memory area. This setup is similar to shared-memory parallelism on CPUs, where
+threads cooperate through a common memory space. However, each GPU block’s shared memory is private to that block, much
+like how separate processes in a distributed-memory model (such as MPI) each have their own memory and must explicitly
+exchange data. Efficient GPU programs manage this hierarchy carefully, reusing shared memory to reduce costly access to
+global memory.
+
 :::::::::::::::::::::::::::::::::::::::::::::
 
 ## OpenACC
 
-The next framework we'll look at is OpenACC, which is a framework for parallel programming on
-accelerators such as GPUs. Just like OpenMP, it is directive-based, so we use compiler directives to tell the compiler which
-parts of the code should be executed on a GPU. The OpenACC runtime and compiler handle the low-level details such as
-kernel generation, thread scheduling, and memory transfers between the CPU and GPU. This allows incremental acceleration
-of existing CPU code with minimal modification.
+OpenACC is a framework for parallel programming on GPUs, both for NVIDIA and AMD GPUs; i.e. it is platform agnostic.
+Just like OpenMP, it uses compiler directives to tell the compiler which parts of code should be executed, in parallel,
+on a GPU. Also like OpenMP, the OpenACC runtime and compiler handles all of the parallelisation details such as
+generating the parallel code, transferring data between the CPU and GPU and synchronising/managing GPU threads.
 
-As with OpenMP, OpenACC relies heavily on compiler directives. These are special commands for the compiler, not the
-program itself. In C and C++, they start with `#pragma`. A typical OpenACC directive looks like:
-
-```c
-#pragma acc parallel loop
-```
-
-This tells the compiler to parallelise the following loop and offload it to the GPU. The compiler then generates the
-necessary GPU kernels and data transfers automatically.
-
-Most of the work in OpenACC is done with these compiler directives, though a runtime library is also available for finer
-control over device selection, data movement, and synchronisation. To offload our `vector_add` function to a GPU, we
-only need to add a single line of code:
+Whilst most of the heavy lifting for OpenACC is done with compiler directives, a runtime library is also available for
+finer control over things such as selecting with GPU to use, finer grained data movement and synchronisation. But to
+parallelise our `vector_add` function to a GPU, we only need to add a single line of code.
 
 ```c
 void vector_add(int *a, int *b, int *c, int n) {
-// Let's put a comment here to explain something
+// This OpenACC directive tells the compiler to parallelise the
+// following 'for' loop, running its iterations concurrently
+// on the GPU
 #pragma acc parallel loop
     for (int i = 0; i < n; ++i) {
         c[i] = a[i] + b[i];
@@ -419,30 +418,42 @@ void vector_add(int *a, int *b, int *c, int n) {
 }
 ```
 
-The directive `#pragma acc parallel loop` tells the compiler to parallelise the loop and execute it on the accelerator.
-Each GPU thread performs part of the vector addition. OpenACC takes care of allocating memory on the GPU, transferring
-data from the host (CPU) to the device (GPU), and copying results back to the host when the loop completes.
+The full program is in [vector_openacc.c](files/vector/vector_openacc.c). The directive `#pragma acc parallel loop`
+tells the compiler to parallelise the loop and execute it on the GPU. Each GPU thread performs part of the vector
+addition. OpenACC also takes care of allocating memory on the GPU and transferring data from the CPU to GPU's memory. It
+also copies the results back to the CPU when the loop is completed. In the next section about CUDA, we will see how much
+additional code we need to write to do just this.
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-### Memory model and data movement
+## Some other useful directives
 
-GPUs use a separate memory space from the CPU. OpenACC automatically manages data transfers between host and device
-memory based on the regions you annotate. However, explicit data management is possible using directives such as
-`#pragma acc data`, `copy`, `copyin`, and `copyout` for more control. Efficient GPU acceleration often depends on
-minimising unnecessary data movement between host and device.
+As we've seen,`#pragma acc parallel loop` targets a single loop. OpenACC also provides the `#pragma acc kernels`
+directive. This directive is meant to be put before a larger region of code, such as a complicated loop. The compiler
+then analyses this entire region and automatically determines the best way to convert the code, including any loops it
+finds, into parallel "kernels" of code to run on the GPU.
+
+The main difference is that `#pragma acc parallel loop` is prescriptive: you are explicitly telling the compiler to
+parallelise that one loop in one specific way. In contrast, `#pragma acc kernels` is descriptive: you are telling the
+compiler "here is a block of code to accelerate," giving it freedom to analyse the code and choose the most efficient
+way to run it.
+
+Additionally, whilst OpenACC automatically manages data transfers between the GPU and CPU, more explicit data management
+is possible using directives such as `#pragma acc data`, `copy`, `copyin`, and `copyout` for more control.
 
 :::::::::::::::::::::::::::::::::::::::::::::
 
-To compile an OpenACC program, you must use a compiler that supports it, such as NVIDIA’s HPC compiler (`nvc`), and
-enable GPU offloading with the `-acc` flag, e.g. `nvc -acc vector_acc.c -o vector_acc.exe`. Without the flag, the
-OpenACC directives are ignored and GPU code is not generated.
+To compile an OpenACC program, we need a compiler that supports it. On Iridis X this is either GCC or one from NVIDIA's
+compiler collection. With GCC we need to use the `-fopenacc` flag. However, when using NVIDIA's C compiler the flag is
+instead `-acc`, e.g. `nvc -acc vector_openacc.c`. Without the flag, the OpenACC directives are ignored and GPU code is
+not generated.
 
-The following is an example of how you would compile and launch an OpenACC program on Iridis X.
+The following is an example of how you would compile and launch an OpenACC program on Iridis X. It is especially
+important that we remember to request a GPU using the `--gres=gpu:1` directive and select a partition where nodes have
+GPUs.
 
 ```bash
 #!/bin/bash
-
 #SBATCH --partition=a100
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -460,10 +471,11 @@ nvidia-smi
 ./vector_acc.exe
 ```
 
-The main advantage of OpenACC is that it allows rapid GPU acceleration with minimal code changes. It is particularly
-useful for incrementally porting existing CPU applications to GPUs. However, compared to lower-level models like CUDA,
-it offers less fine-grained control over GPU execution and memory management. OpenACC is therefore well suited for
-scientific and engineering applications where productivity and portability are more important than maximal performance.
+The main advantage of OpenACC, like OpenMP, is that it allows rapid GPU parallelisation with minimal code changes. It is
+particularly useful for incrementally porting existing CPU applications to GPUs. However, compared to lower-level
+frameworks like CUDA, it offers less fine-grained control over GPU execution and memory management. OpenACC is therefore
+well suited for scientific and engineering applications where productivity and portability are more important than
+maximal performance.
 
 ## CUDA
 
