@@ -93,7 +93,7 @@ C here, but the language does not really matter.
 // The result of the addition is returned back in *c
 void vector_add(int *a, int *b, int *c, int n) {
     // This is the loop which we'll parallelise
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; ++i) {
         c[i] = a[i] + b[i];
     }
 }
@@ -132,39 +132,138 @@ c[4] =  12 (expected:  12)
 
 ### OpenMP
 
-- Concept: shared-memory model.
-- Common directives (`parallel`, `for`, `reduction`).
-- Compilation (`gcc -fopenmp`).
-- Simple Slurm job example with `--cpus-per-task`.
-- Strengths (simple to add) and limits (single-node memory).
+The first framework we'll look at is OpenMP. As mentioned in the previous episode, OpenMP is an industry-standard
+framework designed for parallel programming in a shared-memory environment. OpenMP spawns threads with each one,
+ideally, running on its own CPU core. OpenMP works by using *compiler directives* to tell the compiler which code needs
+to be parallelised, letting OpenMP and the compiler takes care of all the parallelisation details. In general, you just
+need to say which parts of your code you want to run in parallel.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### Compiler directives
+
+If you're unfamiliar with compiler directives, you can think of them as being a *special command* for the compiler, not
+for the program itself. In C and C++, these almost *always* start with `#pragma`. Think of it as a special note to the
+compiler which says, "when you compile this specific piece of code, do something extra." Since these are compiler
+options, they do not modify the run time behaviour of the program, only how the final executable is compiled.
+
+:::::::::::::::::::::::::::::::::::::::::::::
+
+Most of the parallelisation with OpenMP is done with these compiler directives. However, OpenMP does also offer a
+library of runtime functions which gives finer grained control, such as if you need to ensure thread synchronisation or
+need to go off the beaten track. To parallelise our `vector_add` function, we only need to add a single line of code,
+using a compiler directive, just before the loop.
 
 ```c
-void vector_add(int *a, int *b, int *c, int n)
-{
+void vector_add(int *a, int *b, int *c, int n) {
+// This directive tells OpenMP to spawn threads and to
+// divide the loop iterations between them. Each thread will
+// handle a fraction of the loop iterations/vector addition
 #pragma omp parallel for
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; ++i) {
         c[i] = a[i] + b[i];
     }
 }
 ```
 
+The full program is in [vector_openmp.c](files/vector/vector_openmp.c). Let's break this down more. The directive we
+used, `#pragma omp parallel for`, tells the compiler that the next for loop should be parallelised. The compiler then
+automatically parallelises it for us, creating a team of threads and dividing the loop's work among them. In this case,
+each thread will perform a portion of the vector addition. All OpenMP directives begin with `#pragma omp`, followed by a
+specific command.
+
+There are lots of other directives available, with `#pragma omp parallel for` being the most commonly used. Another
+useful directive is `#pragma omp atomic` which prevents multiple threads from modifying a variable at once. This is one
+way to prevent a race condition mentioned in the previous episode. OpenMP also provides a library of runtime functions
+which offers even more control. For example, we can use the function `omp_set_num_threads` to control the number of
+threads that OpenMP will use. In C, we need to include the appropriate header file, `omp.h`, to access this function.
+
+```c
+#include <omp.h>
+
+void vector_add(int *a, int *b, int *c, int n) {
+    // Manually set the number of threads to 8
+    omp_set_num_threads(8);
+
+#pragma omp parallel for
+    for (int i = 0; i < n; ++i) {
+        c[i] = a[i] + b[i];
+    }
+}
+```
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### Directives and functions for synchronisation
+
+Effective control of thread synchronisation is essential when parallelising code with OpenMP, as improper handling of
+shared data can lead to race conditions and unpredictable results. To support this, OpenMP provides a range of
+directives and library functions that coordinate access to shared data and manage thread behaviour. The tables below
+summarise several commonly used examples.
+
+| Compiler Directive     | Description                                                                                                                                   |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| `#pragma omp atomic`   | Ensures a specific operation, such as modifying a variable, is executed atomically, e.g. by one thread at a time, to prevent race conditions. |
+| `#pragma omp critical` | Defines a region of code that only one thread can execute at a time.                                                                          |
+
+This list is not exhaustive. A complete reference for all OpenMP directives and functions is available in the [OpenMP
+6.0 Reference Guide](https://www.openmp.org/wp-content/uploads/OpenMP-RefGuide-6.0-OMP60SC24-web.pdf).
+
+:::::::::::::::::::::::::::::::::::::::::::::
+
+To compile an OpenMP program, we need to use the `-fopenmp` flag, e.g. `gcc -fopenmp vector_openmp.c`. If we don't use
+the `-fopenmp` flag, the compiler directives are ignored and any library functions from `omp.h` will not be found
+causing a compilation error.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### Do I need to keep the serial version?
+
+Setting the number of threads or processes to one will produce the same behaviour as the serial program, assuming no
+programming errors. However, to be extra safe, you can use conditional compilation to maintain both parallel and serial
+versions within the same code. Compiled languages support conditional compilation, which allows certain sections of code
+to be compiled only if a specific condition is met. When using OpenMP, the compiler variable `_OPENMP` is defined when
+the `-fopenmp` flag is passed, so you can use this variable to prevent OpenMP directives and functions from being
+compiled when `-fopenmp` is not used.
+
+:::::::::::::::::::::::::::::::::::::::::::::
+
+To launch an OpenMP program, run it like any other program. The number of threads for OpenMP to use can be controlled
+using the environment variable `OMP_NUM_THREADS`. If this is left unset, OpenMP will spawn one thread per logical CPU
+core. Normally, on a HPC cluster this is probably what is wanted. However, when running on your own computer during
+development and testing, you will probably want to set `OMP_NUM_THREADS` to be less than then number of CPU cores to
+avoid overloading the computer.
+
+The following is an example of how you would compile and launch an OpenMP program on Iridis X.
+
 ```bash
 #!/bin/bash
 
-#SBATCH --partition=batch
+#SBATCH --partition=amd
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --time=00:01:00
 
+# Use OMP_NUM_THREADS to say we can to use --cpus-per-task number of
+# threads. The --cpu-per-task SBATCH directive is populated into the
+# SLURM_CPUS_PER_TASK environment variable
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
+# Compile the program using gcc
 module load gcc
 gcc -fopenmp vector_openmp.exe -o vector_openmp.exe
-./vector_openmp.exe
 
+# We run the compiled executable just like the serial version
+./vector_openmp.exe
 ```
+
+The main advantage of OpenMP is that it requires only minimal code modification to parallelise existing programs,
+particularly when the main computational workload lies within loops. Beyond simple loop-level parallelism, parallelising
+more complex program structures becomes more challenging—though this is true of most parallel frameworks. OpenMP still
+provides a wide range of straightforward directives, making it easy to adapt serial code without needing to design the
+program for parallel execution from the start. Its main limitation is that it uses a shared-memory model, which requires
+careful management of thread synchronisation and restricts scalability to a single compute node.
 
 ### MPI
 
@@ -247,7 +346,22 @@ where pure MPI or OpenMP alone falls short.
 
 :::::::::::::::::::::::::::::::::::::::::::::
 
-### GPU Parallelisation
+### OpenACC
+
+- Directive-based GPU offload, similar to OpenMP: `#pragma acc parallel loop`.
+- Compilation also similar to OpenMP `nvc -acc`.
+- Advantages: incremental acceleration; limits: less control.
+
+```c
+void vector_add(int *a, int *b, int *c, int n)
+{
+#pragma acc parallel loop
+    for (int i = 0; i < n; i++)
+    {
+        c[i] = a[i] + b[i];
+    }
+}
+```
 
 ```bash
 #!/bin/bash
@@ -267,7 +381,7 @@ nvidia-smi
 xe
 ```
 
-CUDA:
+### CUDA
 
 - Explicit GPU programming model (kernels, threads, memory).
 - Example kernel declaration (`__global__ void kernel(...)`).
@@ -306,28 +420,12 @@ void vector_add(int *a, int *b, int *c, int n)
 }
 ```
 
-OpenACC:
 
-- Directive-based GPU offload, similar to OpenMP: `#pragma acc parallel loop`.
-- Compilation also similar to OpenMP `nvc -acc`.
-- Advantages: incremental acceleration; limits: less control.
-
-```c
-void vector_add(int *a, int *b, int *c, int n)
-{
-#pragma acc parallel loop
-    for (int i = 0; i < n; i++)
-    {
-        c[i] = a[i] + b[i];
-    }
-}
-```
-
-## Putting It Together
+<!-- ## Putting It Together
 
 - Comparing OpenMP, MPI, OpenACC, and CUDA at a high level.
 - Typical use cases (e.g. CFD, ML, simulations).
-- Choosing the right model for the problem.
+- Choosing the right model for the problem. -->
 
 ## Measuring and improving parallel performance
 
