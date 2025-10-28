@@ -620,6 +620,17 @@ void vector_add(int *a, int *b, int *c, int n) {
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- Nothing yet.
+- Any language can be used for HPC, however, compiled languages like C, C++ and Fortran are typically used for
+  performance-critical code. Python is often used on HPC using libraries which are built on compiled languages.
+- OpenMP is a shared-memory model, using compiler directives (`#pragma omp`) to easily parallelise code (often loops) to
+  run on the CPU cores of a single node.
+- MPI is a distributed-memory model, using a library of functions (`MPI_Init`, `MPI_Send`, etc.) to manage explicit
+  communication between processes. It is complex but can scale across many nodes.
+- GPUs are "many-core" processors ideal for massive, simple, parallel tasks (like matrix maths). Using them requires
+  copying data between the CPU (host) and GPU (device).
+- OpenACC uses compiler directives (`#pragma acc`) to offload work to a GPU, automating parallelisation and data
+  transfers.
+- CUDA is a complex, explicit programming model for NVIDIA GPUs. It requires you to write "kernels" and manually manage
+  memory (`cudaMalloc`, `cudaMemcpy`) but offers the highest control and performance.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
