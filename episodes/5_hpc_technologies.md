@@ -583,40 +583,110 @@ maximal performance.
 
 ## CUDA
 
-- Explicit GPU programming model (kernels, threads, memory).
-- Example kernel declaration (`__global__ void kernel(...)`).
-- Compilation (`nvcc`).
-- Slurm job example with `--gres=gpu:1`.
-- Benefits (fine-grained control) and drawbacks (complexity, vendor lock-in).
+The final framework we will look at is CUDA, which is essentially a programming language created by NVIDIA to run
+arbitrary code on NVIDIA GPUs. However, unlike OpenACC which uses compiler directives to automatically parallalise
+sections of code, CUDA is an extension of the C/C++ language which gives you explicit *fine-grained* control over the
+GPU. This is a much more powerful and performant approach, but also far more complex than OpenACC. You are no longer
+advising the compiler; you are directly writing the code that will run on the GPU. Given this complexity, we will only
+examine the concepts at a very high level.
 
-```cpp
+In CUDA, you write special functions called *kernels* that are executed on the GPU. In the later code example below, we
+have two functions: `vector_add_kernal` and `vector_add`. The `vector_add_kernel` function is the code which runs on the
+GPU. The `__global__` keyword tells the compiler that this function should be launched from the CPU but run on the GPU.
+Inside this kernel, each thread calculates its own unique ID using special variables (like `blockIdx.x` and
+`threadIdx.x`). This ID determines which element `i` of the vector that specific thread will process. This is the core
+mechanism for dividing the parallel work. You will also see an `if (i < n)` check in the kernel. This is a crucial
+safety check. GPUs launch threads in fixed-size groups, so you often launch more threads than you have data (e.g.,
+launching 1024 threads for a 1000-element array). This `if` statement simply tells the "extra" threads (1000, 1001,
+etc.) to do nothing. Without it, they would try to access memory that doesn't exist, which would corrupt your data or
+crash the program.
+
+The original `vector_add` functions runs on the CPU and manages the GPU, controlling when the GPU kernel is launched. It
+must now do all the work *manually* that OpenACC handled automatically:
+
+1. Allocate Memory: `cudaMalloc` is used to allocate separate memory for the three vectors (`d_a`, `d_b`, `d_c`) *on
+    the GPU's memory*. The `d_` prefix is a common convention to mean "device" memory.
+2. Copy Data In: `cudaMemcpy` (with `cudaMemcpyHostToDevice`) is called to copy the input data from the CPU's `a`
+    and `b` arrays to the GPU's `d_a` and `d_b` arrays. This is the explicit data transfer.
+3. Launch Kernel: The `<<<grid, BLOCK_SIZE>>>` syntax is the CUDA-specific command to launch the kernel. This tells
+    the GPU to launch a "grid" of "blocks," to execute the `vector_add_kernel` function.
+4. Copy Data Out: After the kernel finishes, `cudaMemcpy` (with `cudaMemcpyDeviceToHost`) copies the result from the
+    GPU's `d_c` array back to the CPU's `c` array.
+5. Clean Up: `cudaFree` releases the memory on the GPU.
+
+```c++
+// This is the "kernel" - the code that runs on the GPU
 __global__ void vector_add_kernel(int *a, int *b, int *c, int n) {
+    // Calculate the unique ID for this thread
     int i = blockIdx.x * blockDim.x + threadIdx.x;
+
+    // Ensure the thread ID is within the bounds of the array
     if (i < n) {
         c[i] = a[i] + b[i];
     }
 }
 
+// This is the "host" function - the code that runs on the CPU
 void vector_add(int *a, int *b, int *c, int n) {
+    // Pointers for the "device" (GPU) memory
     int *d_a, *d_b, *d_c;
+    int size = n * sizeof(int);
 
-    cudaMalloc(&d_a, n * sizeof(int));
-    cudaMalloc(&d_b, n * sizeof(int));
-    cudaMalloc(&d_c, n * sizeof(int));
+    // 1. Allocate memory on the GPU
+    cudaMalloc(&d_a, size);
+    cudaMalloc(&d_b, size);
+    cudaMalloc(&d_c, size);
 
-    cudaMemcpy(d_a, a, n * sizeof(int), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_b, b, n * sizeof(int), cudaMemcpyHostToDevice);
+    // 2. Copy input data from CPU (host) to GPU (device)
+    cudaMemcpy(d_a, a, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, b, size, cudaMemcpyHostToDevice);
 
+    // 3. Launch the kernel on the GPU
+    int BLOCK_SIZE = 256;
     int grid = (n + BLOCK_SIZE - 1) / BLOCK_SIZE;
     vector_add_kernel<<<grid, BLOCK_SIZE>>>(d_a, d_b, d_c, n);
 
-    cudaMemcpy(c, d_c, n * sizeof(int), cudaMemcpyDeviceToHost);
+    // 4. Copy the result from GPU (device) back to CPU (host)
+    cudaMemcpy(c, d_c, size, cudaMemcpyDeviceToHost);
 
+    // 5. Free the memory on the GPU
     cudaFree(d_a);
     cudaFree(d_b);
     cudaFree(d_c);
 }
 ```
+
+The full program is in [vector_cuda.cu](files/vector/vector_cuda.cu). To compile CUDA code, we must use NVIDIA's `nvcc`
+compiler. Note that this is different from the `nvc` compiler we used to build the OpenACC version of `vector_add`. The
+`nvcc` compiler understands the CUDA-specific syntax used to define and launch kernels, e.g. `__global__` and
+`<<<...>>>`. It sepates out the GPU-specific and CPU-specific code, compiling the CPU code using a standard C++
+compiler. CUDA files typically use the .cu extension.
+
+To run a CUDA program, it is launched like any other program, as the mechanics to communicate and launch threads on the
+GPU is handled inside the program itself. The submission script for a CUDA code is nearly identical to the OpenACC
+script from before.
+
+```bash
+# !/bin.bash
+# SBATCH --partition=a100
+# SBATCH --nodes=1
+# SBATCH --ntasks=1
+# SBATCH --gres=gpu:1
+# SBATCH --time=00:01:00
+
+# Load the NVIDIA CUDA toolkit module
+module load cuda
+
+# Compile the program using nvcc
+nvcc vector_cuda.cu -o vector_cuda.exe
+
+# Run the executable (no special launcher needed)
+./vector_cuda.exe
+```
+
+The main benefit of CUDA is the total control it provides, which often leads to the highest possible performance. The
+main drawbacks are its complexity (requiring manual memory management and kernel writing) and vendor lock-in, as CUDA
+code will only run on NVIDIA GPUs.
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
