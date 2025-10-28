@@ -257,68 +257,172 @@ provides a wide range of straightforward directives, making it easy to adapt ser
 program for parallel execution from the start. Its main limitation is that it uses a shared-memory model, which requires
 careful management of thread synchronisation and restricts scalability to a single compute node.
 
-## MPI
+## Message Passing Interface (MPI)
 
-- Concept: distributed-memory model using message passing.
-- Key functions (`MPI_Init`, `MPI_Send`, `MPI_Recv`, `MPI_Finalize`).
-- Compilation (`mpicc`).
-- Example Slurm job with `--ntasks`.
-- Benefits (scales across nodes) and challenges (communication overhead).
+The Message Passing Interface (MPI) was designed to enable scientific applications to run on supercomputers and, as
+such, has become the dominant distributed-memory parallelism framework in research. An MPI application creates many
+processes each working on their own individual task. However, unlikely shared-memory approaches, each MPI process--or
+rank--has its own private memory space. Therefore to exchange data between these ranks, explicit communication has to
+happen. This is where MPI comes in. It provides a set of library functions to configure a parallel environment and
+exchange data within it. The *key concept* in MPI is message passing, which involves the explicit exchange of data
+between processes. Processes can send messages to specific destinations, broadcast messages to all processes, or perform
+collective operations where all processes participate.
+
+To achieve parallelism, each process runs a copy of the same program, as the other processes, but works with its own
+subset of data, or does its own tasks. The processes then typically communicate to exchange data and/or coordinate their
+next tasks. The power of MPI is that the processes can run on different nodes, allowing MPI programs to scale well
+beyond a single machine. Thankfully the complexity of this is hidden away and controlled by MPI's library of functions
+and the HPC cluster's resource manager, e.g. Slurm.
+
+But there are some trade-offs with MPI. In terms of performance, communicating data takes time. If you have a method
+which requires frequent communication or data dependencies, then you will spend more time exchanging data than doing
+computation. It may instead be worth using a shared-memory framework like OpenMP.
+
+However the biggest trade-off, by far, is that you need to design your application in mind for MPI parallelisation.
+Unlike OpenMP, it is not simple to retrofit a serial program with MPI mainly because we have to do everything ourselves.
+For example, we need to make sure we initialise MPI, track process IDs, explicitly send and receive data, coordinate the
+processes so they do their own work, and so on. The table below gives an idea of some of the MPI functions and their
+purpose.
+
+| Function                | Description                                                                                                                |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `MPI_Init`              | Initialises the MPI environment. Must be called before any other MPI calls.                                                |
+| `MPI_Comm_size`         | Returns the total number of processes in the communicator.                                                                 |
+| `MPI_Comm_rank`         | Returns the rank (ID) of the calling process.                                                                              |
+| `MPI_Send` / `MPI_Recv` | Used for direct point-to-point communication between processes.                                                            |
+| `MPI_Barrier`           | Used for synchronisation. A processes cannot continue past the barrier until all processes have reached it.                |
+| `MPI_Finalize`          | Shuts down the MPI environment. Must be called before exiting the program, other wise background MPI tasks may not finish. |
+
+Let's now take a look at the code changes we need to parallelise the `add_vector` function. A detailed description of
+the MPI library functions is out of scope for this episode, and lesson, so we won't much about the details. From a high
+level, what we need to do is: 1) initialise the MPI environment, 2) split the work between processes, 3) have each
+process do their work, and 4) communicate the results back to one "root" process. The example code below demonstrates
+this. Keep in your head that each process is executes the **exact** same function, but will do something different based
+on its ID.
 
 ```c
-void vector_add(int *a, int *b, int *c, int n)
-{
-    int rank, size;
+//Include the MPI header file
+#include <mpi.h>
+
+void vector_add(int *a, int *b, int *c, int n) {
+    // Initialise the MPI environment -- nothing will work if we
+    // don't do this
     MPI_Init(NULL, NULL);
+
+    // Get the rank (process ID) and total number of processes launched
+    int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+    int root_rank = 0;
 
+    // Determine next how many elements of the vector this process
+    // will handle. We will create a "local" array which will store
+    // the results of the vector addition for this process
     int n_local = n / size;
-    int *a_local = malloc(n_local * sizeof(int));
-    int *b_local = malloc(n_local * sizeof(int));
-    int *c_local = malloc(n_local * sizeof(int));
+    int c_local[n_local];
 
-    MPI_Scatter(a, n_local, MPI_INT, a_local, n_local, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Scatter(b, n_local, MPI_INT, b_local, n_local, MPI_INT, 0, MPI_COMM_WORLD);
+    // Determine the subset of the vectors a and b this process
+    // will be adding together. To do this, we use the ID of
+    // the process and the number of elements each process
+    // will be working on
+    int start = rank * n_local;
+    int stop = (rank + 1) * n_local;
 
-    for (int i = 0; i < n_local; i++)
-    {
-        c_local[i] = a_local[i] + b_local[i];
+    // Perform the local computation on each process
+    for (int i = start; i < stop; i++) {
+        c_local[i] = a[i] + b[i];
     }
 
-    MPI_Gather(c_local, n_local, MPI_INT, c, n_local, MPI_INT, 0, MPI_COMM_WORLD);
+    // We can use this MPI_Gather function to send the "partial" results
+    // from each process back to the "root" process
+    MPI_Gather(c_local, n_local, MPI_INT, c, n_local, MPI_INT,
+               root_rank, MPI_COMM_WORLD);
 
-    free(a_local);
-    free(b_local);
-    free(c_local);
-
+    // Finalise the MPI environment
     MPI_Finalize();
 }
 ```
 
+The complete program is in [vector_mpi.c](files/vector/vector_mpi.c). As you can see, the code is much more involved
+than the OpenMP example. Every process runs this same function. It starts by finding out its unique ID (its rank) and
+the total number of processes (size). Using this information, it calculates which slice of the vectors `a` and `b` it is
+responsible for. After performing the addition for its slice, it stores the answer in a local `c_local` array. That data
+is then aggregated and communicated back into `c` by using `MPI_Gather`. This function is a communication function and a
+bit of a shortcut. Behind the curtain it doing the `MPI_Send` and `MPI_Recv` for us, to send everything back to our root
+process which is the only process with the complete result.
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+Why does only the "root" process have the final, complete, result?
+
+:::::::::::::::::::::::: solution
+
+It is because we used `MPI_Gather` to "gather" the results from each process back to the root process. There is no
+communication to the other process, so only the root process has the data from the other processes. If we wanted every
+process to have a copy of the final result of `c`, we could instead use `MPI_Allgather`.
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+To compile an MPI application, we need to use an *MPI-aware* compiler which is essentially a clever script which knows
+where MPI is installed on our system to make compilation easier. On Iridis, this is `mpicc`. We use `mpicc` as we would
+any other compiler: `mpicc vector_mpi.c -o vector_mpi.exe`.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### What's an MPI-aware compiler?
+
+An MPI-aware compiler is essentially a script which wraps around your regular compiler to provide the required header
+files and libraries to the compiler to build an MPI application. In theory, we could find those headers and libraries
+ourselves and pass them the compiler instead. However, in practise, this is not worth our time when `mpicc` already does
+it for us.
+
+:::::::::::::::::::::::::::::::::::::::::::::
+
+To launch an MPI application we need to use `mpirun`, e.g. `mpirun vector_mpi.exe`. This is another script provided by
+MPI which handles launching the parallel processes and setting up the parallel environment. If we run the program
+without using `mpirun`, then only a single processes will start and will probably become "deadlocked" as the program
+waits indefinitely for messages from other processes that were never started. On Iridis, and other Slurm clusters, we
+can alternative use the Slurm launcher `srun` to do the same job. To summarise, the purposes of `srun` and `mpirun` is
+to,
+
+1. Read the environment to see how many processes to create (e.g., from `#SBATCH --ntasks=8`).
+
+2. Launch that many copies of your executable.
+
+3. Manage where these processes run. If you request resources across multiple nodes, the launcher (in coordination with
+Slurm) starts the processes on the correct machines and ensures they can all communicate with each other.
+
+The following is an example of how you would compile and launch an MPI program on Iridis X.
+
 ```bash
 #!/bin/bash
-
-#SBATCH --partition=batch
+#SBATCH --partition=amd
 #SBATCH --nodes=1
 #SBATCH --ntasks=8
 #SBATCH --time=00:01:00
 
-# Load a MPI library, which give access to the library files and tools part of
-# MPI
+# Load the specific MPI library we want to use
+# This makes the 'mpicc' and 'mpirun' commands available
 module load openmpi
-mpicc vector_mpi.exe -o vector_mpi.exe
 
-# Using the srun command is the easiest way to launch an MPI program on Iridis.
-# It is part of Slurm and gives lots of flexibility on how to launch programs
-# on multiple nodes. It uses the values in the SBATCH directives above to configure
-# how to launch our program
+# Compile the code using the MPI compiler wrapper
+mpicc vector_mpi.c -o vector_mpi.exe
+
+# Launch the program using 'srun'. This is the recommended
+# launcher on Slurm clusters. 'srun' automatically reads the
+# SBATCH settings and launches 8 (from --ntasks) copies
+# of our executable
 srun ./vector_mpi.exe
 
-# Alternatively, you can use mpirun/mpiexec which is part of the MPI library. Functionally
-# it does the same thing as srun, but requires more manual setup as it is has no
-# knowledge of Slurm and the resources Slurm allocated
-mpirun -np $SLURM_NTASKS ./vector_mpi.exe
+# -----------------------------------------------------------
+# An alternative way to launch the program
+# 'mpirun' is the more traditional MPI launcher. Here, we
+# must explicitly tell it how many processes (-np) to run
+# We use the $SLURM_NTASKS variable (which Slurm sets to 8)
+# to match our resource request
+# mpirun -np $SLURM_NTASKS ./vector_mpi.exe
+# -----------------------------------------------------------
 ```
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -365,12 +469,12 @@ popular frameworks: OpenACC and CUDA. You can think of these as being similar to
 - OpenACC is like OpenMP: you can often add it to existing code, using compiler directives to automatically handle the
   parallelisation.
 
-- CUDA is similar to MPI: it is a more complex framework that requires you to design your program around it from the
+- CUDA is "similar" to MPI: it is a more complex framework that requires you to design your program around it from the
   start to achieve the best performance.
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-### CPU and GPUs, what's the difference?
+### CPU and GPU, what's the difference?
 
 ![](fig/cpu_gpu_arch.png)
 
@@ -486,18 +590,16 @@ maximal performance.
 - Benefits (fine-grained control) and drawbacks (complexity, vendor lock-in).
 
 ```cpp
-__global__ void vector_add_kernel(int *a, int *b, int *c, int n)
-{
+__global__ void vector_add_kernel(int *a, int *b, int *c, int n) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i < n)
-    {
+    if (i < n) {
         c[i] = a[i] + b[i];
     }
 }
 
-void vector_add(int *a, int *b, int *c, int n)
-{
+void vector_add(int *a, int *b, int *c, int n) {
     int *d_a, *d_b, *d_c;
+
     cudaMalloc(&d_a, n * sizeof(int));
     cudaMalloc(&d_b, n * sizeof(int));
     cudaMalloc(&d_c, n * sizeof(int));
@@ -515,13 +617,6 @@ void vector_add(int *a, int *b, int *c, int n)
     cudaFree(d_c);
 }
 ```
-
-
-<!-- ## Putting It Together
-
-- Comparing OpenMP, MPI, OpenACC, and CUDA at a high level.
-- Typical use cases (e.g. CFD, ML, simulations).
-- Choosing the right model for the problem. -->
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
