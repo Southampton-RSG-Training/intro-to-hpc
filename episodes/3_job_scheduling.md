@@ -97,7 +97,7 @@ We can find out more details about specific partitions by using the `scontrol sh
 configuration details of a particular partition. To see the breakdown of the batch partition, we use:
 
 ```bash
-$ scontrol show partition=batch
+[iridis6]$ scontrol show partition=batch
 PartitionName=batch
    AllowGroups=ALL DenyAccounts=worldpop AllowQos=ALL
 ...
@@ -113,7 +113,7 @@ details about the configuration and details of the nodes in the partition (e.g. 
 TotalCPUs). To get more detail about a particular node in a partition, we use,
 
 ```bash
-$ scontrol show node=red6001
+[iridis6]$ scontrol show node=red6001
 NodeName=red6001 Arch=x86_64 CoresPerSocket=96
    CPUAlloc=192 CPUEfctv=192 CPUTot=192
 ...
@@ -129,23 +129,27 @@ interesting information.
 
 ## Job submission scripts
 
-When we submit a job to run, we have to write a *Slurm script* which contains the commands/programs  we want to run on a
-compute node. This is usually a script written in the Bash shell language. A very minimal example looks something like
-this.
+To submit a job to run, we have to write a **submission script**, which contains the comannds that we want to run on a
+compute node. This is almost always a bash script, containing special `#SBATCH` directives that tells Slurm what
+resources you need. A very minimal example looks something like this:
 
 ```bash
 #!/bin/bash
-#SBATCH --partition=batch
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --time=00:01:00
 
-date
+#SBATCH --partition=batch
+#SBATCH --time=00:01:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=2
+
+# This is the command that will run
+pwd
 ```
 
-The `#SBATCH` lines are special comments which provide information about the resources we are requesting for our job to
-Slurm. For example the partition we want to run on job on, the maximum time we expect the job to take when running, and
-the number of nodes and CPUs we’d like to request (in this case, just one CPU on one node).
+Let's break down this Bash script. The first line we need to include is the `#!/bin/bash` shebang, which let's Slurm
+know the script is a Bash script. The next four lines starting with `#SBATCH` are instructions to Slurm which tell is
+about the resources we need to run our job. In this case, we have included the minimum *batch directives* you should
+include to submit a job: the partition to run on, how long the job needs to run, the number of nodes we require and the
+number of CPUs. The table below shows a list of the most common directives used.
 
 | Parameter           | Description                                                              | Example Value        |
 |---------------------|--------------------------------------------------------------------------|----------------------|
@@ -162,15 +166,32 @@ the number of nodes and CPUs we’d like to request (in this case, just one CPU 
 | `--mail-user`       | Your email address for job status notifications.                         | `a.user@soton.ac.uk` |
 | `--mail-type`       | Specifies which events trigger an email (e.g., BEGIN, END, FAIL, ALL).   | `END,FAIL`           |
 
-### What goes into a job script?
+More directives can be found in the [Slurm documentation](https://slurm.schedmd.com/sbatch.html).
 
-- Pretty much whatever you need to do to run the job
+So why do we request `ntasks` or `cpus-per-task`? We can think of a task in Slurm as being an instance of a program.
+Some programs are designed to run one instance of themselves, but use many CPU cores. For programs like this,  we should
+request `--ntasks=1` and, for example, `--cpus-per-task=16`. Other programs are designed to run multiple independent
+instances that work in parallel. For programs like this, we'd request `--ntasks=16` and usually give them one CPU each
+`--cpus-per-task=1`.
+
+The submission script contains everything the compute node needs to run your program correctly, from start to finish.
+After the `#SBATCH` parameters, which *have to* go before your commands, you write *all* of the shell commands needed to
+prepare the environment and launch your code, as if you were running it for the very first time. We need to do this
+because jobs essentially run from a blank slate. The environment is not configured, so we have to configure it. This
+includes, but is obviously not limited to, setting environment variables, loading software modules, activating virtual
+environments (if required) and changing to the correct directory.
+
+A more complete submission script, for running a Python script, would look something like this:
 
 ```bash
 #!/bin/bash
+
+#SBATCH --job-name=python-example
 #SBATCH --partition=batch
+#SBATCH --time=04:00:00
 #SBATCH --nodes=1
-#SBATCH --time=00:01:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
 
 # Optional: print useful job info
 echo "Running on host: $(hostname)"
@@ -185,11 +206,10 @@ module load python/3.11
 # Activate Python virtual environment
 source ~/myenv/bin/activate
 
-# Optional: set any environment variables or configuration
-export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+# Set any environment variables or configuration
 export PYTHONUNBUFFERED=1
 
-# Move to job directory (optional)
+# Move to job directory
 cd $SLURM_SUBMIT_DIR
 
 # Run the Python script
@@ -208,14 +228,14 @@ python my_script.py --input data/input.txt --output results/output.txt
 Next, launch our new job:
 
 ```bash
-$ sbatch example-job.sh
+[iridis6]$ sbatch example-job.sh
 Submitted batch job 715860
 ```
 
 We can use this job ID to ask Slurm for more information about it:
 
 ```bash
-scontrol show jobid=715860
+[iridis6]$ scontrol show jobid=715860
 JobId=715860 JobName=example.sh
    UserId=ejp1v21(32917) GroupId=fp(245) MCS_label=N/A
    Priority=348672 Nice=0 Account=default QOS=default
@@ -260,7 +280,7 @@ The error and output file locations, as specified by StdErr and StdOut
 As we’ve seen, we can check on our job’s status by using the command squeue. Let’s take a look in more detail.
 
 ```bash
-squeue -u $USER
+[iridis6]$ squeue -u $USER
 ```
 
 You may find it looks like this:
@@ -291,14 +311,14 @@ You can get a full list of job status codes via the SLURM documentation.
 Sometimes we’ll make a mistake and need to cancel a job. This can be done with the scancel command. Let’s submit a job and then cancel it using its job number (remember to change the walltime so that it runs long enough for you to cancel it before it is killed!).
 
 ```bash
-$ sbatch example-job.sh
+[iridis6]$ sbatch example-job.sh
 Submitted batch job 5791551
 ```
 
 Now cancel the job with its job number (printed in your terminal). A clean return of your command prompt indicates that the request to cancel the job was successful.
 
 ```bash
-scancel 5791551
+[iridis6]$ scancel 5791551
 ```
 
 It might take a minute for the job to disappear from the queue.
@@ -323,7 +343,7 @@ available can be seen with the `sinfo` command. This will show any idle nodes, a
 The most basic usage looks like this:
 
 ```bash
-sinteractive
+[iridis6]$ sinteractive
 ```
 
 This will start an interactive session on a serial node with 1 CPU and roughly 20 GB of memory.
@@ -331,7 +351,7 @@ This will start an interactive session on a serial node with 1 CPU and roughly 2
 You can specify the partition to use with sinteractive by doing:
 
 ```bash
-sinteractive --partition=<partitionname>
+[iridis6]$ sinteractive --partition=<partitionname>
 ```
 
 Please see our documentation regarding our partitions to select one or run the sinfo command on a login node.
@@ -339,7 +359,7 @@ Please see our documentation regarding our partitions to select one or run the s
 To request more resources like the number of CPUs per task:
 
 ```bash
-sinteractive --partition=<partitionname>  --cpus-per-task=10
+[iridis6]$ sinteractive --partition=<partitionname>  --cpus-per-task=10
 ```
 
 All `#SBATCH` flags can be passed at the command line to `sinteractive` which will allow you to customize your
@@ -348,7 +368,7 @@ All `#SBATCH` flags can be passed at the command line to `sinteractive` which wi
 Common settings that users can apply are to request more time or a custom memory request.
 
 ```bash
-sinteractive --partition=<partitionname>  --time=<custom_time_value> --mem=<custom_memory_value_in_MB>
+[iridis6]$ sinteractive --partition=<partitionname>  --time=<custom_time_value> --mem=<custom_memory_value_in_MB>
 ```
 
 The default `sinteractive` command in Iridis 5 will assign your interactive job to a gold compute node in the serial
