@@ -6,7 +6,12 @@ exercises: 0 # exercise time in minutes
 
 :::::::::::::::::::::::::::::::::::::: questions
 
-- Did you know you have to have this question section?
+- What is a job scheduler and why is it needed?
+- What is the difference between a login node and a compute node?
+- How can I see the available resources and queues?
+- What is a job submission script?
+- How do I submit, monitor, and cancel a job?
+- How (and when) should I use an interactive job?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -21,43 +26,45 @@ exercises: 0 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-An HPC cluster will have hundreds or thousands of nodes and thousands of users. How do we decide who gets what and when?
-How do we ensure that a task is run with the resources it needs? This job is handled by a piece of software called the
-scheduler. On an HPC system, the scheduler manages when jobs run, which nodes they run on and when.
-
-The following diagram below compares the tasks of a job scheduler to a waiter in a restaurant. If you can relate to an
-instance where you had to wait for a while in a queue to get in to a popular restaurant, then you may now understand why
-sometimes your job does not start instantly as on your own computer.
+An HPC cluster has thousands of nodes shared by many users. A job scheduler is the software that manages this, deciding
+who gets what resources and when. It ensures that tasks run efficiently and fairly, matching a job's resource request to
+available hardware. On Iridis, the scheduler is Slurm, but the concepts are transferable to other schedulers such as
+PBS.
 
 ![Queueing up to eat at a popular restaurant is like queueing up to run something on an HPC
 cluster.](fig/restaurant_queue_manager.svg)
 
-The scheduler on Iridis is Slurm. Although Slurm is not used everywhere, requesting to run jobs is similar regardless of
-which scheduler is used. The exact syntax might change, but the concepts are the same.
+The scheduler acts like a manager at a popular restaurant. You must queue to get in, and you must wait for a table
+(compute resources) to become free. This is why your jobs may sit in a queue before they start, unlike on your computer.
+In this episode, we'll look at what a job scheduler is and how you interact with it to get your jobs running on Iridis.
 
 ## What can I do on the login nodes?
 
-The login nodes are the gateway into the HPC cluster and can be used for various tasks such as compiling your code, data
-management, and other low CPU intensity task. Please do not run your computationally intensive tasks on the login node -
-the compute nodes are dedicated server nodes for computationally intensive tasks. On Iridis, the login nodes are
-periodically checked for long running jobs, which will be automatically terminated. If everyone ran long and intensive
-jobs on the login nodes, then they will become overloaded and possibly crash preventing anyone from using the cluster.
+The login nodes are the gateway to any cluster. On Iridis, they are intended only for light and short tasks such as
+editing files, managing data, compiling code and submitting/monitoring running jobs.
 
-Since the HPC cluster is a shared resource, this sharing needs to be coordinated by a scheduling software and resource
-manager. For Iridis5, we use the SLURM job scheduler (Simple Linux Utility for Resource Management). Users submit their
-job with the required resources and SLURM will then allocate the requested resources and execute the users' jobs. It is
-therefore common to have submitted jobs sitting in the queue for some time until the required resources become
-available.
+You must not run computationally intensive or long-running tasks on them. Login nodes are a shared resource for all
+users to access the system. Running intensive jobs on them slows the system down for everyone. Any such process will be
+ended automatically, and repeated misuse may lead to your access to Iridis being restricted. To enforce this, login
+nodes have strict resource limits. You are limited to 64 GB of RAM and 2 CPUs (Iridis X also provides an NVIDIA L4 GPU).
 
-Submitted jobs are subsequently executed on the compute nodes which are computing units that have been specially set up
-for computationally intensive tasks.
+All computationally intensive work must be submitted to the job scheduler. This places your job in a queue, and Slurm
+will allocate dedicated compute node resources to it when they become available. If your task requires more power than
+the login node provides (e.g., compiling large, complex code or transferring huge data files), you must perform it on a
+compute node. You can do this by submitting a job or by starting an interactive session, both of which we will cover
+later.
 
 ## Querying available resources
 
-You can find out the queues available on Iridis, and their current state, using:
+Compute nodes in Slurm are grouped together and organised into different **partitions**. You can think of a partition as
+the actual job queue for a certain set of hardware. Clusters are often made up of different types of compute nodes, e.g.
+some with lots of memory, some with GPUs, some with restricted access, and some that are just standard compute nodes.
+The partitions are how Slurm organises this hardware. Each partition can have its own rules, such as a maximum run time
+or a limit on the number of nodes you can use. To find what the partitions are on Iridis 6 and their current state, we
+can use the `sinfo` command:
 
 ```bash
-$ sinfo -s
+[iridis6]$ sinfo -s
 PARTITION             AVAIL  TIMELIMIT   NODES(A/I/O/T) NODELIST
 batch*                   up 2-12:00:00      99/35/0/134 red[6001-6134]
 highmem                  up 2-12:00:00          3/1/0/4 gold[6001-6004]
@@ -66,70 +73,59 @@ scavenger                up   12:00:00          0/6/0/6 red[6135-6140]
 interactive_practical    up   12:00:00          1/0/0/1 red6128
 ```
 
-The -s flag curtails the output to only a summary, whereas omitting this flag provides a full listing of nodes in each
-queue and their current state. You should see something like the following. Here we can see the general availability of
-each of these queues (also known as partitions), as well as the maximum time limit for jobs on each of these queues (in
-days-hours:minutes:seconds format). For example, on the batch queue there is a 2 and a half day limit, whilst the
-scavenger queue has a 12 hour limit. The * beside the partition name indicates it is the default queue (although it’s
-always good practice to specify this explicitly).
+The `-s` flag outputs a summarised version of this list. Omitting this flag provides a full listing of nodes in each
+queue and their current state, which gets quite messy.
 
-Looking at the NODES column, it indicates how many nodes are:
+We can see the general availability of each partition/queue, as well as the maximum time limit for jobs (in
+days-hours:minutes:seconds format). For example, on the batch queue there is a 2 and a half day limit, whilst the
+scavenger queue has a 12 hour limit. The * appended to the batch partition name indicates it is the preferred default
+queue. The NODES column indicates the number of nodes in a given state,
 
 | Label | State  | Description                                    |
 |-------|--------|------------------------------------------------|
-| A     | Active | These nodes are running jobs                   |
+| A     | Active | These nodes are busy running jobs              |
 | I     | Idle   | These nodes are not running jobs               |
 | O     | Other  | These nodes are down, or otherwise unavailable |
 | T     | Total  | The total number of nodes in the partition     |
 
-The NODELIST is a summary of those nodes in a particular queue. In this particular instance, we can see that 35 nodes
+Finally, the NODELIST column is a summary of the nodes belonging to a particular queue; if we didn't use the `-s`
+option, we could get a complete list of each node in each state. In this particular instance, we can see that 35 nodes
 are idle in the batch partition, so if that queue fits our needs (and we have access to it) we may decide to submit to
-that.
+that as there are available resources.
 
-To find out more information on queues, you can use the `scontrol show` command, which allows you to view the
-configuration of Slurm and it’s current state. To see a breakdown of a particular queue:
+We can find out more details about specific partitions by using the `scontrol show` command, which lets us view more
+configuration details of a particular partition. To see the breakdown of the batch partition, we use:
 
 ```bash
 $ scontrol show partition=batch
 PartitionName=batch
    AllowGroups=ALL DenyAccounts=worldpop AllowQos=ALL
-   AllocNodes=ALL Default=YES QoS=N/A
-   DefaultTime=02:00:00 DisableRootJobs=NO ExclusiveUser=NO ExclusiveTopo=NO GraceTime=0 Hidden=NO
-   MaxNodes=UNLIMITED MaxTime=2-12:00:00 MinNodes=0 LLN=NO MaxCPUsPerNode=UNLIMITED MaxCPUsPerSocket=UNLIMITED
-   Nodes=red[6001-6134]
-   PriorityJobFactor=1 PriorityTier=1 RootOnly=NO ReqResv=NO OverSubscribe=YES:4
-   OverTimeLimit=NONE PreemptMode=OFF
-   State=UP TotalCPUs=25728 TotalNodes=134 SelectTypeParameters=NONE
-   JobDefaults=(null)
-   DefMemPerCPU=3350 MaxMemPerNode=650000
-   TRES=cpu=25728,mem=103180000M,node=134,billing=25728
+...
+   MaxTime=2-12:00:00 MinNodes=0
+...
+   State=UP TotalCPUs=25728 TotalNodes=134
+...
+   DefMemPerCPU=3350 MaxMemPerNode=650000
 ```
 
-In particular, we can see who has does and doesn't have access (AllowGroups and DenyAccounts) as well as details about
-the configuration of the nodes in the partition (e.g. DefaultTime, MaxTime, MinNodes). To get more detail about a
-particular node in a partition, we use,
+This purposefully truncated output shows who has does and doesn't have access (AllowGroups and DenyAccounts) as well as
+details about the configuration and details of the nodes in the partition (e.g. MaxTime, MinNodes, TotalNodes,
+TotalCPUs). To get more detail about a particular node in a partition, we use,
 
 ```bash
 $ scontrol show node=red6001
 NodeName=red6001 Arch=x86_64 CoresPerSocket=96
-   CPUAlloc=192 CPUEfctv=192 CPUTot=192 CPULoad=193.18
-   AvailableFeatures=(null)
-   ActiveFeatures=(null)
-   Gres=(null)
-   NodeAddr=red6001 NodeHostName=red6001 Version=24.05.1
-   OS=Linux 4.18.0-553.el8_10.x86_64 #1 SMP Fri May 10 15:19:13 EDT 2024
-   RealMemory=770000 AllocMem=643200 FreeMem=531885 Sockets=2 Boards=1
-   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
-   Partitions=batch
-   BootTime=2025-08-28T17:00:10 SlurmdStartTime=2025-10-20T16:52:29
-   LastBusyTime=2025-10-28T23:28:04 ResumeAfterTime=None
-   CfgTRES=cpu=192,mem=770000M,billing=192
-   AllocTRES=cpu=192,mem=643200M
-   CurrentWatts=n/a AveWatts=n/a
+   CPUAlloc=192 CPUEfctv=192 CPUTot=192
+...
+   RealMemory=770000 AllocMem=643200 FreeMem=531885 Sockets=2
+   State=ALLOCATED
+...
+   Partitions=batch
 ```
 
-This provides a detailed summary of the node, including the number of CPUs (CPUTot), if there are GPUs (Gres) as well as
-the state of the node (State) and other interesting information.
+This provides a detailed summary of the node, including the number of CPUs on it (CPUTot), if there are GPUs (Gres) as
+well as the state of the node (State), the current resources allocated to a user (CPUAlloc, AllocMem) and other
+interesting information.
 
 ## Job submission scripts
 
@@ -362,6 +358,11 @@ more than 20 CPUs.
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- You need a list of key points
+- The job scheduler (like Slurm) manages all user jobs to ensure fair and efficient use of the cluster.
+- Login nodes are for light tasks (editing, compiling); compute nodes are for running scheduled, intensive jobs.
+- Use `sinfo` and `scontrol` to query the status of partitions (queues) and nodes.
+- A job script is a Bash script containing `#SBATCH` directives (resource requests) and the commands to be run.
+- Use `sbatch` to submit a job, `squeue` to monitor its status, and `scancel` to cancel it.
+- Use `sinteractive` to request a live terminal session on a compute node for debugging or interactive work.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
