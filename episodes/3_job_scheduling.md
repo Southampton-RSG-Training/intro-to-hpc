@@ -18,10 +18,10 @@ exercises: 0 # exercise time in minutes
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Describe briefly what a job scheduler does
+- Contrast when to run programs on an HPC login node vs running them on a compute node
 - Summarise how to query the available resources on an HPC system
 - Describe a minimal job submission script and parameters that need to be specified
 - Summarise how to submit a batch job and monitor it until completion
-- Contrast when to run programs on an HPC login node vs running them on a compute node
 - Summarise the process for requesting and using an interactive job
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
@@ -351,56 +351,27 @@ We can also refine this to cancel only pending jobs, whilst letting running ones
 
 ## Interactive jobs
 
-On occasions, for instance, when needing to debug on Iridis, it can be useful to start jobs directly from a compute
-node. To do so use the `sinteractive` command. By default, this will give a single node for 2 hours, but this can be
-changed with the normal flags to `sbatch`. If sufficient resources are available, the interactive job
-will start immediately, otherwise, it will still need to queue to start and the terminal will be unavailable. Once the
-job has started the user is logged in to a node of the job and they can run commands from there across all the allocated
-nodes. By default, the user should also be able to use any GUI interfaces as long as X-forwarding is set up correctly
-when the user connected to Iridis (by using the -X SSH flag).
+We have so far been using slurm to submit jobs to a queue and then waiting for them to finish. However, on Iridis we can
+also start an interactive jobs where we get direct access to compute nodes via a shell session, letting us start the
+jobs directly. This is incredibly useful for debugging code which isn't working, or for experimenting and testing.
 
-As resources may not be available immediately to satisfy the requirements of an interactive job, it is normally only
-practical to use interactive jobs for short jobs of a few hours or less, running on a handful of nodes. For example, a
-user may wish to test their applications before submitting a long-running job. Some estimates of what resources are
-available can be seen with the `sinfo` command. This will show any idle nodes, along with reserved and allocated nodes.
-
-`sinteractive` is a command line tool that is available on the login nodes.
-
-The most basic usage looks like this:
+To start an interactive session use the `sinteractive` command. By default, this will give a single node for 2 hours,
+but this can be changed with same job parameters in a job submission script, e.g. `sinteractive --time=05:00:00
+--cpus-per-task=4`.
 
 ```bash
-[iridis6]$ sinteractive
+[iridisX]$ sinteractive --partition=l4
 ```
 
-This will start an interactive session on a serial node with 1 CPU and roughly 20 GB of memory.
+This will start an interactive session on the L4 partition on Iridis X, for 2 hours with 1 CPU. If sufficient resources
+are available, the interactive job will start immediately, otherwise, it will need to queue to start. As resources may
+not be available immediately to satisfy the requirements of an interactive job, it is normally only practical to use
+interactive jobs for short jobs of a few hours or less, running on a couple of nodes. You may also want to use `sinfo
+-s` to query which partitions have idle nodes.
 
-You can specify the partition to use with sinteractive by doing:
-
-```bash
-[iridis6]$ sinteractive --partition=<partitionname>
-```
-
-Please see our documentation regarding our partitions to select one or run the sinfo command on a login node.
-
-To request more resources like the number of CPUs per task:
-
-```bash
-[iridis6]$ sinteractive --partition=<partitionname>  --cpus-per-task=10
-```
-
-All `#SBATCH` flags can be passed at the command line to `sinteractive` which will allow you to customize your
-`sinteractive` sessions within the parameters of the settings we have allowed for Slurm.
-
-Common settings that users can apply are to request more time or a custom memory request.
-
-```bash
-[iridis6]$ sinteractive --partition=<partitionname>  --time=<custom_time_value> --mem=<custom_memory_value_in_MB>
-```
-
-The default `sinteractive` command in Iridis 5 will assign your interactive job to a gold compute node in the serial
-partition as a result. By default, `sinteractive` requests 1 task on 1 node, which by default assigns 1 CPU to that
-task. Even if you specify a different partition as directed above, you will be given a node in serial unless you ask for
-more than 20 CPUs.
+Once the interactive session has started, you are logged into the node the job has been allocated and you can run
+commands from as if it were a terminal session on your own computer. You can even use GUI applications as long as
+X-forwarding has been setup correctly.
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
