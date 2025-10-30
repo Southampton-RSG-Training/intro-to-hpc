@@ -76,6 +76,21 @@ interactive_practical    up   12:00:00          1/0/0/1 red6128
 The `-s` flag outputs a summarised version of this list. Omitting this flag provides a full listing of nodes in each
 queue and their current state, which gets quite messy.
 
+::::::::::::::::::::::::::::::::::::: callout
+
+## The scavenger partition
+
+The scavenger partition on Iridis allows you to use idle compute nodes that you do not normally have access to, ensuring
+those resources do not go to waste. However, this access is low-priority. If a user with access to those nodes submits a
+job, your scavenger job will be preempted. This means your job is automatically cancelled and put back into the queue.
+The scheduler will try to run it again later when other idle resources become available.
+
+Because your job can be cancelled at any time, you should only use this partition for testing or for code that can save
+its progress (a technique known as [checkpointing](https://en.wikipedia.org/wiki/Application_checkpointing)). This way,
+you won't lose all your work if your job is preempted.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 We can see the general availability of each partition/queue, as well as the maximum time limit for jobs (in
 days-hours:minutes:seconds format). For example, on the batch queue there is a 2 and a half day limit, whilst the
 scavenger queue has a 12 hour limit. The * appended to the batch partition name indicates it is the preferred default
@@ -218,110 +233,121 @@ python my_script.py --input data/input.txt --output results/output.txt
 
 ## Submitting, monitoring and cancelling jobs
 
-- Use `sbatch` to submit a job
-- Returns an job id, which you can use to track the progress and other things
-- Use `squeue` to look at jobs, e.g. `squeue -u $USER`
-- Jobs can be cancelled using `scancel <jobid>` or `scancel -u $USER` to cancel all jobs
-
 ### Submitting jobs
 
-Next, launch our new job:
+Once we have written our submission script, we submit it to the job queue using the `sbatch` command, giving it the
+argument the name of our submission script.
 
 ```bash
 [iridis6]$ sbatch example-job.sh
 Submitted batch job 715860
 ```
 
-We can use this job ID to ask Slurm for more information about it:
+If all goes well, you should see some output which says "Submitted batch job" followed by a job ID, which a unique ID
+given to the job. We'll use this ID to manage our job such as checking the status of it or cancelling it.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Test your script before submitting it
+
+It is always good practice to test your submission script before submitting a large or long-running job. There is
+nothing more frustrating than waiting hours for your job to start, only to have it crash instantly because of a simple
+typo or error in the script.
+
+A good way to do this is to submit a test job that requests minimal resources, for example: `--nodes=1`,
+`--cpus-per-task=1` and `--time=00:05:00`. These small, short jobs usually have a much shorter queue time. The goal is
+not to test your code at scale or get results; it is only to confirm that the script successfully loads its modules,
+finds its files, and launches the program without immediately failing. Another option would be to use the scavenger
+partition, which tends to have shorter queue times.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+### Monitoring jobs
+
+We can check on the status of job's we've submitted by using the `squeue` command. This will show us any jobs we have
+waiting in the queue or currently running. Let's take a look in more detail. To take a look at only our jobs, we use:
+
+```bash
+[iridis6]$ squeue -u $USER
+JOBID   PARTITION  NAME      USER     ST  TIME  NODES  NODELIST(REASON)
+715860  batch      example   ejp1v21  R   0:00  1      red6085
+715558  batch      video_so  ejp1v21  PD  0:00  1      (Dependency)
+```
+
+By using `-u $USER`, we only see our jobs. If we used just `squeue`, we would see all the jobs which are either
+currently in the queue or are running. We can also use `-j` to query specific job IDs. However we use it, we get the
+details of the jobs, including the partition, user and also the state of the job (in the ST column). In this example, we
+can see two jobs. One is in R or RUNNING state and another is in PD or PENDING state. A job will typically go through
+the following states,
+
+| Label | State      | Description                                                                                 |
+|-------|------------|---------------------------------------------------------------------------------------------|
+| PD    | PENDING    | The jobs might need to wait in a queue first before they can be allocated to a node to run. |
+| R     | RUNNING    | The job is currently running.                                                               |
+| CG    | COMPLETING | The job is in the process of completing.                                                    |
+| CD    | COMPLETED  | The job has completed.                                                                      |
+
+For pending jobs, you will usually see a reason for why the job is pending in the NODELIST(REASON) column. This can be
+for a variety of reasons, such as the nodes requested for job not being available, that there are job in front of you in
+the queue, or that the job depends on another completing first. Once the job is running, the nodes that it is running on
+will be displayed in this column instead.  While the squeue table lists the common states for a successful job, jobs can
+also end in failure. You may see other states, such as F (Failed) if your program terminated with an error, OOM (Out of
+Memory) if it exceeded its memory request, or CA (Cancelled) if you or an administrator stopped it.
+
+If we want more detail about a job, we can use `scontrol show` again:
 
 ```bash
 [iridis6]$ scontrol show jobid=715860
 JobId=715860 JobName=example.sh
    UserId=ejp1v21(32917) GroupId=fp(245) MCS_label=N/A
-   Priority=348672 Nice=0 Account=default QOS=default
+   ...
    JobState=RUNNING Reason=None Dependency=(null)
-   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   ...
    RunTime=00:00:09 TimeLimit=00:01:00 TimeMin=N/A
    SubmitTime=2025-10-29T14:58:31 EligibleTime=2025-10-29T14:58:31
-   AccrueTime=2025-10-29T14:58:31
    StartTime=2025-10-29T14:58:32 EndTime=2025-10-29T14:59:32 Deadline=N/A
-   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2025-10-29T14:58:32 Scheduler=Main
    Partition=batch AllocNode:Sid=login6002:1385285
-   ReqNodeList=(null) ExcNodeList=(null)
    NodeList=red6086
-   BatchHost=red6086
-   NumNodes=1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
-   ReqTRES=cpu=1,mem=3350M,node=1,billing=1
+   ...
    AllocTRES=cpu=1,mem=3350M,node=1,billing=1
-   Socks/Node=* NtasksPerN:B:S:C=0:0:*:1 CoreSpec=*
-   MinCPUsNode=1 MinMemoryCPU=3350M MinTmpDiskNode=0
-   Features=(null) DelayBoot=00:00:00
-   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   ...
    Command=/iridisfs/home/ejp1v21/example.sh
-   WorkDir=/iridisfs/home/ejp1v21
    StdErr=/iridisfs/home/ejp1v21/slurm-715860.out
-   StdIn=/dev/null
    StdOut=/iridisfs/home/ejp1v21/slurm-715860.out
 ```
 
-In particular, we can see:
+This detailed output confirms the JobState is RUNNING (though it could be PENDING if still in the queue or COMPLETED if
+it had already finished). With this output we can see exactly how long the job has been running (RunTime) against its
+maximum allowed time (TimeLimit). It also provides a complete history, showing when the job was submitted (SubmitTime),
+when it became eligible to run (EligibleTime), and when it actually started running (StartTime).
 
-<!-- The following section below will need updating given the output above -->
-As we might expect the JobState is RUNNING, although it may be PENDING if waiting to be assigned to a node, or if we weren’t fast enough running the scontrol command it might be COMPLETED
-How long the job has run for (RunTime), and the job’s maximum specified duration (TimeLimit)
-The job’s SubmitTime, as well as the job’s StartTime for execution: this may be the actual start time, or the expected start time if set in the future. The expected EndTime is also specified, although if it isn’t specified directly in the job script this isn’t always exactly StartTime + specified duration; it’s often rounded up, perhaps to the nearest minute.
-The queue assigned for the job is the devel queue, and that the job is running on the dnode036 node
-The resources assigned to the job are a single node (NumNodes=1) with 128 CPU cores, for a single task with 1 CPU core per task. Note that in this case we got more resources in terms of CPUs than what we asked for. For example in this instance, we can see that we actually obtained a node with 128 CPUs (although we won’t use them)
-We didn’t specify a working directory within which to execute the job, so the default WorkDir is our home directory
-The error and output file locations, as specified by StdErr and StdOut
-
-### Monitoring jobs
-
-As we’ve seen, we can check on our job’s status by using the command squeue. Let’s take a look in more detail.
-
-```bash
-[iridis6]$ squeue -u $USER
-```
-
-You may find it looks like this:
-
-  JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
-5791510 cosma7-pa example- yourUser PD       0:00      1 (Priority)
-
-So -u yourUsername shows us all jobs associated with our machine account. We can also use -j to query specific job IDs, e.g.: squeue -j 5791510 which will, in this case, yield the same information since we only have that job in the queue (if it hasn’t already completed!).
-
-In either case, we can see all the details of our job, including the partition, user, and also the state of the job (in the ST column). In this case, we can see it is in the PD or PENDING state. Typically, a successful job run will go through the following states:
-
-PD - pending: sometimes our jobs might need to wait in a queue first before they can be allocated to a node to run.
-R - running: job has an allocation and is currently running
-CG - completing: job is in the process of completing
-CD - completed: the job is completed
-For pending jobs, helpfully, you may see a reason for this in the NODELIST(REASON) column; for example, that the nodes required for the job are down or reserved for other jobs, or that the job is queued behind a higher priority job that is making use of the requested resources. Once it’s able to run, the nodes that have been allocated will be displayed in this column instead.
-
-However, in terms of job states, there are a number of reasons why jobs may end due to a failure or other condition, including:
-
-OOM - ouf of memory: the job attempted to use more memory during execution than what was available
-S - suspended: job has an allocation, but it has been suspended to allow for other jobs to use the resources
-CA - cancelled: the job was explicitly cancelled, either by the user or system administrator, and may or may not have been started
-F - failed: the job has terminated with a non-zero exit code or has failed for another reason
-You can get a full list of job status codes via the SLURM documentation.
+The scontrol output also shows precisely where the job is running and what resources it has (Partition,
+NodeList,AllocTRES). It also tells us what script is being run (Command) and where the output for the job will be stored
+(StdErr, Stdout).
 
 ### Cancelling jobs
 
-Sometimes we’ll make a mistake and need to cancel a job. This can be done with the scancel command. Let’s submit a job and then cancel it using its job number (remember to change the walltime so that it runs long enough for you to cancel it before it is killed!).
+Sometimes we’ll make a mistake and need to cancel a job. This can be done with the `scancel command`.
 
 ```bash
-[iridis6]$ sbatch example-job.sh
-Submitted batch job 5791551
+[iridis6]$ scancel 715860
 ```
 
-Now cancel the job with its job number (printed in your terminal). A clean return of your command prompt indicates that the request to cancel the job was successful.
+A clean return of your command prompt indicates that the request to cancel the job was successful. It might take a
+minute for the job to disappear from the queue, as Slurm cleans up.
+
+If we need to do something a bit more dramatic and cancel all of our jobs, both running and pending then we can use the
+`-u` flag to specify the user.
 
 ```bash
-[iridis6]$ scancel 5791551
+[iridis6]$ scancel -u $USER
 ```
 
-It might take a minute for the job to disappear from the queue.
+We can also refine this to cancel only pending jobs, whilst letting running ones finish by using the `-t` state flag.
+
+```bash
+[iridis6]$ scancel -u $USER -t PENDING
+```
 
 ## Interactive jobs
 
