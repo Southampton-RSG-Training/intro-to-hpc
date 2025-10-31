@@ -51,3 +51,6 @@ po/*~
 
 # macOS
 .DS_Store
+
+# VSCode
+.vscode
