@@ -108,7 +108,7 @@ PartitionName=batch
    DefMemPerCPU=3350 MaxMemPerNode=650000
 ```
 
-This purposefully truncated output shows who has does and doesn't have access (AllowGroups, DenyAccounts) as well as
+This purposefully truncated output shows who does and doesn't have access (AllowGroups, DenyAccounts) as well as
 details about the configuration and details of the nodes in the partition (e.g. MaxTime, MinNodes, TotalNodes,
 TotalCPUs). Here, we can see accounts belonging to the "worldpop" group do not have access to the batch partition.
 
