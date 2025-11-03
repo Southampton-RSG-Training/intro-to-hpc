@@ -23,7 +23,6 @@ exercises: 0 # exercise time in minutes
 - Summarise the capabilities of the NOCS HPC facilities
 - Summarise the key capabilities of Iridis 6 and Iridis X for NOCS applications
 - Summarise key capabilities of national HPC resources and how to access them
-
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
@@ -38,8 +37,10 @@ High Performance Computing (HPC) refers to the use of powerful computers and pro
  
 
 :::::::: callout
-Lets consider some computational research problems that could benefit from the aggregated computational power of High Performance Computing:
-
+Can you think of any computational research problems that could benefit from the aggregated computational power of High Performance Computing? Discuss it with your colleagues.
+:::
+:::solution
+Here are some computation research examples where HPC could be of benefit:
 - A oceanography research student is modelling ocean circulation by processing seismic reflection datasets. They have thousands of these datasets - but each processing run takes an hour. Running the model on a laptop will take over a month! In this research problem, final results are calculated after all 1000 models have run, but typically only one model is run at a time (in serial) on the laptop. Since each of the 1000 runs is independent of all others, and given enough computers, it’s theoretically possible to run them all at once (in parallel).
 
 - The seismic reflection datasets are extremely large and the researcher is already finding it challenging to process the datasets on their computer. The researcher has just received datasets that are 10 times as large - analysing these larger datasets will certainly crash their computer. In this research problem, the calculations required might be impossible to speed up by adding more computers, but a computer with more memory would be required to analyse the much larger future data set.
@@ -95,7 +96,9 @@ The internet made it possible for these data centers to be far remote from your 
 
 There is a direct parallel between this and running computational workloads on HPC clusters, in that you outsource computational tasks to a remote computer. 
 
-However there is a distinct difference between the "cloud" and an HPC cluster. What people call the cloud is mostly a web-service where you can rent such servers by providing your credit card details and by clicking together the specs of a remote resource. The cloud is a generic term commonly used to refer to remote computing resources of any kind – that is, any computers that you use but are not right in front of you. Cloud can refer to machines serving websites, providing shared storage, providing web services (such as e-mail or social media platforms), as well as more traditional “compute” resources. 
+However there is a distinct difference between the "cloud" and an HPC cluster. What people call the cloud is mostly a web-service where you can rent such servers by providing your credit card details and by clicking together the specs of a remote resource. The cloud is a generic term commonly used to refer to remote computing resources of any kind – that is, any computers that you use but are not right in front of you. Cloud can refer to machines serving websites, providing shared storage, providing web services (such as e-mail or social media platforms), as well as more traditional “compute” resources.
+
+HPC systems are more static and rigidly structured than cloud systems, and follow consistent patterns in how they're deployed, whereas cloud infrastructures tend to be much more flexible and "user-led" in their configurations and provisioning. 
 
 ### HPC Cluster
 
@@ -171,7 +174,7 @@ HPC facilities are divided into tiers, with larger HPC clusters being categorise
 In the UK there are three tiers, with an additional highest tier for continental systems:
 
 * Tier 3: Local single institution supercomputers aimed towards researchers at one institution. At the University of Southampton we have the Iridis HPC cluster. 
-* Tier 2: Layer of HPC clusters that sit above the Tier 3, or University systems, and are larger or more specialised than most University systems. These are facilities that fill the gap between tier 3 and tier 1 facilities, and are an EPSRC initiative. 
+* Tier 2: Layer of HPC clusters that sit above the Tier 3, or University systems, and are larger or more specialised than most University systems. These are facilities that fill the gap between tier 3 and tier 1 facilities. 
 * Tier 1: Nationally leading HPC clusters.
 * Tier 0: European facilities with petaflop systems, and the best across a continent. The Partnership for Advanced Computing in Europe (PRACE) provides access to the 8 Tier-0 systems in Europe. 
 
@@ -368,15 +371,6 @@ Access to the National Facilities is through public access calls:
 * DiRAC: access for UK academics is typically through the <a href="https://dirac.ac.uk/getting-access/">STFC’s Resource Allocation Committee</a> calls.
 
 
-## Iridis On Demand
-
-![Iridis On Demand: A web portal to the University of Southampton's HPC Cluster, Iridis](fig/OOD.png){width="80%"}
-
-From your bash session this morning you will now be aware of the power of the programmatic capabilities of a scripting language from the command line. User interaction with High Performance Computing clusters has typically always been done using the command line, and leveraging a scripting language from the command line can be extremely efficient when manipulating data and interacting with the cluster's resources. 
-
-However there is an alternative for Iridis,  which is Iridis On Demand. Iridis on Demand provides a web based interface to HPC system, allowing you to create job scripts, transfer data on/off the system, submit and manage jobs and even run some interactive apps on the compute nodes, such as Jupyter notebooks and remote desktops. 
-
-You can request access to Iridis on Demand through an <a href="https://sotonac.sharepoint.com/teams/HPCCommunityWiki/SitePages/Connecting-to-Iridis5.aspx#requesting-access-to-iridis-ondemand">application form</a>. 
 
 
 
@@ -388,6 +382,6 @@ You can request access to Iridis on Demand through an <a href="https://sotonac.s
 - High Performance Computing (HPC) combines many powerful computers (nodes) into clusters that work together to solve large or complex computational problems faster than a personal computer.
 - HPC is essential when problems are too big, data too large, or computations too slow for a single machine.
 - HPC facilities in the UK are divided into tiers: the largest systems categorised in higher tiers. The University of Southampton's HPC system is a local tier 3 facility and you can get access to use it.
-- Iridis On Demand: Provides a web interface to the Iridis cluster, enabling file management, job submission, and interactive applications (like Jupyter notebooks) without command-line use.
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
