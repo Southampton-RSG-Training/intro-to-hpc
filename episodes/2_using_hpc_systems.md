@@ -97,7 +97,7 @@ This will generate a new strong SSH key pair, with the following flags:
 
 - a (default is 16): number of rounds of passphrase derivation; increase to slow down brute force attacks.
 - t (default is rsa): specify the “type” or cryptographic algorithm. ed25519 specifies EdDSA with a 256-bit key; it is faster than RSA with a comparable strength.
-- f (default is /home/user/.ssh/id_algorithm): filename to store your private key. The public key filename will be identical, with a .pub extension added.
+- f (default is `/home/user/.ssh/id_algorithm`): filename to store your private key. The public key filename will be identical, with a .pub extension added.
 
 When prompted, enter a strong password:
 
