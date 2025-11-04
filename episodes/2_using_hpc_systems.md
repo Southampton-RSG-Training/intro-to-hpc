@@ -323,7 +323,7 @@ rsync -avzP /path/to/directory/ username@iridis6.soton.ac.uk:/path/to/directory/
 
 ### GUI based data transfer
 
-There are GUI based alternatives to the above command line tools. One such option is <a href="https://filezilla-project.org/">Filezilla</a>, a cross-platform client MAcOS, Windows and Linux that can use the SFTP  protocol and will allow you to drag and drop files between the remote and local system.
+There are GUI based alternatives to the above command line tools. One such option is <a href="https://filezilla-project.org/">Filezilla</a>, a cross-platform client for MacOS, Windows and Linux that can use the SFTP protocol and will allow you to drag and drop files between the remote and local system.
 
 Finally for Iridis X (and Iridis 6 as the two systems share a filesystem) Open on Demand has a file manager that will allow you to browse files as well as upload and download files to and from the system.
 
