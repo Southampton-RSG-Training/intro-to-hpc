@@ -165,7 +165,13 @@ The command to log onto Iridis 6 using the SSH key from the previous section wou
 ```bash
 username@laptop:~$ ssh -i ~/.ssh/id_ed25519_iridis your_university_username@iridis6.soton.ac.uk 
 ```
-and for Iridis X there are 3 login nodes. `loginX001`; an Intel Xeon 8562Y+ login node with an NVIDIA L4 GPU, `loginX002` and AMD EPYC 7452 CPU node without a GPU, and `loginX003`; an AMD EPYC 9255 node with an NVIDIA L4 GPU. The commands to login to each of them are:
+and for Iridis X there are 3 login nodes:
+
+- `loginX001`; an Intel Xeon 8562Y+ login node with an NVIDIA L4 GPU
+- `loginX002` and AMD EPYC 7452 CPU node without a GPU
+- `loginX003`; an AMD EPYC 9255 node with an NVIDIA L4 GPU
+
+The commands to login to each of them are:
 
 ```bash
 username@laptop:~$ ssh -i ~/.ssh/id_ed25519_iridis your_university_username@loginX001.iridis.soton.ac.uk  
