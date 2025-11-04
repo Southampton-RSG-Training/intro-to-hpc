@@ -359,14 +359,17 @@ void vector_add(int *a, int *b, int *c, int n) {
 }
 ```
 
-The complete program is in [vector_mpi.c](files/vector/vector_mpi.c). As you can see, the code is much more involved and
-complicated than the OpenMP example. Every process runs this same function, but works on a different part of the vector
-addition. The function start by the process finding out its unique ID (its rank) and the total number of processes
-(size). Using this information, it calculates which slice of the vectors `a` and `b` it is responsible for. After
-performing the addition for its slice, it stores the answer in a local `c_local` array. That data is then aggregated and
-communicated back to the root process into the array `c` by using `MPI_Gather`. This function is a communication
-function and a bit of a shortcut. Behind the curtain it doing the `MPI_Send` and `MPI_Recv` for us, sending data from
-each process back to our root process; which is the only process with the complete result.
+The complete program is in [vector_mpi.c](files/vector/vector_mpi.c). As you can see, the code is much more involved
+than the OpenMP example. Every process runs this same function, but each one is responsible for a different part of the
+vector addition. Each process follows a clear set of steps:
+
+- First, it finds out its unique ID (`rank`) and the total number of processes (`size`).
+- Using this, it calculates which "slice" of the vectors `a` and `b` it is responsible for.
+- It then performs the addition for its slice and stores the partial answer in a local `c_local` array.
+- Finally, it calls the `MPI_Gather` function, which aggregates all the `c_local` arrays.
+
+`MPI_Gather` is a collective communication shortcut. Behind the curtain it doing the `MPI_Send` and `MPI_Recv` for us,
+sending data from each process back to our root process; which is the only process with the complete result.
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
