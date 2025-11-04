@@ -461,7 +461,7 @@ Currently Loaded Modules:
   1) aocc/5.0   2) binutils/2.42   3) gcc/14.2.0   4) openmpi/5.0.6_aocc
 ```
 ### Unloading Modules
-In order to now unlooad the openmpi module we can use the command:
+In order to now unload the openmpi module we can use the command:
 ```bash
 [username@login6002 ~]$ module unload openmpi
 ```
