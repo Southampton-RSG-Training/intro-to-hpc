@@ -603,11 +603,11 @@ GPUs.
 module load nvhpc
 
 # Compile the program with GPU offloading enabled
-nvc -acc vector_acc.c -o vector_acc.exe
+nvc -acc vector_openacc.c -o vector_openacc.exe
 
 # Check GPU availability and run the program
 nvidia-smi
-./vector_acc.exe
+./vector_openacc.exe
 ```
 
 The main advantage of OpenACC, like OpenMP, is that it allows rapid GPU parallelisation with minimal code changes. It is
