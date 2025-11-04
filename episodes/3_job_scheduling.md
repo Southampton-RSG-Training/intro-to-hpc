@@ -187,9 +187,27 @@ More directives can be found in the [Slurm documentation](https://slurm.schedmd.
 
 So why do we request `ntasks` or `cpus-per-task`? We can think of a task in Slurm as being an instance of a program.
 Some programs are designed to run one instance of themselves, but use many CPU cores. For programs like this, we should
-request `--ntasks=1` and, for example, `--cpus-per-task=16`. Other programs are designed to run multiple independent
-instances that work in parallel. For programs like this, we'd request `--ntasks=16` and usually give them one CPU each
-`--cpus-per-task=1`.
+request one task and 16 CPUs.
+
+```bash
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+```
+
+Other programs are designed to run multiple independent instances that work in parallel. For programs like this, we'd
+request 16 tasks and with one CPU per task.
+
+```bash
+#SBATCH --ntasks=16
+#SBATCH --cpus-per-task=1
+```
+
+Finally, some programs have multiple instances each using many CPU cores.
+
+```bash
+#SBATCH --ntasks=4
+#SBATCH --cpus-per-task=8
+```
 
 The submission script contains everything the compute node needs to run your program correctly, from start to finish.
 After the `#SBATCH` parameters, which *have to* go before your commands, you write *all* of the shell commands needed to
