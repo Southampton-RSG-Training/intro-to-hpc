@@ -447,7 +447,7 @@ reinforce the objectives.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -476,7 +476,7 @@ challenge blocks?</h3>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>You can add a line with at least three colons and a
 <code>solution</code> tag.</p>
@@ -1317,7 +1317,7 @@ loads or unloads packages</li>
 </div>
 </div></section><section id="aio-3_job_scheduling"><p>Content from <a href="3_job_scheduling.html">Introduction to Job Scheduling</a></p>
 <hr>
-<p>Last updated on 2025-09-25 |
+<p>Last updated on 2025-11-04 |
 
         <a href="https://github.com/carpentries/workbench-template-md/edit/main/episodes/3_job_scheduling.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1331,7 +1331,12 @@ loads or unloads packages</li>
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>Did you know you have to have this question section?</li>
+<li>What is a job scheduler and why is it needed?</li>
+<li>What is the difference between a login node and a compute node?</li>
+<li>How can I see the available resources and queues?</li>
+<li>What is a job submission script?</li>
+<li>How do I submit, monitor, and cancel a job?</li>
+<li>How (and when) should I use an interactive job?</li>
 </ul>
 </div>
 </div>
@@ -1342,13 +1347,13 @@ loads or unloads packages</li>
 <h3 class="card-title">Objectives</h3>
 <ul>
 <li>Describe briefly what a job scheduler does</li>
+<li>Contrast when to run programs on an HPC login node vs running them
+on a compute node</li>
 <li>Summarise how to query the available resources on an HPC system</li>
 <li>Describe a minimal job submission script and parameters that need to
 be specified</li>
 <li>Summarise how to submit a batch job and monitor it until
 completion</li>
-<li>Contrast when to run programs on an HPC login node vs running them
-on a compute node</li>
 <li>Summarise the process for requesting and using an interactive
 job</li>
 </ul>
@@ -1357,7 +1362,640 @@ job</li>
 </div>
 </div>
 </div>
-<p>Lesson content goes here</p>
+<p>An HPC cluster has thousands of nodes shared by many users. A job
+scheduler is the software that manages this, deciding who gets what
+resources and when. It ensures that tasks run efficiently and fairly,
+matching a job’s resource request to available hardware. On Iridis, the
+scheduler is Slurm, but the concepts are transferable to other
+schedulers such as PBS.</p>
+<figure><img src="fig/restaurant_queue_manager.svg" style="width:100.0%" alt="Queueing up to eat at a popular restaurant is like queueing up to run something on an HPC cluster." class="figure mx-auto d-block"><div class="figcaption">Queueing up to eat at a popular restaurant is
+like queueing up to run something on an HPC cluster.</div>
+</figure><p>The scheduler acts like a manager at a popular restaurant. You must
+queue to get in, and you must wait for a table to become free. This is
+why your jobs may sit in a queue before they start, unlike on your
+computer. In this episode, we’ll look at what a job scheduler is and how
+you interact with it to get your jobs running on Iridis.</p>
+<section><h2 class="section-heading" id="can-i-run-jobs-on-the-login-nodes">Can I run jobs on the login nodes?<a class="anchor" aria-label="anchor" href="#can-i-run-jobs-on-the-login-nodes"></a>
+</h2>
+<hr class="half-width">
+<p>On Iridis, and all HPC clusters, the login nodes are intended only
+for light and short tasks such as editing files, managing data,
+compiling code and submitting/monitoring jobs in the queue.</p>
+<p>You must not run computationally intensive or long-running tasks on
+them. Login nodes are a shared resource for all users to access the
+system, and so running intensive jobs on them slows the system down for
+everyone. Any such process will be ended automatically, and repeated
+misuse may lead to your access to Iridis being restricted. To enforce
+this, login nodes have strict resource limits. You are limited to 64 GB
+of RAM and 2 CPUs (Iridis X also provides an NVIDIA L4 GPU).</p>
+<p>All computationally intensive work must be submitted to the job
+scheduler. This places your job in a queue, and Slurm will allocate
+dedicated compute node resources to it when they become available. If
+you are compiling a large, complex codebase which requires more
+resources, or need to transfer large amounts of data, you should
+probably perform the tasks on a compute node instead. You can do this by
+submitting a job or by starting an interactive session, both of which we
+will cover later.</p>
+</section><section><h2 class="section-heading" id="querying-available-resources">Querying available resources<a class="anchor" aria-label="anchor" href="#querying-available-resources"></a>
+</h2>
+<hr class="half-width">
+<p>Compute nodes in Slurm are grouped together and organised into
+different <strong>partitions</strong>. You can think of a partition as
+the actual queue for a certain set of hardware. Clusters are made up of
+different types of compute nodes, e.g. some with lots of memory, some
+with GPUs, some with restricted access, and some that are just
+“standard” compute nodes. The partitions are how Slurm organises this
+hardware. Each partition has its own rules, such as a maximum run time,
+who can access the resources in it or a limit on the number of nodes
+that can used at once. To find what the partitions are on Iridis 6 and
+their current state, we can use the <code>sinfo</code> command:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> sinfo <span class="at">-s</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">PARTITION</span>             AVAIL  TIMELIMIT   NODES<span class="er">(</span><span class="ex">A/I/O/T</span><span class="kw">)</span> <span class="ex">NODELIST</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">batch*</span>                   up 2-12:00:00      99/35/0/134 red<span class="pp">[</span><span class="ss">6001</span><span class="pp">-</span><span class="ss">6134</span><span class="pp">]</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">highmem</span>                  up 2-12:00:00          3/1/0/4 gold<span class="pp">[</span><span class="ss">6001</span><span class="pp">-</span><span class="ss">6004</span><span class="pp">]</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="ex">worldpop</span>                 up 2-12:00:00          0/6/0/6 red<span class="pp">[</span><span class="ss">6135</span><span class="pp">-</span><span class="ss">6140</span><span class="pp">]</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="ex">scavenger</span>                up   12:00:00          0/6/0/6 red<span class="pp">[</span><span class="ss">6135</span><span class="pp">-</span><span class="ss">6140</span><span class="pp">]</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="ex">interactive_practical</span>    up   12:00:00          1/0/0/1 red6128</span></code></pre>
+</div>
+<p>The <code>-s</code> flag outputs a summarised version of this list.
+Omitting this flag provides a full listing of nodes in each queue and
+their current state, which gets quite messy.</p>
+<p>We can see the availability of each partition/queue, as well as the
+maximum time limit for jobs (in <code>days-hours:minutes:seconds</code>
+format). For example, on the batch queue there is a two and a half day
+limit, whilst the scavenger queue has a twelve hour limit. The *
+appended to the batch partition name indicates it is the preferred
+default queue. The NODES column indicates the number of nodes in a given
+state,</p>
+<table class="table">
+<thead><tr class="header">
+<th>Label</th>
+<th>State</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>Active</td>
+<td>These nodes are busy running jobs.</td>
+</tr>
+<tr class="even">
+<td>I</td>
+<td>Idle</td>
+<td>These nodes are not running jobs.</td>
+</tr>
+<tr class="odd">
+<td>O</td>
+<td>Other</td>
+<td>These nodes are down, or otherwise unavailable.</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>Total</td>
+<td>The total number of nodes in the partition.</td>
+</tr>
+</tbody>
+</table>
+<p>Finally, the NODELIST column is a summary of the nodes belonging to a
+particular queue; if we didn’t use the <code>-s</code> option, we could
+get a complete list of each node in each state. In this particular
+instance, we can see that 35 nodes are idle in the batch partition, so
+if that queue fits our needs we may decide to submit to that as there
+are available resources.</p>
+<p>We can find out more details about specific partitions by using the
+<code>scontrol show</code> command, which lets us view more
+configuration details of a particular partition. To see the breakdown of
+the batch partition, we use:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> scontrol show partition=batch</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="va">PartitionName</span><span class="op">=</span>batch</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>   <span class="va">AllowGroups</span><span class="op">=</span>ALL <span class="va">DenyAccounts</span><span class="op">=</span>worldpop <span class="va">AllowQos</span><span class="op">=</span>ALL</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="ex"> </span>  MaxTime=2-12:00:00 MinNodes=0</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="ex"> </span>  State=UP TotalCPUs=25728 TotalNodes=134</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="ex"> </span>  DefMemPerCPU=3350 MaxMemPerNode=650000</span></code></pre>
+</div>
+<p>This purposefully truncated output shows who does and doesn’t have
+access (AllowGroups, DenyAccounts) as well as details about the
+configuration and details of the nodes in the partition (e.g. MaxTime,
+MinNodes, TotalNodes, TotalCPUs). Here, we can see accounts belonging to
+the “worldpop” group do not have access to the batch partition.</p>
+<p>To get more detail about a particular node in a partition we use:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> scontrol show node=red6001</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="va">NodeName</span><span class="op">=</span>red6001 <span class="va">Arch</span><span class="op">=</span>x86_64 <span class="va">CoresPerSocket</span><span class="op">=</span>96</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex"> </span>  CPUAlloc=192 CPUEfctv=192 CPUTot=192</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="ex"> </span>  RealMemory=770000 AllocMem=643200 FreeMem=531885 Sockets=2</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="ex"> </span>  State=ALLOCATED</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="ex"> </span>  Partitions=batch</span></code></pre>
+</div>
+<p>This provides a detailed summary of the node, including the number of
+CPUs on it (CPUTot), if there are GPUs (Gres) as well as the state of
+the node (State), the current resources allocated to a user (CPUAlloc,
+AllocMem) and other interesting information.</p>
+<div id="the-scavenger-partition" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="the-scavenger-partition" class="callout-inner">
+<h3 class="callout-title">The scavenger partition</h3>
+<div class="callout-content">
+<p>The scavenger partition on Iridis allows you to use idle compute
+nodes that you do not normally have access to, ensuring those resources
+do not go to waste. However, this access is low-priority. If a user with
+access to those nodes submits a job, your scavenger job will be
+preempted. This means your job is automatically cancelled and put back
+into the queue. The scheduler will try to run it again later when other
+idle resources become available.</p>
+<p>Because your job can be cancelled at any time, you should only use
+this partition for testing or for code that can save its progress (a
+technique known as <a href="https://en.wikipedia.org/wiki/Application_checkpointing" class="external-link">checkpointing</a>).
+This way, you won’t lose work if your job is preempted.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="job-submission-scripts">Job submission scripts<a class="anchor" aria-label="anchor" href="#job-submission-scripts"></a>
+</h2>
+<hr class="half-width">
+<p>To submit a job to run, we have to write a <strong>submission
+script</strong> which contains the commands that we want to run on a
+compute node. This is almost always a bash script, containing special
+<code>#SBATCH</code> directives that tells Slurm what resources you need
+to run your job. A very minimal example looks something like this:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#SBATCH --partition=batch</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#SBATCH --time=00:01:00</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=2</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co"># This is the command that will run</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre>
+</div>
+<p>Let’s break down this Bash script. The first line we need to include
+is the <code>#!/bin/bash</code> shebang, which let’s Slurm know the
+script is a Bash script. The next four lines starting with
+<code>#SBATCH</code> are instructions to Slurm which tell it the
+resources we’ve requested to run the job. In this case, we have included
+the minimum <em>batch directives</em> you should include to submit a
+job: the partition to run on, how long the job needs to run, the number
+of nodes we require and the number of CPUs. The table below shows a list
+of the most commonly used directives.</p>
+<table class="table">
+<colgroup>
+<col width="16%">
+<col width="57%">
+<col width="26%">
+</colgroup>
+<thead><tr class="header">
+<th>Parameter</th>
+<th>Description</th>
+<th>Example Value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>--job-name</code></td>
+<td>Sets a name for your job.</td>
+<td><code>--job-name=my_analysis</code></td>
+</tr>
+<tr class="even">
+<td><code>--nodes</code></td>
+<td>Requests a specific number of compute nodes.</td>
+<td><code>--nodes=1</code></td>
+</tr>
+<tr class="odd">
+<td><code>--ntasks</code></td>
+<td>Requests a total number of tasks (e.g., MPI processes).</td>
+<td><code>--ntasks=16</code></td>
+</tr>
+<tr class="even">
+<td><code>--ntasks-per-node</code></td>
+<td>Specifies the number of tasks to run on each node.</td>
+<td><code>-ntasks-per-node=8</code></td>
+</tr>
+<tr class="odd">
+<td><code>--cpus-per-task</code></td>
+<td>Requests a number of CPU cores for each task (e.g., for OpenMP
+threads).</td>
+<td><code>--cpus-per-task=4</code></td>
+</tr>
+<tr class="even">
+<td><code>--time</code></td>
+<td>Sets the maximum wall-clock time for the job (HH:MM:SS).</td>
+<td><code>--time=01:30:00</code></td>
+</tr>
+<tr class="odd">
+<td><code>--partition</code></td>
+<td>Specifies the queue (partition) to submit the job to.</td>
+<td><code>--partition=highmem</code></td>
+</tr>
+<tr class="even">
+<td><code>--gres</code></td>
+<td>Requests generic resources, most commonly GPUs.</td>
+<td><code>--gres=gpu:1</code></td>
+</tr>
+<tr class="odd">
+<td><code>--output</code></td>
+<td>Specifies the file to write the standard output (STDOUT) to.</td>
+<td><code>--output=job_output.log</code></td>
+</tr>
+<tr class="even">
+<td><code>--error</code></td>
+<td>Specifies the file to write the standard error (STDERR) to.</td>
+<td><code>--error=job_error.log</code></td>
+</tr>
+<tr class="odd">
+<td><code>--mail-user</code></td>
+<td>Your email address for job status notifications.</td>
+<td><code>--mail-user=a.user@soton.ac.uk</code></td>
+</tr>
+<tr class="even">
+<td><code>--mail-type</code></td>
+<td>Specifies which events trigger an email (e.g., BEGIN, END, FAIL,
+ALL).</td>
+<td><code>--mail-type=END,FAIL</code></td>
+</tr>
+</tbody>
+</table>
+<p>More directives can be found in the <a href="https://slurm.schedmd.com/sbatch.html" class="external-link">Slurm
+documentation</a>.</p>
+<p>So why do we request <code>ntasks</code> or
+<code>cpus-per-task</code>? We can think of a task in Slurm as being an
+instance of a program. Some programs are designed to run one instance of
+themselves, but use many CPU cores. For programs like this, we should
+request one task and 16 CPUs.</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=16</span></span></code></pre>
+</div>
+<p>Other programs are designed to run multiple independent instances
+that work in parallel. For programs like this, we’d request 16 tasks and
+with one CPU per task.</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#SBATCH --ntasks=16</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=1</span></span></code></pre>
+</div>
+<p>Finally, some programs have multiple instances each using many CPU
+cores.</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#SBATCH --ntasks=4</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span></code></pre>
+</div>
+<p>The submission script contains everything the compute node needs to
+run your program correctly, from start to finish. After the
+<code>#SBATCH</code> parameters, which <em>have to</em> go before your
+commands, you write <em>all</em> of the shell commands needed to prepare
+the environment and launch your code, as if you were running it for the
+very first time. We need to do this because jobs essentially run from a
+blank slate. The environment is not configured, so we have to configure
+it. This includes, but is obviously not limited to, setting environment
+variables, loading software modules, activating virtual environments (if
+required) and navigating to the correct directory.</p>
+<p>A more complete submission script, for running a Python script, would
+look something like this:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#SBATCH --job-name=python-example</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#SBATCH --partition=batch</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#SBATCH --time=04:00:00</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># Optional: print useful job info</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Running on host: </span><span class="va">$(</span><span class="fu">hostname</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Job started at: </span><span class="va">$(</span><span class="fu">date</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"SLURM job ID: </span><span class="va">$SLURM_JOB_ID</span><span class="st">"</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Number of CPUs: </span><span class="va">$SLURM_CPUS_PER_TASK</span><span class="st">"</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co"># Load required modules</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="ex">module</span> purge</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="ex">module</span> load python/3.11</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co"># Activate Python virtual environment</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="bu">source</span> ~/myenv/bin/activate</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co"># Set any environment variables or configuration options</span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="bu">export</span> <span class="va">PYTHONUNBUFFERED</span><span class="op">=</span>1</span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co"># Move to job directory</span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$SLURM_SUBMIT_DIR</span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co"># Run the Python script</span></span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="ex">python</span> my_script.py <span class="at">--input</span> data/input.txt <span class="at">--output</span> results/output.txt</span></code></pre>
+</div>
+<p>In this example, <a href="files/python_job.sh">python_job.sh</a>, we
+used the following script: <a href="files/my_script.py">my_script.py</a>. In the submission script,
+you will notice that we have used environment variables starting with
+<code>$SLURM_</code>. These are set by Slurm when a job starts running
+on a compute node. A complete list of them have be found in the <a href="https://slurm.schedmd.com/sbatch.html#SECTION_OUTPUT-ENVIRONMENT-VARIABLES" class="external-link">Slurm
+documentation</a>.</p>
+<div id="no-internet-access-on-compute-nodes" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="no-internet-access-on-compute-nodes" class="callout-inner">
+<h3 class="callout-title">No internet access on compute nodes</h3>
+<div class="callout-content">
+<p>On Iridis, the compute nodes <strong>do not</strong> have access to
+the internet. If your job script tries to download files or access any
+online resource, it will hang and eventually fail. You should run any
+<em>short</em> tasks that require internet access (like downloading
+datasets) on the login nodes before you submit your job, or in an Iridis
+on Demand interactive session.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="submitting-monitoring-and-cancelling-jobs">Submitting, monitoring and cancelling jobs<a class="anchor" aria-label="anchor" href="#submitting-monitoring-and-cancelling-jobs"></a>
+</h2>
+<hr class="half-width">
+<div class="section level3">
+<h3 id="submitting-jobs">Submitting jobs<a class="anchor" aria-label="anchor" href="#submitting-jobs"></a>
+</h3>
+<p>Once we have written our submission script, we submit it to the job
+queue using the <code>sbatch</code> command, giving it the argument the
+name of our submission script.</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> sbatch example-job.sh</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="ex">Submitted</span> batch job 715860</span></code></pre>
+</div>
+<p>If all goes well, you should see some output which says “Submitted
+batch job” followed by a job ID, which a unique ID given to the job.
+We’ll use this ID to manage our job such as checking the status of it or
+cancelling it.</p>
+<div id="test-your-script-before-submitting-it" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="test-your-script-before-submitting-it" class="callout-inner">
+<h3 class="callout-title">Test your script before submitting it</h3>
+<div class="callout-content">
+<p>It is always good practice to test your submission script before
+submitting a large or long-running job. There is nothing more
+frustrating than waiting hours for your job to start, only to have it
+crash instantly because of a simple typo or error in the script.</p>
+<p>A good way to do this is to submit a test job that requests minimal
+resources, for example: <code>--nodes=1</code>,
+<code>--cpus-per-task=1</code> and <code>--time=00:05:00</code>. These
+small, short jobs usually have a much shorter queue time. The goal is
+not to test your code at scale or get results; it is only to confirm
+that the script successfully loads its modules, finds its files, and
+launches the program without immediately failing. Another option would
+be to use the scavenger partition, which tends to have shorter queue
+times.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="monitoring-jobs">Monitoring jobs<a class="anchor" aria-label="anchor" href="#monitoring-jobs"></a>
+</h3>
+<p>We can check on the status of jobs we’ve submitted by using the
+<code>squeue</code> command. This will show us any jobs we have waiting
+in the queue or are currently running. Let’s take a look in more detail.
+To take a look at only our jobs, we use:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> squeue <span class="at">-u</span> <span class="va">$USER</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="ex">JOBID</span>   PARTITION  NAME      USER     ST  TIME  NODES  NODELIST<span class="er">(</span><span class="ex">REASON</span><span class="kw">)</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="ex">715860</span>  batch      example   ejp1v21  R   0:00  1      red6085</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="ex">715558</span>  batch      video_so  ejp1v21  PD  0:00  1      <span class="er">(</span><span class="ex">Dependency</span><span class="kw">)</span></span></code></pre>
+</div>
+<p>By using <code>-u $USER</code>, where <code>$USER</code> is the
+environment variable containing our username, we only see our jobs. If
+we used just <code>squeue</code>, we would see all the jobs which are
+either currently in the queue or are running for all users and
+partitions. We can also use <code>-j</code> to query specific job IDs.
+However we choose to use <code>squeue</code>, it prints the details of
+jobs including the partition, user and also the state of the job (in the
+ST column). In this example, we can see two jobs. One is in R, or
+RUNNING, state and another is in PD, or PENDING, state. A job will
+typically go through the following states,</p>
+<table class="table">
+<colgroup>
+<col width="6%">
+<col width="10%">
+<col width="83%">
+</colgroup>
+<thead><tr class="header">
+<th>Label</th>
+<th>State</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>PD</td>
+<td>PENDING</td>
+<td>The jobs might need to wait in a queue first before they can be
+allocated to a node to run.</td>
+</tr>
+<tr class="even">
+<td>R</td>
+<td>RUNNING</td>
+<td>The job is currently running.</td>
+</tr>
+<tr class="odd">
+<td>CG</td>
+<td>COMPLETING</td>
+<td>The job is in the process of completing.</td>
+</tr>
+<tr class="even">
+<td>CD</td>
+<td>COMPLETED</td>
+<td>The job has completed.</td>
+</tr>
+</tbody>
+</table>
+<p>For pending jobs, you will usually see a reason for why the job is
+pending in the NODELIST(REASON) column. This can be for a variety of
+reasons, such as the nodes requested for job not being available, that
+there are jobs in front of it in the queue, or that the job depends on
+another completing first. Once the job is running, the nodes that it is
+running on will be displayed in this column instead. While the
+<code>squeue</code> table lists the common states for a successful job,
+jobs can also end in failure. You may see other states, such as F
+(Failed) if your program terminated with an error, OOM (Out of Memory)
+if it exceeded its memory request, or CA (Cancelled) if you or an
+administrator stopped it.</p>
+<p>If we want more detail about a job, we can use
+<code>scontrol show</code> again:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> scontrol show jobid=715860</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="va">JobId</span><span class="op">=</span>715860 <span class="va">JobName</span><span class="op">=</span>example.sh</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>   <span class="va">UserId</span><span class="op">=</span>ejp1v21<span class="kw">(</span><span class="ex">32917</span><span class="kw">)</span> <span class="va">GroupId</span><span class="op">=</span>fp<span class="kw">(</span><span class="ex">245</span><span class="kw">)</span> <span class="va">MCS_label</span><span class="op">=</span>N/A</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>   <span class="ex">...</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>   <span class="va">JobState</span><span class="op">=</span>RUNNING <span class="va">Reason</span><span class="op">=</span>None <span class="va">Dependency</span><span class="op">=</span><span class="va">(</span>null<span class="va">)</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>   <span class="ex">...</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>   <span class="va">RunTime</span><span class="op">=</span>00:00:09 <span class="va">TimeLimit</span><span class="op">=</span>00:01:00 <span class="va">TimeMin</span><span class="op">=</span>N/A</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>   <span class="va">SubmitTime</span><span class="op">=</span>2025-10-29T14:58:31 <span class="va">EligibleTime</span><span class="op">=</span>2025-10-29T14:58:31</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>   <span class="va">StartTime</span><span class="op">=</span>2025-10-29T14:58:32 <span class="va">EndTime</span><span class="op">=</span>2025-10-29T14:59:32 <span class="va">Deadline</span><span class="op">=</span>N/A</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>   <span class="va">Partition</span><span class="op">=</span>batch <span class="ex">AllocNode:Sid=login6002:1385285</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>   <span class="va">NodeList</span><span class="op">=</span>red6086</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>   <span class="ex">...</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>   <span class="va">AllocTRES</span><span class="op">=</span>cpu=1,mem=3350M,node=1,billing=1</span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>   <span class="ex">...</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>   <span class="va">Command</span><span class="op">=</span>/iridisfs/home/ejp1v21/example.sh</span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a>   <span class="va">StdErr</span><span class="op">=</span>/iridisfs/home/ejp1v21/slurm-715860.out</span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a>   <span class="va">StdOut</span><span class="op">=</span>/iridisfs/home/ejp1v21/slurm-715860.out</span></code></pre>
+</div>
+<p>This detailed output confirms the JobState is RUNNING (though it
+could be PENDING if still in the queue or COMPLETED if it had already
+finished). With this output we can see exactly how long the job has been
+running (RunTime) against its maximum allowed time (TimeLimit). It also
+provides a complete history, showing when the job was submitted
+(SubmitTime), when it reached the front of the queue (EligibleTime), and
+when it started running (StartTime).</p>
+<p>The <code>scontrol</code> output also shows precisely where the job
+is running and what resources it has (Partition, NodeList, AllocTRES).
+It also tells us what script is being run (Command) and where the output
+for the job will be stored (StdErr, Stdout).</p>
+</div>
+<div class="section level3">
+<h3 id="cancelling-jobs">Cancelling jobs<a class="anchor" aria-label="anchor" href="#cancelling-jobs"></a>
+</h3>
+<p>Sometimes we’ll make a mistake and need to cancel a job. This can be
+done with the <code>scancel</code> command, giving it the ID of the job
+you want to cancel:</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> scancel 715860</span></code></pre>
+</div>
+<p>A clean return of the command indicates that the request to cancel
+the job was successful. It might take a minute for the job to disappear
+from the queue, as Slurm cleans it up. If we need to do something a bit
+more dramatic and cancel all of our jobs, both running and pending then
+we can use the <code>-u</code> flag to specify the user jobs we want to
+cancel,</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> scancel <span class="at">-u</span> <span class="va">$USER</span></span></code></pre>
+</div>
+<p>We can also refine this to cancel only pending jobs, whilst letting
+running ones finish by using the <code>-t</code> state flag.</p>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> scancel <span class="at">-u</span> <span class="va">$USER</span> <span class="at">-t</span> PENDING</span></code></pre>
+</div>
+<div id="submit-monitor-and-cancel-a-python-example" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="submit-monitor-and-cancel-a-python-example" class="callout-inner">
+<h3 class="callout-title">Submit, monitor and cancel a Python
+example</h3>
+<div class="callout-content">
+<p>Now try all of this yourself with the Python example from earlier in
+the episode. You should use the the Python script <a href="files/my_script.py">my_script.py</a> and the submission script <a href="files/python_job.sh">python_job.sh</a>.</p>
+<p>Submit your job, check in on its status in the queue and then cancel
+it. The job should run for around five minutes, giving you enough time
+to do these three steps.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>First, submit the <code>python_job.sh</code> script using the
+<code>sbatch</code> command.</p>
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> sbatch python_job.sh</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="ex">Submitted</span> batch job 715861</span></code></pre>
+</div>
+<p>Make a note of the Job ID (e.g., 715861) that is returned. Check the
+status of your job using <code>squeue -u $USER</code>. You should see
+your job listed, likely in the PD (Pending) state.</p>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> squeue <span class="at">-u</span> <span class="va">$USER</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="ex">JOBID </span>  PARTITION  NAME      USER     ST  TIME  NODES  NODELIST<span class="er">(</span><span class="ex">REASON</span><span class="kw">)</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="ex">715861 </span> batch      python_job  ejp1v21  PD  0:00  1      <span class="er">(</span><span class="ex">Priority</span><span class="kw">)</span></span></code></pre>
+</div>
+<p>Finally, cancel the job using <code>scancel</code> and the Job ID you
+noted.</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="ex">[iridis6]$</span> scancel 715861</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="interactive-jobs">Interactive jobs<a class="anchor" aria-label="anchor" href="#interactive-jobs"></a>
+</h2>
+<hr class="half-width">
+<p>We have so far been using Slurm to submit jobs to a queue and then
+waiting for them to finish. However, on Iridis we can also start an
+interactive jobs where we get direct access to compute nodes via a shell
+session, letting us start the jobs directly from the command line. This
+is incredibly useful for debugging code which isn’t working, or for
+experimenting and testing, e.g. you may want to test your submission
+script using <code>bash ./job-script.sh</code>.</p>
+<p>To start an interactive session use the <code>sinteractive</code>
+command. By default, this will give a single node for 2 hours, but this
+can be changed with same job parameters in a job submission script,
+e.g. <code>sinteractive --time=05:00:00 --cpus-per-task=4</code>,</p>
+<div class="codewrapper sourceCode" id="cb18">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="ex">[iridisX]$</span> sinteractive <span class="at">--partition</span><span class="op">=</span>l4</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="ex">Waiting</span> for JOBID 731867 to start.......</span></code></pre>
+</div>
+<p>This will start an interactive session on the L4 partition on Iridis
+X, for 2 hours with 1 CPU. If sufficient resources are available, the
+interactive job will start immediately, otherwise, it will need to queue
+to start. As resources may not be available immediately to satisfy the
+requirements of an interactive job, it is normally only practical to use
+interactive jobs for short jobs of a few hours or less, running on a
+couple of nodes. You may also want to use <code>sinfo -s</code> to query
+which partitions have idle nodes, and use those.</p>
+<p>Once the interactive session has started, you are logged into the
+node the job has been allocated and you can run commands from as if it
+were a terminal session on your own computer. You can even use GUI
+applications as long as X-forwarding has been setup correctly.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1366,11 +2004,27 @@ job</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>You need a list of key points</li>
+<li>The job scheduler (like Slurm) manages all user jobs to ensure fair
+and efficient use of the cluster.</li>
+<li>Login nodes are for light tasks (editing, compiling); compute nodes
+are for running scheduled, intensive jobs.</li>
+<li>Use <code>sinfo</code> and <code>scontrol</code> to query the status
+of partitions (queues) and nodes.</li>
+<li>A job script is a Bash script containing <code>#SBATCH</code>
+directives (resource requests) and the commands to be run.</li>
+<li>Use <code>sbatch</code> to submit a job, <code>squeue</code> to
+monitor its status, and <code>scancel</code> to cancel it.</li>
+<li>Use <code>sinteractive</code> to request a live terminal session on
+a compute node for debugging or interactive work.</li>
 </ul>
 </div>
 </div>
-</div></section><section id="aio-4_programmatic_parallelism"><p>Content from <a href="4_programmatic_parallelism.html">Introduction to Programmatic Parallelism</a></p>
+</div>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</section></section><section id="aio-4_programmatic_parallelism"><p>Content from <a href="4_programmatic_parallelism.html">Introduction to Programmatic Parallelism</a></p>
 <hr>
 <p>Last updated on 2025-10-22 |
 

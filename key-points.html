@@ -395,7 +395,18 @@ is a local tier 3 facility and you can get access to use it.</li>
 </ul></section><section id="3_job_scheduling"><h2 class="section-heading"><a href="3_job_scheduling.html">Introduction to Job Scheduling</a></h2>
 <hr class="half-width">
 <ul>
-<li>You need a list of key points</li>
+<li>The job scheduler (like Slurm) manages all user jobs to ensure fair
+and efficient use of the cluster.</li>
+<li>Login nodes are for light tasks (editing, compiling); compute nodes
+are for running scheduled, intensive jobs.</li>
+<li>Use <code>sinfo</code> and <code>scontrol</code> to query the status
+of partitions (queues) and nodes.</li>
+<li>A job script is a Bash script containing <code>#SBATCH</code>
+directives (resource requests) and the commands to be run.</li>
+<li>Use <code>sbatch</code> to submit a job, <code>squeue</code> to
+monitor its status, and <code>scancel</code> to cancel it.</li>
+<li>Use <code>sinteractive</code> to request a live terminal session on
+a compute node for debugging or interactive work.</li>
 </ul></section><section id="4_programmatic_parallelism"><h2 class="section-heading"><a href="4_programmatic_parallelism.html">Introduction to Programmatic Parallelism</a></h2>
 <hr class="half-width">
 <ul>
