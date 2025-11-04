@@ -234,28 +234,7 @@ Once granted access you can login at https://iridisondemand.soton.ac.uk/, ensuri
 
 ## Data Transfer
 
-Moving data onto and from an HPC system can be achieved in several ways. Two of the most common are SSH based protocols: SCP (Secure Copy) and SFTP (Secure File Transfer Protocol). 
-
-### Using SCP in the terminal
-
-To upload data from your local system to the remote HPC system you can use the scp command from the terminal. The general syntax to transfer a file is `scp /path/to/file.txt your_username@hpc.system.address:/path/to/directory`, so to transfer a file `important_data.mat` from your local system to the `data` folder in your home directory on Iridis 6 you would use the command
-
-```bash
-username@laptop:~$ scp /path/to/important_data.mat your_username@iridis6.soton.ac.uk:/home/username/data/
-```
-or to transfer an entire directory you would add the `-r` flag:
-
-```bash
-username@laptop:~$ scp -r /path/to/important_data/ your_username@iridis6.soton.ac.uk:/home/username/data/
-```
-
-To transfer from the host you simply reverse the order, e.g to copy a data folder from Iridis to your local home directory:
-
-```bash
-username@laptop:~$ scp -r your_username@iridis6.soton.ac.uk:/home/username/data/ ~/
-```
-
-`scp` is simple an lightweight, but is not able to resume a file transfer that has failed. 
+Moving data onto and from an HPC system can be achieved in several ways. One of the most common tools are SSH based SFTP (Secure File Transfer Protocol) and rsync. 
 
 ### Using SFTP in the terminal
 
