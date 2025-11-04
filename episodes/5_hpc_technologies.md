@@ -492,7 +492,7 @@ problems like matrix operations, where every element can be processed in the sam
 
 However, *offloading* work to a GPU is more complicated than parallelising using CPUs. The main reason is that the CPU
 and the GPU have their own separate memory spaces. Data stored in the CPU's memory is not visible to the GPU, and
-vice-versa. This setup is similar to the separate memory for each process in MPI application. Data must be copied from
+vice-versa. This setup is similar to the separate memory for each process in an MPI application. Data must be copied from
 the CPU's memory to the GPU's memory. This transfer step is slow compared to the speed of the calculations. Therefore,
 efficient GPU programs must minimise data transfers, often by keeping data on the GPU as long as possible. While
 optimising CPU code often focuses on reducing the total number of calculations, optimising GPU code is usually more
