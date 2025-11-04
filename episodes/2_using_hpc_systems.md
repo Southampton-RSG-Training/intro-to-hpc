@@ -442,7 +442,7 @@ In order to load `openmpi`, a module containing `mpicc`, we issue the following 
 [username@login6002 ~]$ module load openmpi 
 ```
 
-Now when we use which to try and find the path to `mpicc` we get a different result:
+Now when we use `which` to try and find the path to `mpicc` we get a different result:
 
 ```bash
 [username@login6002 ~]$ which mpicc
