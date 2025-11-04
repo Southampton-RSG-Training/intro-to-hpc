@@ -492,7 +492,7 @@ You can find out more details about the system from the <a href="https://sotonac
 There is a team of HPC system adminstrators that look after Iridis, including supporting the installation and maintenence of the software you need. You can contact them through the <a href="https://teams.microsoft.com/l/team/19%3A18c8baa70f8540d78455babffe11ad9c%40thread.tacv2/conversations?groupId=a0a40f99-c620-425f-8c12-a1216cf64cce&tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8"> HPC Community Teams</a>.
 
 ### Research Software Group & HPC Research Software Engineers
-The <a href="https://rsgsoton.net/">Research Software Group</a> at Southampton is a team of Reasearch Software Engineers (RSE) dedictaed to ensruing software developed for research is as good as it can be. We offer a full range of Software Development Services, covering many different technologies and all academic disciplines.
+The <a href="https://rsgsoton.net/">Research Software Group</a> at Southampton is a team of Research Software Engineers (RSE) dedictaed to ensruing software developed for research is as good as it can be. We offer a full range of Software Development Services, covering many different technologies and all academic disciplines.
 
 Within the Research Software Group there is a team of HPC RSEs who have been employed to help researchers make the best use of Iridis. Optimising or extending existing codes to make best use of the HPC resources available, e.g. refactoring, porting to HPC, porting to GPU. 
 
