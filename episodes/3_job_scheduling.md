@@ -40,7 +40,7 @@ look at what a job scheduler is and how you interact with it to get your jobs ru
 
 ## Can I run jobs on the login nodes?
 
-On Iridis, and all HPC clusters, the login they are intended only for light and short tasks such as editing files,
+On Iridis, and all HPC clusters, the login nodes are intended only for light and short tasks such as editing files,
 managing data, compiling code and submitting/monitoring jobs in the queue.
 
 You must not run computationally intensive or long-running tasks on them. Login nodes are a shared resource for all
