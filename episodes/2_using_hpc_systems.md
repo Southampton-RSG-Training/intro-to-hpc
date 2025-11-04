@@ -57,7 +57,7 @@ SSH keys are an alternative method for authentication to obtain access to remote
 - a public key which can be placed on any remote system you will access.
 
 :::callout
-A private key that is visible to anyone but you should be considered compromised, and must be destroyed. This includes having improper permissions on the directory it (or a copy) is stored in, traversing any network that is not secure (encrypted), attachment on unencrypted email, and even displaying the key on your terminal window.
+A private key that is visible to anyone should be considered compromised, and must be destroyed. This includes having improper permissions on the directory it (or a copy) is stored in, traversing any network that is not secure (encrypted), attached to an unencrypted email, and even displaying the key on your terminal window.
 :::
 
 The standard location for ssh keys is in a hidden folder in your home directory. Best to check if there are any there before creating a new pair, and potentially over writing the old ones! 
@@ -97,7 +97,7 @@ This will generate a new strong SSH key pair, with the following flags:
 
 - a (default is 16): number of rounds of passphrase derivation; increase to slow down brute force attacks.
 - t (default is rsa): specify the “type” or cryptographic algorithm. ed25519 specifies EdDSA with a 256-bit key; it is faster than RSA with a comparable strength.
-- f (default is /home/user/.ssh/id_algorithm): filename to store your private key. The public key filename will be identical, with a .pub extension added.
+- f (default is `/home/user/.ssh/id_algorithm`): filename to store your private key. The public key filename will be identical, with a .pub extension added.
 
 When prompted, enter a strong password:
 
@@ -107,10 +107,10 @@ When prompted, enter a strong password:
 - **Nothing is less secure than a private key with no password.** If you skipped password entry by accident, go back and generate a new key pair with a strong password.
 :::
 
-Take a look in ~/.ssh (use `ls ~/.ssh`). You should see two new files:
+Take a look in `~/.ssh` (use `ls ~/.ssh`). You should see two new files:
 
-- your private key (~/.ssh/id_ed25519_iridis): do not share with anyone!
-- the shareable public key (~/.ssh/id_ed25519_iridis.pub): if a system administrator asks for a key, this is the one to send. It is also safe to upload to websites such as GitHub: it is meant to be seen.
+- your private key (`~/.ssh/id_ed25519_iridis`): do not share with anyone!
+- the shareable public key (`~/.ssh/id_ed25519_iridis.pub`): if a system administrator asks for a key, this is the one to send. It is also safe to upload to websites such as GitHub: it is meant to be seen.
 
 
 
@@ -165,7 +165,13 @@ The command to log onto Iridis 6 using the SSH key from the previous section wou
 ```bash
 username@laptop:~$ ssh -i ~/.ssh/id_ed25519_iridis your_university_username@iridis6.soton.ac.uk 
 ```
-and for Iridis X there are 3 login nodes. `loginX001`; an Intel Xeon 8562Y+ login node with an NVIDIA L4 GPU, `loginX002` and AMD EPYC 7452 CPU node without a GPU, and `loginX003`; an AMD EPYC 9255 node with an NVIDIA L4 GPU. The commands to login to each of them are:
+and for Iridis X there are 3 login nodes:
+
+- `loginX001`; an Intel Xeon 8562Y+ login node with an NVIDIA L4 GPU
+- `loginX002` and AMD EPYC 7452 CPU node without a GPU
+- `loginX003`; an AMD EPYC 9255 node with an NVIDIA L4 GPU
+
+The commands to login to each of them are:
 
 ```bash
 username@laptop:~$ ssh -i ~/.ssh/id_ed25519_iridis your_university_username@loginX001.iridis.soton.ac.uk  
@@ -296,9 +302,9 @@ rsync -avzP /path/to/directory/ username@iridis6.soton.ac.uk:/path/to/directory/
 
 ### GUI based data transfer
 
-There are GUI based alternatives to the above command line tools. One such option is [Filezilla](https://filezilla-project.org/) a cross-platform client MAcOS, Windows and Linux that can use the SFTP  protocol and will allow you to drag and drop files between the remote and local system.
+There are GUI based alternatives to the above command line tools. One such option is <a href="https://filezilla-project.org/">Filezilla</a>, a cross-platform client for MacOS, Windows and Linux that can use the SFTP protocol and will allow you to drag and drop files between the remote and local system.
 
-Finally for Iridis X (and Iridis 6 as the two systems share a filesystem) Open on Demand has a file manager that will allow you to browse files as well as upload and download files to and from the system.
+Finally for Iridis X (and Iridis 6 as the two systems share a filesystem) Iridis on Demand has a file manager that will allow you to browse files as well as upload and download files to and from the system.
 
 ![File Manager in Iridis On Demand: Moving data to and from the Iridis HPC system can be achieved in the Open On Demand Web Portal](fig/Iridis_OOD_FIle_browser.png){width="80%"}
 
@@ -360,7 +366,7 @@ If creating virtual environments (using e.g. `conda` or `python -m venv`) it can
 
 HPC systems will have a selection of centrally installed and managed software packages, but they will not be available to use immediately when you login. Software is usually managed on HPC systems using **Environment Modules**, and packages need to be _loaded_ before they are available for use. 
 
-:::callout
+::: challenge
 There are several reasons behind the use of environment modules for software management. Can you think of any? Discuss it with your colleagues. 
 :::
 :::solution
@@ -444,13 +450,13 @@ Say we have written a C program, that uses the MPI (Message Passing Interface) f
 - The system looks through directories listed in our `$PATH` environment variable for the shell commands. The directories are listed following the `no mpicc in` message returned from the failed `which` command above. 
 ::::
 
-In order to load `openmpi`, a module containing `mpicc` we issue the following command:
+In order to load `openmpi`, a module containing `mpicc`, we issue the following command:
 
 ```bash
 [username@login6002 ~]$ module load openmpi 
 ```
 
-Now when we use which to try and find the path to `mpicc` we get a different result:
+Now when we use `which` to try and find the path to `mpicc` we get a different result:
 
 ```bash
 [username@login6002 ~]$ which mpicc
@@ -475,7 +481,7 @@ Currently Loaded Modules:
   1) aocc/5.0   2) binutils/2.42   3) gcc/14.2.0   4) openmpi/5.0.6_aocc
 ```
 ### Unloading Modules
-In order to now unlooad the openmpi module we can use the command:
+In order to now unload the openmpi module we can use the command:
 ```bash
 [username@login6002 ~]$ module unload openmpi
 ```
@@ -506,7 +512,7 @@ You can find out more details about the system from the [HPC Community Wiki](htt
 There is a team of HPC system adminstrators that look after Iridis, including supporting the installation and maintenence of the software you need. You can contact them through the [HPC Community Teams](https://teams.microsoft.com/l/team/19%3A18c8baa70f8540d78455babffe11ad9c%40thread.tacv2/conversations?groupId=a0a40f99-c620-425f-8c12-a1216cf64cce&tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8).
 
 ### Research Software Group & HPC Research Software Engineers
-The [Research Software Group](https://rsgsoton.net/) at Southampton is a team of Reasearch Software Engineers (RSE) dedictaed to ensuring software developed for research is as good as it can be. We offer a full range of Software Development Services, covering many different technologies and all academic disciplines.
+The <a href="https://rsgsoton.net/">Research Software Group</a> at Southampton is a team of Research Software Engineers (RSE) dedictaed to ensruing software developed for research is as good as it can be. We offer a full range of Software Development Services, covering many different technologies and all academic disciplines.
 
 Within the Research Software Group there is a team of HPC RSEs who have been employed to help researchers make the best use of Iridis. Optimising or extending existing codes to make best use of the HPC resources available, e.g. refactoring, porting to HPC, porting to GPU. 
 
