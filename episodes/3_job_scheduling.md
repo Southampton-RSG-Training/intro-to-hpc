@@ -77,7 +77,7 @@ The `-s` flag outputs a summarised version of this list. Omitting this flag prov
 queue and their current state, which gets quite messy.
 
 We can see the availability of each partition/queue, as well as the maximum time limit for jobs (in
-days-hours:minutes:seconds format). For example, on the batch queue there is a two and a half day limit, whilst the
+`days-hours:minutes:seconds` format). For example, on the batch queue there is a two and a half day limit, whilst the
 scavenger queue has a twelve hour limit. The * appended to the batch partition name indicates it is the preferred
 default queue. The NODES column indicates the number of nodes in a given state,
 
