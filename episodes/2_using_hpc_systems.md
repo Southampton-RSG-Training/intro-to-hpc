@@ -179,7 +179,7 @@ username@laptop:~$ ssh -i ~/.ssh/id_ed25519_iridis your_university_username@logi
 username@laptop:~$ ssh -i ~/.ssh/id_ed25519_iridis your_university_username@loginX003.iridis.soton.ac.uk  
 ```
 
-**You must be on the University campus network, or using the VPN, in order to access Iridis.** You can read about how to access the VPN <a href="https://knowledgenow.soton.ac.uk/Articles/KB0011610"> here</a>. 
+**You must be on the University campus network, or using the VPN, in order to access Iridis.** You can read about how to access the VPN [here](https://knowledgenow.soton.ac.uk/Articles/KB0011610). 
 
 On successfully logging onto the system you will see a system message of the day similar to:
 ```bash
