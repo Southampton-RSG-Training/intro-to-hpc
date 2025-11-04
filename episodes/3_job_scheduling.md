@@ -112,7 +112,7 @@ This purposefully truncated output shows who does and doesn't have access (Allow
 details about the configuration and details of the nodes in the partition (e.g. MaxTime, MinNodes, TotalNodes,
 TotalCPUs). Here, we can see accounts belonging to the "worldpop" group do not have access to the batch partition.
 
-To get more detail about a particular node in a partition we use,
+To get more detail about a particular node in a partition we use:
 
 ```bash
 [iridis6]$ scontrol show node=red6001
