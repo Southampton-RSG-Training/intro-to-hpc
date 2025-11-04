@@ -292,7 +292,7 @@ But there are some trade-offs with MPI. In terms of performance, communicating d
 which requires frequent communication or data dependencies, then you will spend more time exchanging data than doing
 computation. It may instead be worth using a shared-memory framework like OpenMP. However the biggest trade-off, by far,
 is that you need to design your application in mind for MPI parallelisation. Unlike OpenMP, it is not simple to retrofit
-a serial program with MPI. For example, we need to make sure we program ourselves initialising the MPI library, track
+a serial program with MPI. For example, we need to make sure we program initialising the MPI library ourselves, track
 process IDs, explicitly send and receive data, coordinate the processes so they do their own work, and so on. The table
 below gives an idea of some of the MPI functions we need to use and their purpose.
 
