@@ -255,6 +255,16 @@ You will notice that we have used environment variables starting with `$SLURM_`.
 starts running on a compute node. A complete list of them have be found in the [Slurm
 documentation](https://slurm.schedmd.com/sbatch.html#SECTION_OUTPUT-ENVIRONMENT-VARIABLES).
 
+::::::::::::::::::::::::::::::::::::: callout
+
+## No internet access on compute nodes
+
+On Iridis, the compute nodes **do not** have access to the internet. If your job script tries to download files or
+access any online resource, it will hang and eventually fail. You should run any *short* tasks that require internet
+access (like downloading datasets) on the login nodes before you submit your job, or in an Iridis on Demand interactive session.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 ## Submitting, monitoring and cancelling jobs
 
 ### Submitting jobs
