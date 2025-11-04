@@ -57,7 +57,7 @@ SSH keys are an alternative method for authentication to obtain access to remote
 - a public key which can be placed on any remote system you will access.
 
 :::callout
-A private key that is visible to anyone but you should be considered compromised, and must be destroyed. This includes having improper permissions on the directory it (or a copy) is stored in, traversing any network that is not secure (encrypted), attachment on unencrypted email, and even displaying the key on your terminal window.
+A private key that is visible to anyone should be considered compromised, and must be destroyed. This includes having improper permissions on the directory it (or a copy) is stored in, traversing any network that is not secure (encrypted), attached to an unencrypted email, and even displaying the key on your terminal window.
 :::
 
 The standard location for ssh keys is in a hidden folder in your home directory. Best to check if there are any there before creating a new pair, and potentially over writing the old ones! 
