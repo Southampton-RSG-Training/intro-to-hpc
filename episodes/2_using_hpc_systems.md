@@ -436,7 +436,7 @@ Say we have written a C program, that uses the MPI (Message Passing Interface) f
 
 The system looks through directories listed in our `$PATH` environment variable for the shell commands. The directories are listed following the `no mpicc in` message returned from the failed `which` command above. 
 
-In order to load `openmpi`, a module containing `mpicc` we issue the following command:
+In order to load `openmpi`, a module containing `mpicc`, we issue the following command:
 
 ```bash
 [username@login6002 ~]$ module load openmpi 
