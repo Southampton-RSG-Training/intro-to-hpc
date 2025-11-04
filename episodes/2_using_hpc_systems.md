@@ -35,7 +35,7 @@ An HPC system is an incredibly valuable resource, and getting access to one will
 
 ### Getting Access to Iridis
 
-In the case of Iridis, the process of getting access to the system is straight forward. Use of the system is *free* at the point of use, and there is a <a href="https://sotonac.sharepoint.com/teams/HPCCommunityWiki/SitePages/Connecting-to-Iridis5.aspx"> short application form</a> to be filled in. 
+In the case of Iridis, the process of getting access to the system is straight forward. Use of the system is *free* at the point of use, and there is a [short application form](https://sotonac.sharepoint.com/teams/HPCCommunityWiki/SitePages/Connecting-to-Iridis5.aspx) to be filled in. 
 
 The application includes a brief summary of the project you will be working on and the research topic along with some details of your computing requirements. Getting an account on Iridis 6 or Iridis X (or both) is through the same application form, and you can explicitly include which machine you would like an account for in the form. If you are unsure about which system would suit your needs best then there are plenty of avenues for getting help, which we will discuss later. Once your request has been granted the HPC team will contact you to let you know your account has been set-up, and you will be able to login to the system.
 
@@ -173,7 +173,7 @@ username@laptop:~$ ssh -i ~/.ssh/id_ed25519_iridis your_university_username@logi
 username@laptop:~$ ssh -i ~/.ssh/id_ed25519_iridis your_university_username@loginX003.iridis.soton.ac.uk  
 ```
 
-**You must be on the University campus network, or using the VPN, in order to access Iridis.** You can read about how to access the VPN <a href="https://knowledgenow.soton.ac.uk/Articles/KB0011610"> here</a>. 
+**You must be on the University campus network, or using the VPN, in order to access Iridis.** You can read about how to access the VPN [here](https://knowledgenow.soton.ac.uk/Articles/KB0011610). 
 
 On successfully logging onto the system you will see a system message of the day similar to:
 ```bash
@@ -228,7 +228,7 @@ However there is an alternative to SSH access from the command line for Iridis X
 
 ![Iridis On Demand: A web portal to the University of Southampton's HPC Cluster, Iridis](fig/OOD.png){width="80%"}
 
-You can request access to Iridis on Demand through the same application form to obtain an account on the system:  <a href="https://sotonac.sharepoint.com/teams/HPCCommunityWiki/SitePages/Connecting-to-Iridis5.aspx#requesting-access-to-iridis-ondemand">application form</a>. Simply include `Iridis Ondemand` keywords in the comment section of the application. 
+You can request access to Iridis on Demand through the same application form to obtain an account on the system: [here](https://sotonac.sharepoint.com/teams/HPCCommunityWiki/SitePages/Connecting-to-Iridis5.aspx#requesting-access-to-iridis-ondemand). Simply include `Iridis Ondemand` keywords in the comment section of the application. 
 
 Once granted access you can login at https://iridisondemand.soton.ac.uk/, ensuring you are on the campus network, or using the VPN. 
 
@@ -317,11 +317,11 @@ rsync -avzP /path/to/directory/ username@iridis6.soton.ac.uk:/path/to/directory/
 
 ### GUI based data transfer
 
-There are GUI based alternatives to the above command line tools. One such option is <a href="https://filezilla-project.org/">Filezilla</a>, a cross-platform client MAcOS, Windows and Linux that can use the SFTP  protocol and will allow you to drag and drop files between the remote and local system.
+There are GUI based alternatives to the above command line tools. One such option is [Filezilla](https://filezilla-project.org/) a cross-platform client MAcOS, Windows and Linux that can use the SFTP  protocol and will allow you to drag and drop files between the remote and local system.
 
 Finally for Iridis X (and Iridis 6 as the two systems share a filesystem) Open on Demand has a file manager that will allow you to browse files as well as upload and download files to and from the system.
 
-![File Manager in Iridis On Demand: Moving data to and from the Iridis HPC system can be achieved in the Open On Demand Web POrtal](fig/Iridis_OOD_FIle_browser.png){width="80%"}
+![File Manager in Iridis On Demand: Moving data to and from the Iridis HPC system can be achieved in the Open On Demand Web Portal](fig/Iridis_OOD_FIle_browser.png){width="80%"}
 
 ## Data Management
 
@@ -337,13 +337,44 @@ Here are some suggestions for how to manage your data on an HPC system:
 
 ### Use the right filesystem:
 - Most HPC clusters provide multiple storage filesystems optimised for different purposes. 
-- For example, on Iridis 6 & X, your home directory (/home/username/) has a **110 GB quota** and is **regularly backed up**. This space is best used for storing important source code, scripts, and essential datasets needed to run your jobs. 
-- You also have access to a scratch directory (**/scratch/username/**), which provides a much **larger 1.5 TB quota** but is **not backed up**. This area is designed for temporary or intermediate files — such as large simulation outputs or data requiring further analysis — that can be safely deleted or moved off the system once processing is complete.
+- Typically there will be a `home` directory, which will be backed up. This space is best used for storing important source code, scripts, and essential datasets needed to run your jobs. 
+- There will also likely be a `scratch` space on the file system. This area is designed for temporary or intermediate files — such as large simulation outputs or data requiring further analysis — that can be safely deleted or moved off the system once processing is complete.
+- **Each system will differ, so check the documentation carefully**
 
 ### Data Lifecycle:
 - Clean up old data to free up space: deleting or archiving with zipping tools.
 - Track data provenance: Record how data was generated or modified.
-- Back-up data: ensure important data is regulalry backed up off the HPC system.
+- Back-up data: ensure important data is regularly backed up off the HPC system.
+
+:::callout
+### Iridis Filesystem & Quotas
+Iridis 6 & X share a filesystem. On it you have access to two main areas:
+- Home directory: (`/home/username/`): **backed up** for important files 
+- Scratch directory (`/scratch/username/`): **not backed up**, for temporary or intermediate input & output files to enable computational workloads
+
+There are two quota types in place on the system:
+- A data limit: restricts the amount of data you can store. 
+    - **110 GB** on the `/home/username/` directory
+    - **1.5 TB** on the `/scratch/username/` directory
+- An inode limit: restricts the number of files you can store.
+    - **160,000** on the `/home/username/` directory
+    - ***500,000** on the `/scratch/username/`
+    
+You can check the usage of the quotas with the following command on the system:
+```bash
+username@login6001:~$ myfiles
+Home space used (GB): 24/130
+━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━
+Home number of files used: 202813/204800
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
+Scratch space used (GB): 208/2000
+━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━
+Scratch number of files used: 486966/614400
+━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━
+```
+
+If creating virtual environments (using e.g. `conda` or `python -m venv`) it can be extremely easy to hit the inode quota, so it is wirth remembering this command and regularly checking your usage.
+:::
 
 
 ## Software Management: Environment Modules
@@ -487,12 +518,12 @@ No modules loaded
 
 There are multiple avenues to getting help with Iridis. 
 
-You can find out more details about the system from the <a href="https://sotonac.sharepoint.com/teams/HPCCommunityWiki">HPC Community Wiki</a>.
+You can find out more details about the system from the [HPC Community Wiki](https://sotonac.sharepoint.com/teams/HPCCommunityWiki).
 
-There is a team of HPC system adminstrators that look after Iridis, including supporting the installation and maintenence of the software you need. You can contact them through the <a href="https://teams.microsoft.com/l/team/19%3A18c8baa70f8540d78455babffe11ad9c%40thread.tacv2/conversations?groupId=a0a40f99-c620-425f-8c12-a1216cf64cce&tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8"> HPC Community Teams</a>.
+There is a team of HPC system adminstrators that look after Iridis, including supporting the installation and maintenence of the software you need. You can contact them through the [HPC Community Teams](https://teams.microsoft.com/l/team/19%3A18c8baa70f8540d78455babffe11ad9c%40thread.tacv2/conversations?groupId=a0a40f99-c620-425f-8c12-a1216cf64cce&tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8).
 
 ### Research Software Group & HPC Research Software Engineers
-The <a href="https://rsgsoton.net/">Research Software Group</a> at Southampton is a team of Reasearch Software Engineers (RSE) dedictaed to ensruing software developed for research is as good as it can be. We offer a full range of Software Development Services, covering many different technologies and all academic disciplines.
+The [Research Software Group](https://rsgsoton.net/) at Southampton is a team of Reasearch Software Engineers (RSE) dedictaed to ensuring software developed for research is as good as it can be. We offer a full range of Software Development Services, covering many different technologies and all academic disciplines.
 
 Within the Research Software Group there is a team of HPC RSEs who have been employed to help researchers make the best use of Iridis. Optimising or extending existing codes to make best use of the HPC resources available, e.g. refactoring, porting to HPC, porting to GPU. 
 
