@@ -356,7 +356,7 @@ Here are some suggestions for how to manage your data on an HPC system:
 
 HPC systems will have a selection of centrally installed and managed software packages, but they will not be available to use immediately when you login. Software is usually managed on HPC systems using **Environment Modules**, and packages need to be _loaded_ before they are available for use. 
 
-:::callout
+::: challenge
 There are several reasons behind the use of environment modules for software management. Can you think of any? Discuss it with your colleagues. 
 :::
 :::solution
