@@ -251,8 +251,9 @@ cd $SLURM_SUBMIT_DIR
 python my_script.py --input data/input.txt --output results/output.txt
 ```
 
-You will notice that we have used environment variables starting with `$SLURM_`. These are set by Slurm when a job
-starts running on a compute node. A complete list of them have be found in the [Slurm
+In this example, [python_job.sh](files/python_job.sh), we used the following script: [my_script.py](files/my_script.py).
+In the submission script, you will notice that we have used environment variables starting with `$SLURM_`. These are set
+by Slurm when a job starts running on a compute node. A complete list of them have be found in the [Slurm
 documentation](https://slurm.schedmd.com/sbatch.html#SECTION_OUTPUT-ENVIRONMENT-VARIABLES).
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -383,6 +384,43 @@ We can also refine this to cancel only pending jobs, whilst letting running ones
 ```bash
 [iridis6]$ scancel -u $USER -t PENDING
 ```
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Submit, monitor and cancel a Python example
+
+Now try all of this yourself with the Python example from earlier in the episode. You should use the the Python script
+[my_script.py](files/my_script.py) and the submission script [python_job.sh](files/python_job.sh).
+
+Submit your job, check in on its status in the queue and then cancel it. The job should run for around five minutes,
+giving you enough time to do these three steps.
+
+::::::::::::::::::::::::::::::::::::: solution
+
+First, submit the `python_job.sh` script using the `sbatch` command.
+
+```bash
+[iridis6]$ sbatch python_job.sh
+Submitted batch job 715861
+```
+
+Make a note of the Job ID (e.g., 715861) that is returned. Check the status of your job using `squeue -u $USER`. You
+should see your job listed, likely in the PD (Pending) state.
+
+```bash
+[iridis6]$ squeue -u $USER
+JOBID   PARTITION  NAME      USER     ST  TIME  NODES  NODELIST(REASON)
+715861  batch      python_job  ejp1v21  PD  0:00  1      (Priority)
+```
+
+Finally, cancel the job using `scancel` and the Job ID you noted.
+
+```bash
+[iridis6]$ scancel 715861
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Interactive jobs
 
