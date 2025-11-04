@@ -107,7 +107,7 @@ When prompted, enter a strong password:
 - **Nothing is less secure than a private key with no password.** If you skipped password entry by accident, go back and generate a new key pair with a strong password.
 :::
 
-Take a look in ~/.ssh (use `ls ~/.ssh`). You should see two new files:
+Take a look in `~/.ssh` (use `ls ~/.ssh`). You should see two new files:
 
 - your private key (~/.ssh/id_ed25519_iridis): do not share with anyone!
 - the shareable public key (~/.ssh/id_ed25519_iridis.pub): if a system administrator asks for a key, this is the one to send. It is also safe to upload to websites such as GitHub: it is meant to be seen.
