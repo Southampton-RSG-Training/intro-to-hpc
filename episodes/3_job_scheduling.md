@@ -32,7 +32,7 @@ available hardware. On Iridis, the scheduler is Slurm, but the concepts are tran
 PBS.
 
 ![Queueing up to eat at a popular restaurant is like queueing up to run something on an HPC
-cluster.](fig/restaurant_queue_manager.svg)
+cluster.](fig/restaurant_queue_manager.svg){width=100%}
 
 The scheduler acts like a manager at a popular restaurant. You must queue to get in, and you must wait for a table to
 become free. This is why your jobs may sit in a queue before they start, unlike on your computer. In this episode, we'll
