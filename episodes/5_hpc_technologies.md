@@ -85,8 +85,8 @@ The intention is not to make you proficient with these frameworks--or even dange
 appreciation on what is being used.
 
 To illustrate this, we will use a simple program, written in C, which adds together two vectors to explore the code
-changes required. More specifically, we will be modifying the following function `vector_add` to run in parallel. We have chosen
-to use C here, as it is rather simple to look at and understand, but the language does not really matter.
+changes required. More specifically, we will be modifying the following function `vector_add` to run in parallel. We
+have chosen to use C as it is commonly used language in HPC.
 
 ```c
 // *a, *b, and *c are arrays and n is the length of them.
