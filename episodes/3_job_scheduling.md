@@ -44,7 +44,7 @@ On Iridis, and all HPC clusters, the login they are intended only for light and 
 managing data, compiling code and submitting/monitoring jobs in the queue.
 
 You must not run computationally intensive or long-running tasks on them. Login nodes are a shared resource for all
-users to access the system. Running intensive jobs on them slows the system down for everyone. Any such process will be
+users to access the system, and so running intensive jobs on them slows the system down for everyone. Any such process will be
 ended automatically, and repeated misuse may lead to your access to Iridis being restricted. To enforce this, login
 nodes have strict resource limits. You are limited to 64 GB of RAM and 2 CPUs (Iridis X also provides an NVIDIA L4 GPU).
 
