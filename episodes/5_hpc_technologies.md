@@ -257,7 +257,7 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 # Compile the program using gcc
 module load gcc
-gcc -fopenmp vector_openmp.exe -o vector_openmp.exe
+gcc -fopenmp vector_openmp.c -o vector_openmp.exe
 
 # We run the compiled executable just like the serial version
 ./vector_openmp.exe
