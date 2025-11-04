@@ -437,8 +437,12 @@ Say we have written a C program, that uses the MPI (Message Passing Interface) f
 [username@login6002 ~]$ which mpicc
 /usr/bin/which: no mpicc in (/home/co1f23/.local/bin:/home/co1f23/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/lpp/mmfs/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/iridisfs/i6software/slurm/default/bin:/iridisfs/i6software/slurm/bin:/opt/c3/bin)
 ```
-
-The system looks through directories listed in our `$PATH` environment variable for the shell commands. The directories are listed following the `no mpicc in` message returned from the failed `which` command above. 
+:::callout
+ ### What is `$PATH`?
+- `$PATH` is an environment variable that tells your shell where to look for executable programs when you type a command. It’s a list of directory paths, separated by colons (:). When you run a command like mpicc, the system searches these directories in order until it finds a matching executable.
+- Loading modules (like openmpi) adds new directories to `$PATH`, allowing you to use the software they provide without typing the full path to the executable.
+- The system looks through directories listed in our `$PATH` environment variable for the shell commands. The directories are listed following the `no mpicc in` message returned from the failed `which` command above. 
+::::
 
 In order to load `openmpi`, a module containing `mpicc` we issue the following command:
 
