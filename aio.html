@@ -243,7 +243,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="introduction.html">1. Using Markdown</a>
+        <a href="1_intro_to_hpc_systems.html">1. Introduction to HPC Systems</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -255,7 +255,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="1_intro_to_hpc_systems.html">2. Introduction to HPC Systems</a>
+        <a href="2_using_hpc_systems.html">2. Accessing and Using HPC Resources</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -267,7 +267,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="2_using_hpc_systems.html">3. Accessing and Using HPC Resources</a>
+        <a href="3_job_scheduling.html">3. Introduction to Job Scheduling</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -279,7 +279,7 @@
 <div class="accordion accordion-flush" id="accordionFlush5">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading5">
-        <a href="3_job_scheduling.html">4. Introduction to Job Scheduling</a>
+        <a href="4_programmatic_parallelism.html">4. Introduction to Programmatic Parallelism</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -291,7 +291,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="4_programmatic_parallelism.html">5. Introduction to Programmatic Parallelism</a>
+        <a href="5_hpc_technologies.html">5. Landscape of HPC Technologies</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -303,7 +303,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="5_hpc_technologies.html">6. Introduction to HPC Technologies</a>
+        <a href="6_parallel_scaling.html">6. Measuring and improving parallel performance</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -366,179 +366,7 @@
     <main id="main-content" class="main-content"><div class="container lesson-content">
         
         
-<section id="aio-introduction"><p>Content from <a href="introduction.html">Using Markdown</a></p>
-<hr>
-<p>Last updated on 2025-09-25 |
-
-        <a href="https://github.com/carpentries/workbench-template-md/edit/main/episodes/introduction.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>How do you write a lesson using Markdown and
-<a href="https://carpentries.github.io/sandpaper/" class="external-link">sandpaper</a>?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Explain how to use markdown with The Carpentries Workbench</li>
-<li>Demonstrate how to include pieces of code, figures, and nested
-challenge blocks</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
-<hr class="half-width">
-<p>This is a lesson created via The Carpentries Workbench. It is written
-in <a href="https://pandoc.org/MANUAL.html" class="external-link">Pandoc-flavored Markdown</a>
-for static files and <a href="https://rmarkdown.rstudio.com/" class="external-link">R
-Markdown</a> for dynamic files that can render code into output. Please
-refer to the <a href="https://carpentries.github.io/sandpaper-docs/" class="external-link">Introduction to The
-Carpentries Workbench</a> for full documentation.</p>
-<p>What you need to know is that there are three sections required for a
-valid Carpentries lesson:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code>questions</code> are displayed at the beginning of the episode
-to prime the learner for the content.</li>
-<li>
-<code>objectives</code> are the learning objectives for an episode
-displayed with the questions.</li>
-<li>
-<code>key points</code> are displayed at the end of the episode to
-reinforce the objectives.</li>
-</ol>
-<div id="challenge-1-can-you-do-it" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<span class="callout-header">Challenge</span>
-<div id="challenge-1-can-you-do-it" class="callout-inner">
-<h3 class="callout-title">Challenge 1: Can you do it?</h3>
-<div class="callout-content">
-<p>What is the output of this command?</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">paste</span><span class="op">(</span><span class="st">"This"</span>, <span class="st">"new"</span>, <span class="st">"lesson"</span>, <span class="st">"looks"</span>, <span class="st">"good"</span><span class="op">)</span></span></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1"> Output </h4>
-</button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
-<div class="accordion-body">
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="output" tabindex="0"><code>[1] "This new lesson looks good"</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="challenge-2-how-do-you-nest-solutions-within-challenge-blocks" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<span class="callout-header">Challenge</span>
-<div id="challenge-2-how-do-you-nest-solutions-within-challenge-blocks" class="callout-inner">
-<h3 class="callout-title">Challenge 2: how do you nest solutions within
-challenge blocks?</h3>
-<div class="callout-content">
-
-</div>
-</div>
-</div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
-</button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
-<div class="accordion-body">
-<p>You can add a line with at least three colons and a
-<code>solution</code> tag.</p>
-</div>
-</div>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="figures">Figures<a class="anchor" aria-label="anchor" href="#figures"></a>
-</h2>
-<hr class="half-width">
-<p>You can use standard markdown for static figures with the following
-syntax:</p>
-<p><code>![optional caption that appears below the figure](figure url){alt='alt text for accessibility purposes'}</code></p>
-<figure><img src="https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg" alt="Blue Carpentries hex person logo with no text." class="figure mx-auto d-block"><div class="figcaption">You belong in The Carpentries!</div>
-</figure><div id="callout1" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div class="callout-inner">
-<div class="callout-content">
-<p>Callout sections can highlight information.</p>
-<p>They are sometimes used to emphasise particularly important points
-but are also used in some lessons to present “asides”: content that is
-not central to the narrative of the lesson, e.g. by providing the answer
-to a commonly-asked question.</p>
-</div>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="math">Math<a class="anchor" aria-label="anchor" href="#math"></a>
-</h2>
-<hr class="half-width">
-<p>One of our episodes contains <span class="math inline">\(\LaTeX\)</span> equations when describing how to
-create dynamic reports with {knitr}, so we now use mathjax to describe
-this:</p>
-<p><code>$\alpha = \dfrac{1}{(1 - \beta)^2}$</code> becomes: <span class="math inline">\(\alpha = \dfrac{1}{(1 - \beta)^2}\)</span></p>
-<p>Cool, right?</p>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<span class="callout-header">Key Points</span>
-<div class="callout-inner">
-<div class="callout-content">
-<ul>
-<li>Use <code>.md</code> files for episodes when you want static
-content</li>
-<li>Use <code>.Rmd</code> files for episodes when you need to generate
-output</li>
-<li>Run <code>sandpaper::check_lesson()</code> to identify any issues
-with your lesson</li>
-<li>Run <code>sandpaper::build_lesson()</code> to preview your lesson
-locally</li>
-</ul>
-</div>
-</div>
-</div>
-<!--
-Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use.
- -->
-</section></section><section id="aio-1_intro_to_hpc_systems"><p>Content from <a href="1_intro_to_hpc_systems.html">Introduction to HPC Systems</a></p>
+<section id="aio-1_intro_to_hpc_systems"><p>Content from <a href="1_intro_to_hpc_systems.html">Introduction to HPC Systems</a></p>
 <hr>
 <p>Last updated on 2025-11-04 |
 
@@ -1262,7 +1090,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-2_using_hpc_systems"><p>Content from <a href="2_using_hpc_systems.html">Accessing and Using HPC Resources</a></p>
 <hr>
-<p>Last updated on 2025-09-25 |
+<p>Last updated on 2025-11-06 |
 
         <a href="https://github.com/carpentries/workbench-template-md/edit/main/episodes/2_using_hpc_systems.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1276,7 +1104,13 @@ any links that you are not going to use.
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>Did you know you have to have this question section?</li>
+<li>How do I get an account to access Iridis?</li>
+<li>How is my connection to an HPC system secured?</li>
+<li>How can I connect to an HPC system?</li>
+<li>What ways are there to get data on to and from an HPC system?</li>
+<li>How should I manage my data on an HPC system?</li>
+<li>What software is available on an HPC system, and how do I access
+it?</li>
 </ul>
 </div>
 </div>
@@ -1286,7 +1120,7 @@ any links that you are not going to use.
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Summarise the process for applying for access to IRIDIS /
+<li>Summarise the process for applying for access to Iridis &amp;
 OpenOnDemand</li>
 <li>Summarise how access to HPC systems is typically secured</li>
 <li>Describe how to connect to an HPC system using an SSH client
@@ -1294,15 +1128,809 @@ program</li>
 <li>Describe how to transfer files to and from an HPC system over an SSH
 connection</li>
 <li>Summarise best practices for managing generated research data</li>
-<li>Explain how the shell environment changes when the module mechanism
-loads or unloads packages</li>
+<li>Explain how to use software packages installed on the system through
+software modules</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 </div>
-<p>Lesson content goes here</p>
+<p>We have seen a high level overview of <em>what</em> an HPC system is,
+and why it could be enormously beneficial to your research. Now it is
+time to discuss <em>how</em> we get access to it and look at the first
+steps of using an HPC system: logging on, transferring data, accessing
+installed software and getting help!</p>
+<section><h2 class="section-heading" id="getting-access-to-an-hpc-system">Getting access to an HPC system<a class="anchor" aria-label="anchor" href="#getting-access-to-an-hpc-system"></a>
+</h2>
+<hr class="half-width">
+<p>An HPC system is an incredibly valuable resource, and getting access
+to one will involve a few steps. Prospective users will typically have
+to request an account through a sign-up process, along with a
+justification of the use of the system. For example this can be through
+a “funding” application for Computing Resources, as we have seen for
+Tier 2 and National HPC systems in the previous episode, or a much more
+straight-forward request to the HPC administration team of a local tier
+3 HPC system.</p>
+<div class="section level3">
+<h3 id="getting-access-to-iridis">Getting Access to Iridis<a class="anchor" aria-label="anchor" href="#getting-access-to-iridis"></a>
+</h3>
+<p>In the case of Iridis, the process of getting access to the system is
+straight forward. Use of the system is <em>free</em> at the point of
+use, and there is a <a href="https://sotonac.sharepoint.com/teams/HPCCommunityWiki/SitePages/Connecting-to-Iridis5.aspx" class="external-link">short
+application form</a> to be filled in.</p>
+<p>The application includes a brief summary of the project you will be
+working on and the research topic along with some details of your
+computing requirements. Getting an account on Iridis 6 or Iridis X (or
+both) is through the same application form, and you can explicitly
+include which machine you would like an account for in the form. If you
+are unsure about which system would suit your needs best then there are
+plenty of avenues for getting help, which we will discuss later. Once
+your request has been granted the HPC team will contact you to let you
+know your account has been set-up, and you will be able to login to the
+system.</p>
+</div>
+</section><section><h2 class="section-heading" id="securely-connecting-to-an-hpc-system">Securely Connecting to an HPC System<a class="anchor" aria-label="anchor" href="#securely-connecting-to-an-hpc-system"></a>
+</h2>
+<hr class="half-width">
+<p>Accessing an HPC system is most often done through the command line
+interface (CLI), the use of which you are already familiar with from
+your bash session this morning. The only leap to be made here is to open
+the CLI on a remote machine, though there are precautions to be taken to
+ensure the connection is secure. These precautions make sure no-one can
+see or change the commands you are sending and that no-one gets access
+to your account.</p>
+<p>These security requirements are most often handled through use of a
+tool known as <strong>S</strong>ecure <strong>SH</strong>ell (SSH).
+Logging onto your laptop or personal device will normally require a
+password or pattern to prevent unauthorised access. The likelihood of
+somebody else intercepting your password is low, since logging your
+keystrokes requires a malicious exploit or physical access.</p>
+<p>For systems running an SSH server anyone on the network can attempt
+to log in. Usernames are quite often public, or easy to guess, which
+makes the password the weakest link in the security chain. Many clusters
+therefore forbid password-based login, requiring instead that you
+generate and configure a public-private key pair with a much stronger
+password, known as SSH keys.</p>
+<p>While accessing Iridis can be done using your University username and
+password, we will quickly walk through the use of SSH keys and an SSH
+agent to both strengthen your security and make it more convenient to
+log in to remote systems.</p>
+<div class="section level3">
+<h3 id="ssh-keys">SSH Keys<a class="anchor" aria-label="anchor" href="#ssh-keys"></a>
+</h3>
+<p>SSH keys are an alternative method for authentication to obtain
+access to remote computing systems. They can also be used for
+authentication when transferring files or for accessing remote version
+control systems (such as GitHub). We will walk through the creation and
+use of a pair of SSH keys:</p>
+<ul>
+<li>a private key which you keep on your own computer, and</li>
+<li>a public key which can be placed on any remote system you will
+access.</li>
+</ul>
+<div id="callout1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>A private key that is visible to anyone should be considered
+compromised, and must be destroyed. This includes having improper
+permissions on the directory it (or a copy) is stored in, traversing any
+network that is not secure (encrypted), attached to an unencrypted
+email, and even displaying the key on your terminal window.</p>
+</div>
+</div>
+</div>
+<p>The standard location for ssh keys is in a hidden folder in your home
+directory. Best to check if there are any there before creating a new
+pair, and potentially over writing the old ones!</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> ls ~/.ssh</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">id_ed25519</span> id_ed25519.pub</span></code></pre>
+</div>
+<p>To generate a new pair of SSH keys we can use the
+<code>ssh-keygen</code> tool from the CLI. You can see the manual and
+all the arguments and options for the tool with the following
+command:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> man ssh-keygen</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>SSH-KEYGEN(1)                                                                             General Commands Manual                                                                             SSH-KEYGEN(1)
+
+NAME
+     ssh-keygen – OpenSSH authentication key utility
+
+SYNOPSIS
+     ssh-keygen [-q] [-a rounds] [-b bits] [-C comment] [-f output_keyfile] [-m format] [-N new_passphrase] [-O option] [-t dsa | ecdsa | ecdsa-sk | ed25519 | ed25519-sk | rsa] [-w provider] [-Z cipher]
+     ssh-keygen -p [-a rounds] [-f keyfile] [-m format] [-N new_passphrase] [-P old_passphrase] [-Z cipher]
+     ssh-keygen -i [-f input_keyfile] [-m key_format]
+     ssh-keygen -e [-f input_keyfile] [-m key_format]
+     ssh-keygen -y [-f input_keyfile]
+     ssh-keygen -c [-a rounds] [-C comment] [-f keyfile] [-P passphrase]
+    ...</code></pre>
+</div>
+<p>In order to create an SSH key pair we can use the following
+command:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> ssh-keygen <span class="at">-a</span> 100 <span class="at">-f</span> ~/.ssh/id_ed25519_iridis <span class="at">-t</span> ed25519</span></code></pre>
+</div>
+<p>This will generate a new strong SSH key pair, with the following
+flags:</p>
+<ul>
+<li>a (default is 16): number of rounds of passphrase derivation;
+increase to slow down brute force attacks.</li>
+<li>t (default is rsa): specify the “type” or cryptographic algorithm.
+ed25519 specifies EdDSA with a 256-bit key; it is faster than RSA with a
+comparable strength.</li>
+<li>f (default is <code>/home/user/.ssh/id_algorithm</code>): filename
+to store your private key. The public key filename will be identical,
+with a .pub extension added.</li>
+</ul>
+<p>When prompted, enter a strong password:</p>
+<div id="callout2" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<ul>
+<li>Use a password manager and its built-in password generator with all
+character classes, 25 characters or longer, such as LastPass.</li>
+<li>Create a memorable passphrase with some punctuation and
+number-for-letter substitutions, 32 characters or longer.</li>
+<li>
+<strong>Nothing is less secure than a private key with no
+password.</strong> If you skipped password entry by accident, go back
+and generate a new key pair with a strong password.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>Take a look in <code>~/.ssh</code> (use <code>ls ~/.ssh</code>). You
+should see two new files:</p>
+<ul>
+<li>your private key (<code>~/.ssh/id_ed25519_iridis</code>): do not
+share with anyone!</li>
+<li>the shareable public key
+(<code>~/.ssh/id_ed25519_iridis.pub</code>): if a system administrator
+asks for a key, this is the one to send. It is also safe to upload to
+websites such as GitHub: it is meant to be seen.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="ssh-agent">SSH Agent<a class="anchor" aria-label="anchor" href="#ssh-agent"></a>
+</h3>
+<p>Typing out a complex password by hand every time you want to connect
+to the HPC system is tedious. You can use SSH Agent to make the process
+much more convenient. It is a helper program that keeps track of your
+keys and passphrases. It allows you to type your password once, and be
+remembered by the SSH Agent, for some period of time until you log
+off.</p>
+<p>We can check if the SSH agent is running with:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> ssh-add <span class="at">-l</span></span></code></pre>
+</div>
+<p>If you get an error like:</p>
+<div class="codewrapper">
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="error" tabindex="0"><code>Error connecting to agent: No such file or directory</code></pre>
+</div>
+<p>… then the agent needs to be started with:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> eval <span class="va">$(</span><span class="fu">ssh-agent</span><span class="va">)</span></span></code></pre>
+</div>
+<p>Now you can add your key to the agent with:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> ssh-add <span class="at">-t</span> 8h ~/.ssh/id_ed25519_iridis</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Enter passphrase for .ssh/id_ed25519_iridis:
+Identity added: .ssh/id_ed25519_iridis
+Lifetime set to 86400 seconds</code></pre>
+</div>
+<p>Using an SSH Agent, you can type your password for the private key
+once, then have the agent remember it for some number of hours or until
+you log off. Unless someone has physical access to your machine, this
+keeps the password safe, and removes the tedium of entering the password
+multiple times.</p>
+</div>
+<div class="section level3">
+<h3 id="logging-on-to-the-system">Logging on to the system<a class="anchor" aria-label="anchor" href="#logging-on-to-the-system"></a>
+</h3>
+<p>Logging onto an HPC system from the CLI is done with the
+<code>ssh</code> command. The general syntax of the command is:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> ~/.ssh/ssh_key your_username@hpc.system.address</span></code></pre>
+</div>
+<p>The <code>-i</code> flag tells <code>ssh</code> to use an SSH key,
+and is followed by the path to its location. If using password
+authentication this flag can be omitted.</p>
+<p>The command to log onto Iridis 6 using the SSH key from the previous
+section would be:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> ssh <span class="at">-i</span> ~/.ssh/id_ed25519_iridis your_university_username@iridis6.soton.ac.uk </span></code></pre>
+</div>
+<p>and for Iridis X there are 3 login nodes:</p>
+<ul>
+<li>
+<code>loginX001</code>; an Intel Xeon 8562Y+ login node with an
+NVIDIA L4 GPU</li>
+<li>
+<code>loginX002</code> and AMD EPYC 7452 CPU node without a GPU</li>
+<li>
+<code>loginX003</code>; an AMD EPYC 9255 node with an NVIDIA L4
+GPU</li>
+</ul>
+<p>The commands to login to each of them are:</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> ssh <span class="at">-i</span> ~/.ssh/id_ed25519_iridis your_university_username@loginX001.iridis.soton.ac.uk  </span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="ex">username@laptop:~$</span> ssh <span class="at">-i</span> ~/.ssh/id_ed25519_iridis your_university_username@loginX002.iridis.soton.ac.uk  </span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="ex">username@laptop:~$</span> ssh <span class="at">-i</span> ~/.ssh/id_ed25519_iridis your_university_username@loginX003.iridis.soton.ac.uk  </span></code></pre>
+</div>
+<p><strong>You must be on the University campus network, or using the
+VPN, in order to access Iridis.</strong> You can read about how to
+access the VPN <a href="https://knowledgenow.soton.ac.uk/Articles/KB0011610" class="external-link">here</a>.</p>
+<p>On successfully logging onto the system you will see a system message
+of the day similar to:</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>        <span class="co">######################################################</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                        <span class="ex">WELCOME</span> TO IRIDIS 6</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>        <span class="co">######################################################</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>        <span class="ex">Login</span> nodes are limited to 64 GB of RAM and 2 CPUs per user.</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>        <span class="ex">The</span> system has two sets of hardware:</span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>        <span class="ex">134</span> Red Genoa nodes <span class="er">(</span><span class="va">red</span><span class="op">[</span><span class="dv">6001</span>-6134<span class="op">]</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>                <span class="ex">Dual</span> socket AMD EPYC 9654 96-Core Processors = 192 cores</span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>                <span class="ex">650GB</span> usable memory per node</span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>                <span class="ex">Single</span> HDR 100 Gigabit IB connection</span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>        <span class="ex">6</span> Red Genoa-X nodes <span class="er">(</span><span class="va">red</span><span class="op">[</span><span class="dv">6135</span>-6140<span class="op">]</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>                <span class="ex">Dual</span> socket AMD EPYC 9684X 96-Core Processors = 192 cores</span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a>                <span class="ex">650GB</span> usable memory per node</span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a>                <span class="ex">Single</span> HDR 100 Gigabit IB connection</span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a>        <span class="ex">4</span> Gold nodes:</span>
+<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a>                <span class="ex">Dual</span> socket AMD EPYC 9654 96-Core Processors = 192 cores</span>
+<span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a>                <span class="ex">2.85TB</span> usable memory per node</span>
+<span id="cb13-25"><a href="#cb13-25" tabindex="-1"></a>                <span class="ex">Single</span> HDR 100 Gigabit IB connection</span>
+<span id="cb13-26"><a href="#cb13-26" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" tabindex="-1"></a>        <span class="ex">The</span> system uses the Slurm scheduler, similar to Iridis 5, where the partitions</span>
+<span id="cb13-28"><a href="#cb13-28" tabindex="-1"></a>        <span class="ex">are</span> currently named red/gold after the hardware types. Please run <span class="st">'sinfo'</span> to</span>
+<span id="cb13-29"><a href="#cb13-29" tabindex="-1"></a>        <span class="ex">get</span> further information.</span>
+<span id="cb13-30"><a href="#cb13-30" tabindex="-1"></a></span>
+<span id="cb13-31"><a href="#cb13-31" tabindex="-1"></a>        <span class="ex">Settings</span> <span class="er">(</span><span class="ex">such</span> as Slurm flags, available modules, partition names, resource limits<span class="kw">)</span></span>
+<span id="cb13-32"><a href="#cb13-32" tabindex="-1"></a>        <span class="ex">on</span> this system are likely to change over the next several weeks, please check</span>
+<span id="cb13-33"><a href="#cb13-33" tabindex="-1"></a>        <span class="ex">your</span> work matches the system prior to any usage.</span>
+<span id="cb13-34"><a href="#cb13-34" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" tabindex="-1"></a>        <span class="ex">Users</span> have a default limit of 384 CPUs, where we are looking to expand this</span>
+<span id="cb13-36"><a href="#cb13-36" tabindex="-1"></a>        <span class="ex">during</span> service and provide users up to 768 CPUs, based on experience level.</span>
+<span id="cb13-37"><a href="#cb13-37" tabindex="-1"></a></span>
+<span id="cb13-38"><a href="#cb13-38" tabindex="-1"></a>        <span class="ex">For</span> issues and problems, please contact us on Teams or via ServiceLine.</span>
+<span id="cb13-39"><a href="#cb13-39" tabindex="-1"></a>        <span class="ex">There</span> is now an Iridis 6 Support channel in Teams, please post in that</span>
+<span id="cb13-40"><a href="#cb13-40" tabindex="-1"></a>        <span class="ex">channel.</span></span>
+<span id="cb13-41"><a href="#cb13-41" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" tabindex="-1"></a>        <span class="ex">NB:</span> There are no GPUs in Iridis 6 currently.</span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="iridis-on-demand">Iridis On Demand<a class="anchor" aria-label="anchor" href="#iridis-on-demand"></a>
+</h3>
+<p>From your bash session this morning you will now be aware of the
+power of the programmatic capabilities of a scripting language from the
+command line. User interaction with High Performance Computing clusters
+has typically always been done using the command line, and leveraging a
+scripting language from the command line can be extremely efficient when
+manipulating data and interacting with the cluster’s resources.</p>
+<p>However there is an alternative to SSH access from the command line
+for Iridis X, which is Iridis On Demand. Iridis on Demand provides a web
+based interface to HPC system, allowing you to create job scripts,
+transfer data on/off the system, submit and manage jobs and even run
+some interactive apps on the compute nodes, such as Jupyter notebooks
+and remote desktops.</p>
+<figure><img src="fig/OOD.png" style="width:80.0%" alt="Iridis On Demand: A web portal to the University of Southampton’s HPC Cluster, Iridis" class="figure mx-auto d-block"><div class="figcaption">Iridis On Demand: A web portal to the University
+of Southampton’s HPC Cluster, Iridis</div>
+</figure><p>You can request access to Iridis on Demand through the same
+application form to obtain an account on the system: <a href="https://sotonac.sharepoint.com/teams/HPCCommunityWiki/SitePages/Connecting-to-Iridis5.aspx#requesting-access-to-iridis-ondemand" class="external-link">here</a>.
+Simply include <code>Iridis Ondemand</code> keywords in the comment
+section of the application.</p>
+<p>Once granted access you can login at <a href="https://iridisondemand.soton.ac.uk/" class="external-link uri">https://iridisondemand.soton.ac.uk/</a>, ensuring you are on
+the campus network, or using the VPN.</p>
+</div>
+</section><section><h2 class="section-heading" id="data-transfer">Data Transfer<a class="anchor" aria-label="anchor" href="#data-transfer"></a>
+</h2>
+<hr class="half-width">
+<p>Moving data onto and from an HPC system can be achieved in several
+ways. One of the most common tools are SSH based SFTP (Secure File
+Transfer Protocol) and rsync.</p>
+<div class="section level3">
+<h3 id="using-sftp-in-the-terminal">Using SFTP in the terminal<a class="anchor" aria-label="anchor" href="#using-sftp-in-the-terminal"></a>
+</h3>
+<p>SCP is lightweight and extremely straightforward to use, however it
+is not very advanced in its abilities. SFTP has more advanced features,
+including:</p>
+<ul>
+<li>Interactive sessions with remote file management such as renaming
+files, deleting files and directories and changing permissions and
+ownership.</li>
+<li>Providing better recovery mechanisms, such as being able to restart
+transfers from an interruption.</li>
+</ul>
+<p>To start an interactive SFTP session on Iridis 6 from the terminal we
+can use the command:</p>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> sftp username@iridis6.soton.ac.uk</span></code></pre>
+</div>
+<p>Once connected you can:</p>
+<ul>
+<li>
+<p>list files:</p>
+<pre><code><span><span class="va">sftp</span><span class="op">&gt;</span> <span class="va">ls</span></span></code></pre>
+</li>
+<li>
+<p>change directories:</p>
+<pre><code><span><span class="va">sftp</span><span class="op">&gt;</span> <span class="va">cd</span> <span class="op">/</span><span class="va">path</span><span class="op">/</span><span class="va">to</span><span class="op">/</span><span class="va">remote</span><span class="op">/</span><span class="va">directory</span></span></code></pre>
+</li>
+<li>
+<p>download a file:</p>
+<pre><code>sftp&gt; get remote_file.txt /local/destination/</code></pre>
+</li>
+<li>
+<p>upload a file:</p>
+<pre><code>sftp&gt; put local_file.txt /remote/destination/</code></pre>
+</li>
+</ul>
+<p>SFTP can also be used non-interactively to transfer files:</p>
+<div class="codewrapper sourceCode" id="cb19">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="ex">username@laptop:~$</span> sftp username@iridis6.soton.ac.uk:/home/username/my_file.txt /local/destination</span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="rsync">rsync<a class="anchor" aria-label="anchor" href="#rsync"></a>
+</h3>
+<p><code>rsync</code> is another versatile command line based tool for
+transferring data, it has a large number of options that allow for
+flexible specification of the files to be transferred. It has a
+delta-transfer algorithm, that compares modification times and sizes of
+files to synchronise between storage locations by copying only files
+that have changed and can allow restarting interrupted transfers.</p>
+<p>For example to transfer a file from your system to Iridis 6:</p>
+<div class="codewrapper sourceCode" id="cb20">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-avzP</span> /path/to/file.iso username@iridis6.soton.ac.uk:/path/to/directory/</span></code></pre>
+</div>
+<p>where to option flags: - <code>a</code> archive option used to
+preserve file timestamps and permissions - <code>v</code> verbose option
+to monitor the transfer - <code>z</code> compression option to compress
+the file during transfer - <code>p</code> partial option to preserve
+partially transferred files in case of interruption</p>
+<p>To recursively copy a directory you could use the following
+command:</p>
+<div class="codewrapper sourceCode" id="cb21">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-avzP</span> /path/to/directory/ username@iridis6.soton.ac.uk:/path/to/directory/</span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="gui-based-data-transfer">GUI based data transfer<a class="anchor" aria-label="anchor" href="#gui-based-data-transfer"></a>
+</h3>
+<p>There are GUI based alternatives to the above command line tools. One
+such option is <a href="https://filezilla-project.org/" class="external-link">Filezilla</a>, a
+cross-platform client for MacOS, Windows and Linux that can use the SFTP
+protocol and will allow you to drag and drop files between the remote
+and local system.</p>
+<p>Finally for Iridis X (and Iridis 6 as the two systems share a
+filesystem) Iridis on Demand has a file manager that will allow you to
+browse files as well as upload and download files to and from the
+system.</p>
+<figure><img src="fig/Iridis_OOD_FIle_browser.png" style="width:80.0%" alt="File Manager in Iridis On Demand: Moving data to and from the Iridis HPC system can be achieved in the Open On Demand Web Portal" class="figure mx-auto d-block"><div class="figcaption">File Manager in Iridis On Demand: Moving data to
+and from the Iridis HPC system can be achieved in the Open On Demand Web
+Portal</div>
+</figure>
+</div>
+</section><section><h2 class="section-heading" id="data-management">Data Management<a class="anchor" aria-label="anchor" href="#data-management"></a>
+</h2>
+<hr class="half-width">
+<p>Computational research can produce large quantities of complex data,
+and good data management is extremely important for the integrity and
+reproducibility of your research. Having a good handle on data
+management when using an HPC system will make your life as a researcher
+easier; it will help you avoid data loss, will reduce storage waste and
+make it easier to for you to locate and analyse your data.</p>
+<p>Here are some suggestions for how to manage your data on an HPC
+system:</p>
+<div class="section level3">
+<h3 id="organise-your-data">Organise your Data:<a class="anchor" aria-label="anchor" href="#organise-your-data"></a>
+</h3>
+<ul>
+<li>Use clear directory structures, for example you could group by
+project, experiment, or date.</li>
+<li>Name files consistently: choose meaningful names that will help you
+identify what is in the file</li>
+<li>Use versioning tools such as git for code, scripts, configuration
+files and data.</li>
+<li>Include documentation such as README files and metadata alongside
+your data.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="use-the-right-filesystem">Use the right filesystem:<a class="anchor" aria-label="anchor" href="#use-the-right-filesystem"></a>
+</h3>
+<ul>
+<li>Most HPC clusters provide multiple storage filesystems optimised for
+different purposes.</li>
+<li>Typically there will be a <code>home</code> directory, which will be
+backed up. This space is best used for storing important source code,
+scripts, and essential datasets needed to run your jobs.</li>
+<li>There will also likely be a <code>scratch</code> space on the file
+system. This area is designed for temporary or intermediate files — such
+as large simulation outputs or data requiring further analysis — that
+can be safely deleted or moved off the system once processing is
+complete.</li>
+<li><strong>Each system will differ, so check the documentation
+carefully</strong></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="data-lifecycle">Data Lifecycle:<a class="anchor" aria-label="anchor" href="#data-lifecycle"></a>
+</h3>
+<ul>
+<li>Clean up old data to free up space: deleting or archiving with
+zipping tools.</li>
+<li>Track data provenance: Record how data was generated or
+modified.</li>
+<li>Back-up data: ensure important data is regularly backed up off the
+HPC system.</li>
+</ul>
+<div id="iridis-filesystem-quotas" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="iridis-filesystem-quotas" class="callout-inner">
+<h3 class="callout-title">Iridis Filesystem &amp; Quotas</h3>
+<div class="callout-content">
+<p>Iridis 6 &amp; X share a filesystem. On it you have access to two
+main areas: - Home directory: (<code>/home/username/</code>):
+<strong>backed up</strong> for important files - Scratch directory
+(<code>/scratch/username/</code>): <strong>not backed up</strong>, for
+temporary or intermediate input &amp; output files to enable
+computational workloads</p>
+<p>There are two quota types in place on the system: - A data limit:
+restricts the amount of data you can store. - <strong>110 GB</strong> on
+the <code>/home/username/</code> directory - <strong>1.5 TB</strong> on
+the <code>/scratch/username/</code> directory - An inode limit:
+restricts the number of files you can store. - <strong>160,000</strong>
+on the <code>/home/username/</code> directory -
+*<strong>500,000</strong> on the <code>/scratch/username/</code></p>
+<p>You can check the usage of the quotas with the following command on
+the system:</p>
+<div class="codewrapper sourceCode" id="cb22">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="ex">username@login6001:~$</span> myfiles</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="ex">Home</span> space used <span class="er">(</span><span class="ex">GB</span><span class="kw">)</span><span class="bu">:</span> 24/130</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="ex">━━━━━╸━━━━━━━━━━━━━━━━━━━━━━━━</span></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="ex">Home</span> number of files used: 202813/204800</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="ex">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="ex">Scratch</span> space used <span class="er">(</span><span class="ex">GB</span><span class="kw">)</span><span class="bu">:</span> 208/2000</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="ex">━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━</span></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="ex">Scratch</span> number of files used: 486966/614400</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="ex">━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━</span></span></code></pre>
+</div>
+<p>If creating virtual environments (using e.g. <code>conda</code> or
+<code>python -m venv</code>) it can be extremely easy to hit the inode
+quota, so it is wirth remembering this command and regularly checking
+your usage.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="software-management-environment-modules">Software Management: Environment Modules<a class="anchor" aria-label="anchor" href="#software-management-environment-modules"></a>
+</h2>
+<hr class="half-width">
+<p>HPC systems will have a selection of centrally installed and managed
+software packages, but they will not be available to use immediately
+when you login. Software is usually managed on HPC systems using
+<strong>Environment Modules</strong>, and packages need to be
+<em>loaded</em> before they are available for use.</p>
+<div id="discussion1" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
+<div class="callout-content">
+<p>There are several reasons behind the use of environment modules for
+software management. Can you think of any? Discuss it with your
+colleagues.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>The three main reasons behind this approach:</p>
+<ul>
+<li>Software incompatibilities: Software incompatibility is a major
+headache for programmers. Sometimes the presence (or absence) of a
+software package will break others that depend on it. Two well known
+examples are Python and C compiler versions. Python 3 famously provides
+a python command that conflicts with that provided by Python 2.</li>
+<li>Versioning: Software versioning is another common issue. A team
+might depend on a certain package version for their research project -
+if the software version was to change (for instance, if a package was
+updated), it might affect their results. Having access to multiple
+software versions allows a set of researchers to prevent software
+versioning issues from affecting their results.</li>
+<li>Dependencies: Dependencies are where a particular software package
+(or even a particular version) depends on having access to another
+software package (or even a particular version of another software
+package).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<p>Environment modules are the solution to these problems. A module is a
+self-contained description of a software package – it contains the
+settings required to run a software package and, usually, encodes
+required dependencies on other software packages.</p>
+<p>There are a number of different environment module implementations
+commonly used on HPC systems: the two most common are TCL modules and
+Lmod. Both of these use similar syntax and the concepts are the same so
+learning to use one will allow you to use whichever is installed on the
+system you are using. In both implementations the module command is used
+to interact with environment modules. An additional subcommand is
+usually added to the command to specify what you want to do. For a list
+of subcommands you can use module -h or module help. As for all
+commands, you can access the full help on the man pages with man
+module.</p>
+<p>On login you may start out with a default set of modules loaded or
+you may start out with an empty environment; this depends on the setup
+of the system you are using.</p>
+<div class="section level3">
+<h3 id="listing-loaded-modules">Listing Loaded Modules<a class="anchor" aria-label="anchor" href="#listing-loaded-modules"></a>
+</h3>
+<p>We can see what modules are loaded with the command:</p>
+<div class="codewrapper sourceCode" id="cb23">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ module list</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="ex">No</span> modules loaded</span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="listing-available-modules">Listing Available Modules<a class="anchor" aria-label="anchor" href="#listing-available-modules"></a>
+</h3>
+<p>In order to see what software modules are available we can use:</p>
+<div class="codewrapper sourceCode" id="cb24">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ module avail</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="ex">--------------------------------------------------------</span> /iridisfs/i6software/modules/applications <span class="at">--------------------------------------------------------</span></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>   <span class="ex">GATK/4.1.9</span>                      ansys/mechanical.2024.1        ensembl-vep/113              interproscan/5.71         paraview/5.10.1</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>   <span class="ex">GATK/4.4.0</span>                      ansys/mechanical.2024.2        fastq-tools/0.8.3            jdftx/1.7.0_gcc           paraview/5.12.1</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>   <span class="ex">GATK/4.5.0</span>                      ansys/mechanical.2025.1        fastqc/0.12.1                jdftx/1.7.0_mkl           paraview/5.13.3   <span class="er">(</span><span class="ex">D</span><span class="kw">)</span></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>   <span class="ex">GATK/4.6.0</span>                      ansys/mechanical.2025.2        ffmpeg/7.0.2                 jdftx/1.7.0        <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">perl/5.40.0</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>   <span class="ex">GATK/4.6.1</span>                      ansys/polyflow.2024.2          gnuplot/6.0.1                julia/1.10.4              picard/3.3.0</span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>   <span class="ex">GATK/4.6.2</span>               <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">ansys/workbench.2024.2</span>         gromacs/2022.5_plumed        julia/1.11.4              plink/1.9</span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>   <span class="ex">R/4.4.0-gcc8</span>                    ansys/workbench.2025.1         gromacs/2024.1.dev1          julia/1.11.6              pycharm/2023.3.4</span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>   <span class="ex">R/4.4.1-mkl</span>                     ansys/workbench.2025.2  <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">gromacs/2024.1.amd</span>           julia/1.11.7              python/3.12</span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>   <span class="ex">R/4.4.3-mkl</span>                     bcl2fastq/2.20                 gromacs/2024.1.gcc           julia/1.12.1       <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">python/3.12.6</span></span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>   <span class="ex">R/4.5.0-mkl</span>                     bedtools/2.31.1                gromacs/2024.1.intel         lumerical/2024.2          python/3.13</span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>   <span class="ex">R/4.5.1-mkl</span>              <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">bionano/3.8.2</span>                  gromacs/2024.1.zen4          lumerical/2025.1          python/3.14.0     <span class="er">(</span><span class="ex">D</span><span class="kw">)</span></span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a>   <span class="ex">Rstudio/2024.09</span>                 bison/3.8.2                    gromacs/2024.3.amd           lumerical/2025.2   <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">samtools/1.20</span></span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a>   <span class="ex">Rstudio/2024.12</span>          <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">blender/4.2.0</span>                  gromacs/2024.3.intel         mathematica/14.0.0        silvaco/TCAD/2024</span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a>   <span class="ex">Rstudio_server/2023.12.1</span>        bwa-mem2/2.2.1                 gromacs/2024.5.amd           matlab/2024a              starccm/18.04</span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>   <span class="ex">Rstudio_server/2024.04.2</span> <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">bwa/0.7.18</span>                     gromacs/2024.5.intel         matlab/2024b       <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">starccm/19.02</span></span>
+<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a>   <span class="ex">STAR/2.7.11</span>                     castep/25.1.2                  gromacs/2025.1.intel         namd/3.0.1                starccm/19.04</span>
+<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a>   <span class="ex">abaqus/2024</span>                     cfx/2025.1                     gromacs/2025.2.intel  <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">nano/8.1</span>                  starccm/19.06</span>
+<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a>   <span class="ex">actran/2024.2</span>                   comsol/6.1                     gurobi/11.0.3                nwchem/7.2.2_aocc         starccm/20.04     <span class="er">(</span><span class="ex">D</span><span class="kw">)</span></span>
+<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a>   <span class="ex">ansys/fluent.2024.1</span>             comsol/6.2_rev3                htslib/1.21                  nwchem/7.2.2_intel        stata/18.0</span>
+<span id="cb24-22"><a href="#cb24-22" tabindex="-1"></a>   <span class="ex">ansys/fluent.2024.2</span>             comsol/6.2                     hyperworks/2022.3            nwchem/7.2.2_ompi5        stata/19.0        <span class="er">(</span><span class="ex">D</span><span class="kw">)</span></span>
+<span id="cb24-23"><a href="#cb24-23" tabindex="-1"></a>   <span class="ex">ansys/fluent.2025.1</span>             comsol/6.3              <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">hyperworks/2024.1</span>            nwchem/7.2.2       <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">tecplot/2023r1</span></span>
+<span id="cb24-24"><a href="#cb24-24" tabindex="-1"></a>   <span class="ex">ansys/fluent.2025.2</span>             csd/2024.1                     hyperworks/2025       <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">onetep/7.2.intel</span>          x13as/1.1</span>
+<span id="cb24-25"><a href="#cb24-25" tabindex="-1"></a>   <span class="ex">ansys/forte.2024.1</span>              datamash/1.3                   igv/2.19.1                   orca/6.1</span>
+<span id="cb24-26"><a href="#cb24-26" tabindex="-1"></a></span>
+<span id="cb24-27"><a href="#cb24-27" tabindex="-1"></a><span class="ex">---------------------------------------------------------</span> /iridisfs/i6software/modules/compilers <span class="at">----------------------------------------------------------</span></span>
+<span id="cb24-28"><a href="#cb24-28" tabindex="-1"></a>   <span class="ex">aocc/4.2</span>             gcc/13.2.0    gcc/15.1.0        go/1.24.0                               intel-compilers/2024.1.0        nasm/2.16.03</span>
+<span id="cb24-29"><a href="#cb24-29" tabindex="-1"></a>   <span class="ex">aocc/5.0</span>      <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">gcc/14.1.0</span>    gcc/15.2.0 <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">go/1.25.1</span>                        <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">intel-compilers/2025.0.0</span></span>
+<span id="cb24-30"><a href="#cb24-30" tabindex="-1"></a>   <span class="ex">binutils/2.42</span>        gcc/14.2.0    go/1.22.3         intel-compilers/2022.2.0.classic        intel-compilers/2025.1.0 <span class="er">(</span><span class="ex">D</span><span class="kw">)</span></span>
+<span id="cb24-31"><a href="#cb24-31" tabindex="-1"></a></span>
+<span id="cb24-32"><a href="#cb24-32" tabindex="-1"></a><span class="ex">-----------------------------------------------------------</span> /iridisfs/i6software/modules/tools <span class="at">------------------------------------------------------------</span></span>
+<span id="cb24-33"><a href="#cb24-33" tabindex="-1"></a>   <span class="ex">apptainer/1.3.1</span>    apptainer/1.4.2 <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">cmake/3.30.5</span>    cmake/4.1.1         <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">gmsh/4.13.1</span>        swig/4.3.0</span>
+<span id="cb24-34"><a href="#cb24-34" tabindex="-1"></a>   <span class="ex">apptainer/1.3.6</span>    awscli/v2              cmake/3.31.1    conda/python3              gocryptfs/2.5.4    valgrind/3.23.0</span>
+<span id="cb24-35"><a href="#cb24-35" tabindex="-1"></a>   <span class="ex">apptainer/1.4.0</span>    cmake/3.29.3           cmake/4.0.0     gdb-oneapi/2025.0.0        hpl/2.3</span>
+<span id="cb24-36"><a href="#cb24-36" tabindex="-1"></a></span>
+<span id="cb24-37"><a href="#cb24-37" tabindex="-1"></a><span class="ex">---------------------------------------------------------</span> /iridisfs/i6software/modules/libraries <span class="at">----------------------------------------------------------</span></span>
+<span id="cb24-38"><a href="#cb24-38" tabindex="-1"></a>   <span class="ex">aocl/4.2.0</span>                  geos/3.13.0                     jdk/23.0.1                  openmpi/4.1.8                   sqlite3/3.46.1</span>
+<span id="cb24-39"><a href="#cb24-39" tabindex="-1"></a>   <span class="ex">aocl/5.0.0</span>                  gsl/2.8                         jdk/24                      openmpi/5.0.3_aocc              szip/2.1.1</span>
+<span id="cb24-40"><a href="#cb24-40" tabindex="-1"></a>   <span class="ex">aocl/5.1.0_gcc14</span>     <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">guile/3.0.10</span>                    jdk/25               <span class="er">(</span><span class="ex">D</span><span class="kw">)</span>    <span class="ex">openmpi/5.0.3_gcc13</span>             tbb/2021.7.0</span>
+<span id="cb24-41"><a href="#cb24-41" tabindex="-1"></a>   <span class="ex">boost/1.86.0</span>                hdf5/1.14.5.classicintel        libfabric/1.22.0            openmpi/5.0.3_gcc14             tbb/2021.12</span>
+<span id="cb24-42"><a href="#cb24-42" tabindex="-1"></a><span class="ex">--More--</span></span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="loading-a-module">Loading a Module<a class="anchor" aria-label="anchor" href="#loading-a-module"></a>
+</h3>
+<p>Say we have written a C program, that uses the MPI (Message Passing
+Interface) for parallel communication. Now we want to cmopile it with
+the <code>mpicc</code> compiler. We can see if the path to the
+<code>mpicc</code> compiler can be found in our shell with the
+<code>which</code> command (which shows the full path of shell
+commands):</p>
+<div class="codewrapper sourceCode" id="cb25">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ which mpicc</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="ex">/usr/bin/which:</span> no mpicc in <span class="er">(</span><span class="ex">/home/co1f23/.local/bin:/home/co1f23/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/lpp/mmfs/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/iridisfs/i6software/slurm/default/bin:/iridisfs/i6software/slurm/bin:/opt/c3/bin</span><span class="kw">)</span></span></code></pre>
+</div>
+<div id="callout4" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>### What is <code>$PATH</code>? - <code>$PATH</code> is an
+environment variable that tells your shell where to look for executable
+programs when you type a command. It’s a list of directory paths,
+separated by colons (:). When you run a command like mpicc, the system
+searches these directories in order until it finds a matching
+executable. - Loading modules (like openmpi) adds new directories to
+<code>$PATH</code>, allowing you to use the software they provide
+without typing the full path to the executable. - The system looks
+through directories listed in our <code>$PATH</code> environment
+variable for the shell commands. The directories are listed following
+the <code>no mpicc in</code> message returned from the failed
+<code>which</code> command above.</p>
+</div>
+</div>
+</div>
+<p>In order to load <code>openmpi</code>, a module containing
+<code>mpicc</code>, we issue the following command:</p>
+<div class="codewrapper sourceCode" id="cb26">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ module load openmpi </span></code></pre>
+</div>
+<p>Now when we use <code>which</code> to try and find the path to
+<code>mpicc</code> we get a different result:</p>
+<div class="codewrapper sourceCode" id="cb27">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ which mpicc</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="ex">/iridisfs/i6software/openmpi/5.0.6/aocc_5/bin/mpicc</span></span></code></pre>
+</div>
+<p><code>mpicc</code> is now found, and if we look at our
+<code>$PATH</code> environment variable we can see why:</p>
+<div class="codewrapper sourceCode" id="cb28">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ echo <span class="va">$PATH</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="ex">/iridisfs/i6software/openmpi/5.0.6/aocc_5/bin:/iridisfs/i6software/gcc/14.2.0/install/bin:/iridisfs/i6software/binutils/2.42/install/bin:/iridisfs/i6software/aocc/5.0/install/aocc-compiler-5.0.0/bin:/iridisfs/i6software/conda/miniconda-py3/condabin:/home/co1f23/.local/bin:/home/co1f23/bin:/opt/clmgr/sbin:/opt/clmgr/bin:/opt/sgi/sbin:/opt/sgi/bin:/usr/lpp/mmfs/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/iridisfs/i6software/slurm/default/bin:/iridisfs/i6software/slurm/bin:/opt/c3/bin</span></span></code></pre>
+</div>
+<p>Several additions have been made to the list of directory paths the
+sytem will search to find the commands we issue, including the one that
+contains the <code>mpicc</code> command.</p>
+<p>So, issuing the <code>module load</code> command will add software to
+your <code>$PATH</code>. It “loads” software.</p>
+<p>If we now look at the modules loaded we can see that the dependencies
+of the openmpi module have also been loaded:</p>
+<div class="codewrapper sourceCode" id="cb29">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ module list</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="ex">Currently</span> Loaded Modules:</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  <span class="ex">1</span><span class="er">)</span> <span class="ex">aocc/5.0</span>   2<span class="er">)</span> <span class="ex">binutils/2.42</span>   3<span class="er">)</span> <span class="ex">gcc/14.2.0</span>   4<span class="er">)</span> <span class="ex">openmpi/5.0.6_aocc</span></span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="unloading-modules">Unloading Modules<a class="anchor" aria-label="anchor" href="#unloading-modules"></a>
+</h3>
+<p>In order to now unload the openmpi module we can use the command:</p>
+<div class="codewrapper sourceCode" id="cb30">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ module unload openmpi</span></code></pre>
+</div>
+<p>Now if we list the currently loaded modules:</p>
+<div class="codewrapper sourceCode" id="cb31">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ module list</span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a><span class="ex">No</span> modules loaded</span></code></pre>
+</div>
+<p>we see that the openmpi module, along with its dependencies, have all
+been unloaded.</p>
+</div>
+<div class="section level3">
+<h3 id="purging-modules">Purging Modules<a class="anchor" aria-label="anchor" href="#purging-modules"></a>
+</h3>
+<p>Depending on the configuration of the modules on the HPC system,
+unloading a module may, or may not, also unload the dependencies.
+Another useful command to unload all loaded modules is the purge
+command:</p>
+<div class="codewrapper sourceCode" id="cb32">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ module list</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="ex">Currently</span> Loaded Modules:</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  <span class="ex">1</span><span class="er">)</span> <span class="ex">aocc/5.0</span>   2<span class="er">)</span> <span class="ex">binutils/2.42</span>   3<span class="er">)</span> <span class="ex">gcc/14.2.0</span>   4<span class="er">)</span> <span class="ex">openmpi/5.0.6_aocc</span></span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a><span class="ex">[username@login6002</span> ~]$ module purge</span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a><span class="ex">No</span> modules loaded</span></code></pre>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="getting-help">Getting Help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+</h2>
+<hr class="half-width">
+<p>There are multiple avenues to getting help with Iridis.</p>
+<p>You can find out more details about the system from the <a href="https://sotonac.sharepoint.com/teams/HPCCommunityWiki" class="external-link">HPC
+Community Wiki</a>.</p>
+<p>There is a team of HPC system adminstrators that look after Iridis,
+including supporting the installation and maintenence of the software
+you need. You can contact them through the <a href="https://teams.microsoft.com/l/team/19%3A18c8baa70f8540d78455babffe11ad9c%40thread.tacv2/conversations?groupId=a0a40f99-c620-425f-8c12-a1216cf64cce&amp;tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8" class="external-link">HPC
+Community Teams</a>.</p>
+<div class="section level3">
+<h3 id="research-software-group-hpc-research-software-engineers">Research Software Group &amp; HPC Research Software Engineers<a class="anchor" aria-label="anchor" href="#research-software-group-hpc-research-software-engineers"></a>
+</h3>
+<p>The <a href="https://rsgsoton.net/" class="external-link">Research Software Group</a> at
+Southampton is a team of Research Software Engineers (RSE) dedictaed to
+ensruing software developed for research is as good as it can be. We
+offer a full range of Software Development Services, covering many
+different technologies and all academic disciplines.</p>
+<p>Within the Research Software Group there is a team of HPC RSEs who
+have been employed to help researchers make the best use of Iridis.
+Optimising or extending existing codes to make best use of the HPC
+resources available, e.g. refactoring, porting to HPC, porting to
+GPU.</p>
+<p>You can get in touch with the group by emailing <a href="mailto:rsg-info@soton.ac.uk" class="email">rsg-info@soton.ac.uk</a>.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1311,11 +1939,36 @@ loads or unloads packages</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>You need a list of key points</li>
+<li><p>Access Iridis 6 and Iridis X requires applying for an account via
+a short online form, including project details and computing
+needs.</p></li>
+<li><p>Iridis On Demand provides a web-based interface for accessing the
+HPC system, managing files, submitting jobs, and running interactive
+applications like Jupyter notebooks.</p></li>
+<li><p>Connections to HPC systems are made securely using SSH (Secure
+Shell), typically through a public-private key pair for secure
+authentication.</p></li>
+<li><p>Data transfer to and from HPC systems can be done using SSH-based
+tools such as scp, sftp, or rsync, or through GUI tools like FileZilla
+or the Iridis On Demand.</p></li>
+<li><p>Software on HPC systems is managed using Environment Modules,
+which allow users to load, unload, and switch between software packages
+and versions.</p></li>
+<li><p>Help and documentation are available through the HPC Community
+Wiki, Teams HPC Community.</p></li>
+<li><p>There is a team of Research Software Engineers in the Research
+Software Group whose role is to help researchers port and optimise code
+for use on HPC systems.</p></li>
 </ul>
 </div>
 </div>
-</div></section><section id="aio-3_job_scheduling"><p>Content from <a href="3_job_scheduling.html">Introduction to Job Scheduling</a></p>
+</div>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</div>
+</section></section><section id="aio-3_job_scheduling"><p>Content from <a href="3_job_scheduling.html">Introduction to Job Scheduling</a></p>
 <hr>
 <p>Last updated on 2025-11-04 |
 
@@ -2362,9 +3015,9 @@ Distributed memory scales better, but is more complex.</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</section></section><section id="aio-5_hpc_technologies"><p>Content from <a href="5_hpc_technologies.html">Introduction to HPC Technologies</a></p>
+</section></section><section id="aio-5_hpc_technologies"><p>Content from <a href="5_hpc_technologies.html">Landscape of HPC Technologies</a></p>
 <hr>
-<p>Last updated on 2025-09-25 |
+<p>Last updated on 2025-11-06 |
 
         <a href="https://github.com/carpentries/workbench-template-md/edit/main/episodes/5_hpc_technologies.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2378,7 +3031,12 @@ any links that you are not going to use.
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>Did you know you have to have this question section?</li>
+<li>Which programming language should I use?</li>
+<li>What are the main ways we can parallelise a program on modern HPC
+systems?</li>
+<li>How do OpenMP and MPI differ in how they achieve parallelism?</li>
+<li>What role do GPUs play in HPC, and how do approaches like CUDA and
+OpenACC use them?</li>
 </ul>
 </div>
 </div>
@@ -2389,16 +3047,1048 @@ any links that you are not going to use.
 <h3 class="card-title">Objectives</h3>
 <ul>
 <li>Differentiate at a high level between the features of OpenMP, MPI,
-CUDA and AI/ML approaches and what they are used for</li>
+CUDA and OpenACC</li>
 <li>Briefly summarise the main OpenMP compiler directives and what they
 do</li>
 <li>Describe how to compile and run an OpenMP program</li>
 <li>Briefly summarise the main MPI message-passing features and how they
 are used</li>
 <li>Describe how to compile and run an MPI program</li>
-<li>Describe the advantages and drawbacks for using a hybrid OpenMP/MPI
-approach</li>
-<li>Briefly summarise how a CUDA program is written</li>
+<li>Briefly summarise how an OpenACC program is written, compiled and
+run</li>
+<li>Briefly summarise how a CUDA program is written, compiled and
+run</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>To get the most performance possible, high-performance computing
+relies on parallelism. Modern systems combines tens of thousands of
+processors, each working on their own part of the problem. To be able to
+wield this power, we need to understand how to write parallel code. This
+is far more complicated than the scope of this episode. Therefore we
+will, instead, look at the landscape of the core HPC technologies used
+today in research. In particular, we will look at the following parallel
+frameworks: OpenMP, MPI, OpenACC and CUDA.</p>
+<section><h2 class="section-heading" id="common-programming-languages">Common programming languages<a class="anchor" aria-label="anchor" href="#common-programming-languages"></a>
+</h2>
+<hr class="half-width">
+<p>Before we start, let’s look at what programming languages are used in
+HPC. In principle, any programming language can be used to write code
+which runs on an HPC cluster. In practise, however, there are some
+languages which are better suited to writing highly performant code.
+Interpreted languages, such as <a href="https://www.python.org/" class="external-link">Python</a>, are easy to develop in, but
+are much slower to execute than compiled languages, making them less
+suitable for computation-heavy applications. For this reason, compiled
+languages such as <a href="https://en.wikipedia.org/wiki/C_(programming_language)" class="external-link">C</a>, <a href="https://en.wikipedia.org/wiki/C%2B%2B" class="external-link">C++</a> and <a href="https://fortran-lang.org/" class="external-link">Fortran</a> are some of the most common
+choices of programming language when writing high performance
+applications as they produce fast, optimised executables.</p>
+<p>Python does, however, remain widely used in HPC, typically by
+performance-critical sections of code being written in compiled
+languages and accessed through a Python interface. Frameworks such as <a href="https://pypi.org/project/torch/" class="external-link">PyTorch</a>, <a href="https://pypi.org/project/numpy/" class="external-link">NumPy</a>, <a href="https://pypi.org/project/scipy/" class="external-link">SciPy</a> and <a href="https://pypi.org/project/numba/" class="external-link">Numba</a> all rely on underlying
+C, Fortran and/or CUDA to accelerate computation, while libraries such
+as <a href="https://pypi.org/project/mpi4py/" class="external-link">mpi4py</a> or <a href="https://docs.python.org/3/library/multiprocessing.html" class="external-link">multiprocessing</a>
+make it possible for distributed parallelism directly in Python. Hybrid
+approaches like this have become more common because they combine
+Python’s ease of use with the speed of compiled code.</p>
+<p>Other specialised languages and frameworks are also used in HPC,
+depending on the application area. <a href="https://developer.nvidia.com/cuda-toolkit" class="external-link">CUDA</a> and <a href="https://www.amd.com/en/products/software/rocm.html" class="external-link">ROCm</a> are
+employed for GPU programming, while newer languages such as <a href="https://julialang.org/" class="external-link">Julia</a> aim to combine ease of
+development with high performance. Domain-specific tools like <a href="https://www.mathworks.com/products/matlab.html" class="external-link">MATLAB</a>, and <a href="https://www.r-project.org/" class="external-link">R</a> also appear in HPC environments,
+though they often rely on compiled extensions or external libraries for
+parallel execution.</p>
+<p>So which language should you use? There is no simple answer. The best
+choice depends heavily on your specific application, the target hardware
+(like CPUs or GPUs), and the trade-offs you are willing to make between
+raw computational performance and ease of development. Ultimately, the
+right language is the one that allows you to solve your problem
+efficiently, leveraging the available libraries and expertise within
+your team.</p>
+<div id="which-compiler-should-you-use" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="which-compiler-should-you-use" class="callout-inner">
+<h3 class="callout-title">Which compiler should you use?</h3>
+<div class="callout-content">
+<p>Iridis and most HPC systems offer a choice of compilers to use. But
+which one should you use? In most cases, you would want to use the
+compiler specific to the type of CPU you are using on the system,
+because these implement architecture specific optimisations e.g. use
+AMD’s <code>aocc</code> on Iridis 6. If you are using NVIDIA GPUs, you
+have little choice in using anything other than NVIDIA’s
+<code>nvc</code>, <code>nvcc</code> or <code>nvfortran</code>
+compilers.</p>
+<p>However, the code you are using may only have been tested on a
+specific compiler such as <a href="https://gcc.gnu.org/" class="external-link">GCC</a>. In
+those cases, it’s often best to stick with what is known to work.
+However, there is nothing stopping you using Intel’s compilers on an AMD
+based system, if the code is only tested or depends on features in the
+Intel compilers.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="a-simple-example">A simple example<a class="anchor" aria-label="anchor" href="#a-simple-example"></a>
+</h2>
+<hr class="half-width">
+<p>We’ll now take a high level look at a selection of some of the most
+used libraries and frameworks used to parallelise code in research. In
+particular, we will see how to use them, the code changes required and
+how to run them on Iridis. The intention is not to make you proficient
+with these frameworks–or even dangerous–but to give a high level
+appreciation on what is being used.</p>
+<p>To illustrate this, we will use a simple program, written in C, which
+adds together two vectors to explore the code changes required. More
+specifically, we will be modifying the following function
+<code>vector_add</code> to run in parallel. We have chosen to use C as
+it is commonly used language in HPC.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">C<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c" tabindex="0"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">// *a, *b, and *c are arrays and n is the length of them.</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">// The result of the addition is returned back in *c</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="dt">void</span> vector_add<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>c<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="co">// This is the loop which we'll parallelise</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>        c<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> b<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="op">}</span></span></code></pre>
+</div>
+<p>You can find the entire program in <a href="files/vector/vector_serial.c">vector_serial.c</a>. To run this
+code on Iridis X, we’ll use the following <a href="files/vector/submit_vector_serial.sh">submission script</a>.</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#SBATCH --partition=amd</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#SBATCH --time=00:01:00</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co"># Load the gcc module, which is the compiler we'll use</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="ex">module</span> load gcc</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co"># Compile the program using gcc</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="fu">gcc</span> vector_serial.c <span class="at">-o</span> vector_serial.exe</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co"># Run the compiled executable</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="ex">./vector_serial.exe</span></span></code></pre>
+</div>
+<p>After the program has run, we should see the following output.</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Verification (first 5 elements):
+c[0] =   0 (expected:   0)
+c[1] =   3 (expected:   3)
+c[2] =   6 (expected:   6)
+c[3] =   9 (expected:   9)
+c[4] =  12 (expected:  12)</code></pre>
+</div>
+</section><section><h2 class="section-heading" id="openmp">OpenMP<a class="anchor" aria-label="anchor" href="#openmp"></a>
+</h2>
+<hr class="half-width">
+<p>The first framework we’ll look at is OpenMP. As mentioned in the
+previous episode, OpenMP is an industry-standard framework designed for
+parallel programming in a shared-memory environment. OpenMP spawns
+threads with each one, ideally, running on its own CPU core. OpenMP
+works by using <em>compiler directives</em> to tell the compiler which
+code needs to be parallelised, letting OpenMP and the compiler take care
+of all the <em>low-level</em> parallelisation details. In general, you
+just need to say which parts of your code you want to run in
+parallel.</p>
+<div id="compiler-directives" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="compiler-directives" class="callout-inner">
+<h3 class="callout-title">Compiler directives</h3>
+<div class="callout-content">
+<p>If you’re unfamiliar with compiler directives, you can think of them
+as being a <em>special command</em> for the compiler, not for the
+program itself. In C and C++, these almost <em>always</em> start with
+<code>#pragma</code>. Think of it as a special note to the compiler
+which says, “when you compile this specific piece of code, do something
+extra.” Since these are compiler options, they do not modify the run
+time behaviour of the program, only how the program is compiled.</p>
+</div>
+</div>
+</div>
+<p>Parallelisation with OpenMP is handled with these compiler
+directives. However, OpenMP does also offer a library of runtime
+functions which gives finer grained control, such as if you need to
+ensure thread synchronisation or need to go off the beaten track. To
+parallelise our <code>vector_add</code> function, we only need to add a
+single line of code, using a compiler directive, just before the
+loop.</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">C<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c" tabindex="0"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="dt">void</span> vector_add<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>c<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">// This directive tells OpenMP to spawn threads and to</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">// divide the loop iterations between them. Each thread will</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">// handle a fraction of the loop iterations/vector addition</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="pp">#pragma omp parallel for</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>        c<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> b<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="op">}</span></span></code></pre>
+</div>
+<p>The full program is in <a href="files/vector/vector_openmp.c">vector_openmp.c</a>. Let’s break
+this down more. The directive we used,
+<code>#pragma omp parallel for</code>, tells the compiler that the next
+for loop should be parallelised. The compiler then automatically
+parallelises it for us, creating a team of threads and dividing the
+loop’s work among them. In this case, each thread will perform a portion
+of the vector addition. All OpenMP directives begin with
+<code>#pragma omp</code>, followed by a specific command.</p>
+<p>There are lots of other directives available, with
+<code>#pragma omp parallel for</code> being the most commonly used.
+Another useful directive is <code>#pragma omp atomic</code> which
+prevents multiple threads from modifying a variable at once. This is one
+way to prevent the race conditions mentioned in the previous episode.
+OpenMP also provides a library of runtime functions which offers even
+more control. For example, we can use the function
+<code>omp_set_num_threads()</code> to control the number of threads that
+OpenMP will spawn. In C, we need to include the appropriate header file,
+<code>&lt;omp.h&gt;</code>, to access the library functions.</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">C<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c" tabindex="0"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;omp.h&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="dt">void</span> vector_add<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>c<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="co">// Manually set the number of threads to 8</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    omp_set_num_threads<span class="op">(</span><span class="dv">8</span><span class="op">);</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="pp">#pragma omp parallel for</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>        c<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> b<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="op">}</span></span></code></pre>
+</div>
+<div id="directives-and-functions-for-synchronisation" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="directives-and-functions-for-synchronisation" class="callout-inner">
+<h3 class="callout-title">Directives and functions for
+synchronisation</h3>
+<div class="callout-content">
+<p>Effective control of thread synchronisation is essential when
+parallelising code with OpenMP, as improper handling of shared data can
+lead to race conditions and unpredictable results. To support this,
+OpenMP provides a range of directives and library functions that
+coordinate access to shared data and manage thread behaviour. The tables
+below summarise several commonly used examples.</p>
+<table class="table">
+<colgroup>
+<col width="14%">
+<col width="85%">
+</colgroup>
+<thead><tr class="header">
+<th>Compiler Directive</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>#pragma omp atomic</code></td>
+<td>Ensures a specific operation, such as modifying a variable, is
+executed atomically, e.g. by one thread at a time, to prevent race
+conditions.</td>
+</tr>
+<tr class="even">
+<td><code>#pragma omp critical</code></td>
+<td>Defines a region of code that only one thread can execute at a
+time.</td>
+</tr>
+</tbody>
+</table>
+<p>This list is not exhaustive. A complete reference for all OpenMP
+directives and functions is available in the <a href="https://www.openmp.org/wp-content/uploads/OpenMP-RefGuide-6.0-OMP60SC24-web.pdf" class="external-link">OpenMP
+6.0 Reference Guide</a>.</p>
+</div>
+</div>
+</div>
+<p>To compile an OpenMP program, we need to use the
+<code>-fopenmp</code> flag,
+e.g. <code>gcc -fopenmp vector_openmp.c</code>. If we don’t use the
+<code>-fopenmp</code> flag, the compiler directives are ignored and any
+library functions from <code>&lt;omp.h&gt;</code> will not be found
+resulting in a compilation error.</p>
+<div id="do-i-need-to-keep-the-serial-version" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="do-i-need-to-keep-the-serial-version" class="callout-inner">
+<h3 class="callout-title">Do I need to keep the serial version?</h3>
+<div class="callout-content">
+<p>Setting the number of threads or processes to one will produce the
+same behaviour as the serial program, assuming no programming errors.
+However, to be extra safe, you can use <a href="https://en.wikipedia.org/wiki/Conditional_compilation" class="external-link">conditional
+compilation</a> to maintain both parallel and serial versions within the
+same codebase/file. Compiled languages support conditional compilation,
+which allows certain sections of code to be compiled only if a specific
+condition is met. When using OpenMP, the compiler variable
+<code>_OPENMP</code> is defined when the <code>-fopenmp</code> flag is
+passed, so you can use this variable to prevent OpenMP directives and
+functions from being compiled when <code>-fopenmp</code> is not
+used.</p>
+</div>
+</div>
+</div>
+<p>To launch an OpenMP program, run it like any other program. The
+number of threads for OpenMP to use can be controlled using the
+environment variable <code>OMP_NUM_THREADS</code>, or the
+<code>omp_set_num_threads()</code> function discussed earlier. If the
+function is unused and the environment variable left unset, OpenMP will
+spawn one thread per CPU core. Normally, on a HPC cluster this is
+probably what is wanted. However, when running on your own computer
+during development and testing, you will probably want to set
+<code>OMP_NUM_THREADS</code> to be less than then number of CPU cores to
+avoid overloading your computer.</p>
+<p>The following is an example of how you would compile and launch an
+OpenMP program on Iridis X, in a single submission script.</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#SBATCH --partition=amd</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=8</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#SBATCH --time=00:01:00</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co"># Use OMP_NUM_THREADS to say we can to use --cpus-per-task number of</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co"># threads. The --cpu-per-task SBATCH directive is populated into the</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co"># SLURM_CPUS_PER_TASK environment variable</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="bu">export</span> <span class="va">OMP_NUM_THREADS</span><span class="op">=</span><span class="va">$SLURM_CPUS_PER_TASK</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co"># Compile the program using gcc</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="ex">module</span> load gcc</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="fu">gcc</span> <span class="at">-fopenmp</span> vector_openmp.c <span class="at">-o</span> vector_openmp.exe</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co"># We run the compiled executable just like the serial version</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="ex">./vector_openmp.exe</span></span></code></pre>
+</div>
+<p>The main advantage of OpenMP is that it requires only minimal code
+modification to parallelise existing programs, particularly when the
+main computational workload lies within loops. Beyond simple loop-level
+parallelism, parallelising more complex program structures becomes more
+challenging, though this is true of most parallel frameworks. OpenMP
+still provides a wide range of straightforward directives, making it
+easy to adapt serial code without needing to design the program for
+parallel execution from the start. Its main limitation is that it uses a
+shared-memory model, which requires careful management of thread
+synchronisation and restricts scalability to a single compute node.</p>
+</section><section><h2 class="section-heading" id="message-passing-interface-mpi">Message Passing Interface (MPI)<a class="anchor" aria-label="anchor" href="#message-passing-interface-mpi"></a>
+</h2>
+<hr class="half-width">
+<p>The Message Passing Interface (MPI) was designed to enable scientific
+applications to run on supercomputers and, as such, has become the
+dominant distributed-memory parallelism framework in research. An MPI
+application creates many processes each working on their own individual
+task. However, unlike shared-memory approaches, each MPI process–or
+rank–has its own private memory space. Therefore to exchange data
+between these ranks, explicit communication has to happen. This is where
+MPI comes in. It provides a set of library functions to configure a
+parallel environment and exchange data within it. The <em>key
+concept</em> in MPI is message passing, which involves the explicit
+exchange of data between processes. Processes can send messages to
+specific destinations, broadcast messages to all processes, or perform
+collective operations where all processes participate.</p>
+<p>To achieve parallelism, each process runs a copy of the same program
+as the other processes, but works on its own subset of data, or does its
+own tasks. The processes communicate to exchange data and/or coordinate
+their next tasks. The power of MPI is that the processes can run on
+different nodes, allowing MPI programs to scale well beyond a single
+machine. Thankfully the complexity of having to spawn processes on
+different nodes and communicate over the network is hidden away and
+controlled by MPI’s library of functions and the HPC cluster’s
+scheduler/resource manager, e.g. Slurm on Iridis.</p>
+<p>But there are some trade-offs with MPI. In terms of performance,
+communicating data takes time. If you have a method which requires
+frequent communication or data dependencies, then you will spend more
+time exchanging data than doing computation. It may instead be worth
+using a shared-memory framework like OpenMP. However the biggest
+trade-off, by far, is that you need to design your application in mind
+for MPI parallelisation. Unlike OpenMP, it is not simple to retrofit a
+serial program with MPI. For example, we need to make sure we program
+initialising the MPI library ourselves, track process IDs, explicitly
+send and receive data, coordinate the processes so they do their own
+work, and so on. The table below gives an idea of some of the MPI
+functions we need to use and their purpose.</p>
+<table class="table">
+<colgroup>
+<col width="16%">
+<col width="83%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>MPI_Init</code></td>
+<td>Initialises the MPI environment. Must be called before any other MPI
+calls.</td>
+</tr>
+<tr class="even">
+<td><code>MPI_Comm_size</code></td>
+<td>Returns the total number of processes in the communicator.</td>
+</tr>
+<tr class="odd">
+<td><code>MPI_Comm_rank</code></td>
+<td>Returns the rank (ID) of the calling process.</td>
+</tr>
+<tr class="even">
+<td>
+<code>MPI_Send</code> / <code>MPI_Recv</code>
+</td>
+<td>Used for direct point-to-point communication between processes.</td>
+</tr>
+<tr class="odd">
+<td><code>MPI_Barrier</code></td>
+<td>Used for synchronisation. A processes cannot continue past the
+barrier until all processes have reached it.</td>
+</tr>
+<tr class="even">
+<td><code>MPI_Finalize</code></td>
+<td>Shuts down the MPI environment. Must be called before exiting the
+program, other wise background MPI tasks may not finish.</td>
+</tr>
+</tbody>
+</table>
+<p>This is only a tiny glimpse into the available MPI functions, and
+what you can do with MPI. In total, there are around 500 functions.</p>
+<p>Let’s now take a look at the code changes we need to parallelise the
+<code>add_vector</code> function using MPI. A detailed description of
+the MPI library functions, and how to design an MPI program, is out of
+scope for this episode, and lesson, so we won’t go much into the
+details. From a high level, what we need to do is: 1) initialise the MPI
+environment, 2) split the work between processes, 3) have each process
+do their work, and 4) communicate the results back to one or more
+processes for the cycle to repeat. The example code below demonstrates
+this. Keep in your head that each process is executes the
+<strong>exact</strong> same function, but will do something different
+based on its ID.</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">C<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c" tabindex="0"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">//Include the MPI header file to access the MPI functions</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;mpi.h&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="dt">void</span> vector_add<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>c<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="co">// Initialise the MPI environment -- nothing will work if we</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="co">// don't do this</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    MPI_Init<span class="op">(</span>NULL<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    <span class="co">// Get the rank (process ID) and total number of processes launched</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    <span class="dt">int</span> rank<span class="op">,</span> size<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    <span class="dt">int</span> root_rank <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>    MPI_Comm_rank<span class="op">(</span>MPI_COMM_WORLD<span class="op">,</span> <span class="op">&amp;</span>rank<span class="op">);</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>    MPI_Comm_size<span class="op">(</span>MPI_COMM_WORLD<span class="op">,</span> <span class="op">&amp;</span>size<span class="op">);</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>    <span class="co">// Determine next how many elements of the vector this process</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>    <span class="co">// will handle. We will create a "local" array which will store</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>    <span class="co">// the results of the vector addition for this process</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>    <span class="dt">int</span> n_local <span class="op">=</span> n <span class="op">/</span> size<span class="op">;</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>    <span class="dt">int</span> c_local<span class="op">[</span>n_local<span class="op">];</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>    <span class="co">// Determine the subset of the vectors a and b this process</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>    <span class="co">// will be adding together. To do this, we use the ID of</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>    <span class="co">// the process and the number of elements each process</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>    <span class="co">// will be working on</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>    <span class="dt">int</span> start <span class="op">=</span> rank <span class="op">*</span> n_local<span class="op">;</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a>    <span class="dt">int</span> stop <span class="op">=</span> <span class="op">(</span>rank <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> n_local<span class="op">;</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a>    <span class="co">// Perform the local computation on each process</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> start<span class="op">;</span> i <span class="op">&lt;</span> stop<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a>        c_local<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> b<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a>    <span class="co">// We can use this MPI_Gather function to send the "partial" results</span></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a>    <span class="co">// from each process back to the "root" process. Only the root process</span></span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a>    <span class="co">// will have the complete vector</span></span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a>    MPI_Gather<span class="op">(</span>c_local<span class="op">,</span> n_local<span class="op">,</span> MPI_INT<span class="op">,</span> c<span class="op">,</span> n_local<span class="op">,</span> MPI_INT<span class="op">,</span></span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a>               root_rank<span class="op">,</span> MPI_COMM_WORLD<span class="op">);</span></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a>    <span class="co">// Finalise the MPI environment</span></span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a>    MPI_Finalize<span class="op">();</span></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="op">}</span></span></code></pre>
+</div>
+<p>The complete program is in <a href="files/vector/vector_mpi.c">vector_mpi.c</a>. As you can see, the
+code is much more involved than the OpenMP example. Every process runs
+this same function, but each one is responsible for a different part of
+the vector addition. Each process follows a clear set of steps:</p>
+<ul>
+<li>First, it finds out its unique ID (<code>rank</code>) and the total
+number of processes (<code>size</code>).</li>
+<li>Using this, it calculates which “slice” of the vectors
+<code>a</code> and <code>b</code> it is responsible for.</li>
+<li>It then performs the addition for its slice and stores the partial
+answer in a local <code>c_local</code> array.</li>
+<li>Finally, it calls the <code>MPI_Gather</code> function, which
+aggregates all the <code>c_local</code> arrays.</li>
+</ul>
+<p><code>MPI_Gather</code> is a collective communication shortcut.
+Behind the curtain it doing the <code>MPI_Send</code> and
+<code>MPI_Recv</code> for us, sending data from each process back to our
+root process; which is the only process with the complete result.</p>
+<div id="challenge1" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
+<div class="callout-content">
+<p>Why does only the “root” process have the final, complete,
+result?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>It is because we used <code>MPI_Gather</code> to “gather” the results
+from each process back to the root process. There is no communication to
+the other process, so only the root process has the data from the other
+processes. If we wanted every process to have a copy of the final result
+of <code>c</code>, we could instead use <code>MPI_Allgather</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<p>To compile an MPI application, we need to use an <em>MPI-aware</em>
+compiler which is essentially a clever script which knows where MPI is
+installed on our system to make compilation easier. On Iridis, this is
+<code>mpicc</code>. We use <code>mpicc</code> as we would any other
+compiler: <code>mpicc vector_mpi.c -o vector_mpi.exe</code>.</p>
+<div id="whats-an-mpi-aware-compiler" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="whats-an-mpi-aware-compiler" class="callout-inner">
+<h3 class="callout-title">What’s an MPI-aware compiler?</h3>
+<div class="callout-content">
+<p>An MPI-aware compiler is essentially a script which wraps around your
+regular compiler to provide the required header files and libraries to
+the compiler to build an MPI application. In theory, we could find those
+headers and libraries ourselves and pass them the compiler instead.
+However, in practise, this is not worth our time when <code>mpicc</code>
+already does it for us.</p>
+</div>
+</div>
+</div>
+<p>To launch an MPI application we need to use <code>mpirun</code>,
+e.g. <code>mpirun vector_mpi.exe</code>. This is another script provided
+by MPI which handles launching the parallel processes and setting up the
+parallel environment. If we run the program without using
+<code>mpirun</code>, then only a single processes will start and will
+probably become “deadlocked” as the program waits indefinitely for
+messages from other processes that were never sent. On Iridis, and other
+Slurm clusters, we can alternatively use the Slurm launcher
+<code>srun</code> to do the same job. To summarise, the purposes of
+<code>srun</code> and <code>mpirun</code> is to,</p>
+<ol style="list-style-type: decimal">
+<li>Read the environment to see how many processes to create (e.g., from
+<code>#SBATCH --ntasks=8</code>).</li>
+<li>Launch that many copies of your executable.</li>
+<li>Manage where these processes run. If you request resources across
+multiple nodes, the launcher (in coordination with Slurm) starts the
+processes on the correct machines and ensures they can all communicate
+with each other.</li>
+</ol>
+<p>The following is an example of how you would compile and launch an
+MPI program on Iridis X.</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#SBATCH --partition=amd</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#SBATCH --ntasks=8</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#SBATCH --time=00:01:00</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co"># Load the specific MPI library we want to use</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># This makes the 'mpicc' and 'mpirun' commands available</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="ex">module</span> load openmpi</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co"># Compile the code using the MPI compiler wrapper</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="ex">mpicc</span> vector_mpi.c <span class="at">-o</span> vector_mpi.exe</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co"># Launch the program using 'srun'. This is the recommended</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co"># launcher on Slurm clusters. 'srun' automatically reads the</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co"># SBATCH settings and launches 8 (from --ntasks) copies</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co"># of our executable</span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="ex">srun</span> ./vector_mpi.exe</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co"># -----------------------------------------------------------</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co"># An alternative way to launch the program</span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co"># 'mpirun' is the more traditional MPI launcher. Here, we</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co"># must explicitly tell it how many processes (-np) to run</span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co"># We use the $SLURM_NTASKS variable (which Slurm sets to 8)</span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co"># to match our resource request</span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co"># mpirun -np $SLURM_NTASKS ./vector_mpi.exe</span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co"># -----------------------------------------------------------</span></span></code></pre>
+</div>
+<div id="hybrid-mpiopenmp" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="hybrid-mpiopenmp" class="callout-inner">
+<h3 class="callout-title">Hybrid MPI+OpenMP</h3>
+<div class="callout-content">
+<p>MPI and OpenMP don’t have to be competing choices. They can be used
+together in a hybrid parallel model, where MPI distributes work across
+nodes and OpenMP manages threads within each node. This combination
+allows applications to scale beyond a single machine while using memory
+and CPU cores more efficiently.</p>
+<p>Hybrid parallelism reduces data duplication between processes and
+improves load balancing through OpenMP’s flexible scheduling. It also
+helps lower communication costs by keeping shared-memory operations
+local to a node.</p>
+<p>The main drawbacks are added complexity and potential overheads from
+managing both models. Code becomes harder to write, debug, and port
+between systems. Still, hybrid MPI+OpenMP programs are often the best
+solution for large-scale workloads where pure MPI or OpenMP alone falls
+short.</p>
+</div>
+</div>
+</div>
+<div id="challenge2" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
+<div class="callout-content">
+<p>Why does using a hybrid MPI+OpenMP scheme reduce data
+duplication?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
+</button>
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div class="accordion-body">
+<p>In a pure MPI application, you would run many separate processes on a
+single compute node (e.g., 64 processes on 64 cores). Each MPI process
+has its own private memory. If all 64 processes need to access the same
+10GB input file, that 10GB of data must be loaded 64 times, once into
+each process’s memory. This duplicates the data 64 times, using 640GB of
+RAM on that node just for that one file.</p>
+<p>In a hybrid MPI+OpenMP model, you may run only one MPI process on
+that node. That single process would then use OpenMP to spawn 64
+threads, one for each core. Because all OpenMP threads share the memory
+of their parent process, the 10GB input file only needs to be loaded
+once. All 64 threads can access that single copy, reducing the memory
+footprint for that data from 640GB to just 10GB.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="using-gpus-instead-of-cpus">Using GPUs instead of CPUs<a class="anchor" aria-label="anchor" href="#using-gpus-instead-of-cpus"></a>
+</h2>
+<hr class="half-width">
+<p>Besides using multiple CPUs, we can also use Graphical Processing
+Units (GPUs) to do calculations in parallel. GPUs were originally
+designed to speed up rendering to display images to a screen, a task
+that involves performing millions of simple, repetitive calculations in
+parallel. Researchers soon realised this design was also perfect for
+many scientific problems.</p>
+<p>GPUs are highly parallel, built to perform thousands of operations at
+the same time. This makes them ideal for work that can be split into
+many identical, independent tasks. While CPUs are designed to tackle
+complex tasks one after another, GPUs are optimised for doing the exact
+same operation on large amounts of data simultaneously. This is perfect
+for problems like matrix operations, where every element can be
+processed in the same way.</p>
+<p>However, <em>offloading</em> work to a GPU is more complicated than
+parallelising using CPUs. The main reason is that the CPU and the GPU
+have their own separate memory spaces. Data stored in the CPU’s memory
+is not visible to the GPU, and vice-versa. This setup is similar to the
+separate memory for each process in an MPI application. Data must be
+copied from the CPU’s memory to the GPU’s memory. This transfer step is
+slow compared to the speed of the calculations. Therefore, efficient GPU
+programs must minimise data transfers, often by keeping data on the GPU
+as long as possible. While optimising CPU code often focuses on reducing
+the total number of calculations, optimising GPU code is usually more
+about reducing data transfers and organising data efficiently in the
+GPU’s memory.</p>
+<p>This level of detail is beyond the scope of this introduction. As
+before, we will only give a broad overview of two popular frameworks:
+OpenACC and CUDA. You can think of these as being similar to OpenMP and
+MPI:</p>
+<ul>
+<li>OpenACC is like OpenMP: you can often add it to existing code, using
+compiler directives to automatically handle the parallelisation.</li>
+<li>CUDA is “similar” to MPI: it is a more complex framework that
+requires you to design your program around it.</li>
+</ul>
+<div id="cpu-and-gpu-whats-the-difference" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="cpu-and-gpu-whats-the-difference" class="callout-inner">
+<h3 class="callout-title">CPU and GPU, what’s the difference?</h3>
+<div class="callout-content">
+<figure><img src="fig/cpu_gpu_arch.png" class="figure mx-auto d-block"></figure><p>This diagram illustrates the key difference between a CPU and a GPU.
+On the left, the CPU is shown with a few, large “Cores” (green). Each
+core is complex, paired with significant “Control” logic (yellow) and
+large, fast memory caches (purple and blue). This design makes each CPU
+core very “smart” and powerful, ideal for handling complex instructions
+and varied tasks one after another.</p>
+<p>On the right, the GPU has a completely different structure. It is
+composed of hundreds or even thousands of tiny, simple cores (the large
+green grid). Notice how much less space is dedicated to “Control” logic
+and complex caches. This architecture is not designed for complex,
+sequential tasks. Instead, it is a massive parallel workforce, built to
+execute the same simple operation (like <code>c[i] = a[i] + b[i]</code>)
+at the same time across thousands of different pieces of data. This
+“many-core” design is what allows it to perform thousands of operations
+concurrently.</p>
+<p>GPUs also use a different memory model. Each GPU core can access the
+large global memory, which is shared across the entire GPU. It is slower
+to read and write to this. To improve performance, groups of cores are
+organised into blocks which shared a small, but very fast, memory area.
+This setup is similar to shared-memory parallelism on CPUs, where
+threads cooperate through a common memory space. However, each GPU
+block’s shared memory is private to that block, much like how separate
+processes in a distributed-memory model (such as MPI) each have their
+own memory and must explicitly exchange data. Efficient GPU programs
+manage this hierarchy carefully, reusing shared memory to reduce costly
+access to global memory.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="openacc">OpenACC<a class="anchor" aria-label="anchor" href="#openacc"></a>
+</h2>
+<hr class="half-width">
+<p>OpenACC is a framework for parallel programming on GPUs, both for
+NVIDIA and AMD GPUs; i.e. it is platform agnostic. Just like OpenMP, it
+uses compiler directives to tell the compiler which parts of code should
+be executed in parallel on a GPU. Also like OpenMP, the OpenACC runtime
+and compiler handles all of the parallelisation details such as
+generating the parallel code, transferring data between the CPU and GPU
+and synchronising/managing GPU threads.</p>
+<p>Whilst most of the heavy lifting for OpenACC is done with compiler
+directives, a runtime library is also available for finer control over
+things such as selecting which GPU to use (if you are lucky enough to
+have more than one!), finer grained data movement and synchronisation
+mechanisms. To parallelise our <code>vector_add</code> function to a
+GPU, we only need to add a single line of code.</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">C<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode c" tabindex="0"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="dt">void</span> vector_add<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>c<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">// This OpenACC directive tells the compiler to parallelise the</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">// following 'for' loop, running its iterations concurrently</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">// on the GPU</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="pp">#pragma acc parallel loop</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>        c<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> b<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="op">}</span></span></code></pre>
+</div>
+<p>The full program is in <a href="files/vector/vector_openacc.c">vector_openacc.c</a>. The directive
+<code>#pragma acc parallel loop</code> tells the compiler to parallelise
+the loop and execute it on the GPU. Each GPU core/thread performs part
+of the vector addition. OpenACC also takes care of allocating memory on
+the GPU and transferring data from the CPU to GPU’s memory. It also
+copies the results back to the CPU when the loop is completed.</p>
+<div id="some-other-useful-directives" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="some-other-useful-directives" class="callout-inner">
+<h3 class="callout-title">Some other useful directives</h3>
+<div class="callout-content">
+<p>As we’ve seen,<code>#pragma acc parallel loop</code> targets a single
+loop. OpenACC also provides the <code>#pragma acc kernels</code>
+directive. This directive is meant to be put before a larger region of
+code, such as a complicated loop or multiple loops. The compiler then
+analyses this entire region and automatically determines the best way to
+convert the code, including any loops it finds, into parallel “kernels”
+of code to run on the GPU.</p>
+<p>The main difference is that <code>#pragma acc parallel loop</code> is
+prescriptive: you are explicitly telling the compiler to parallelise
+that one loop. In contrast, <code>#pragma acc kernels</code> is
+descriptive: you are telling the compiler “here is a block of code to
+accelerate,” giving it freedom to analyse the code and choose the most
+efficient way to parallelise and run it.</p>
+<p>Additionally, whilst OpenACC automatically manages data transfers
+between the GPU and CPU, more explicit data management is possible using
+directives such as <code>#pragma acc data</code>, <code>copy</code>,
+<code>copyin</code>, and <code>copyout</code> for more control.</p>
+</div>
+</div>
+</div>
+<p>To compile an OpenACC program, we need a compiler that supports it.
+On Iridis X this is either GCC or one from NVIDIA’s compiler collection.
+With GCC we need to use the <code>-fopenacc</code> flag. However, when
+using NVIDIA’s C compiler, <code>nvc</code>, the flag is instead
+<code>-acc</code>, e.g. <code>nvc -acc vector_openacc.c</code>. Without
+the flag, the OpenACC directives are ignored and GPU code is not
+generated.</p>
+<p>The following is an example of how you would compile and launch an
+OpenACC program on Iridis X. It is especially important that we remember
+to request a GPU using the <code>--gres=gpu:1</code> directive and
+select a partition where nodes have GPUs.</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#SBATCH --partition=l4</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#SBATCH --gres=gpu:1</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#SBATCH --time=00:01:00</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co"># Load the NVIDIA HPC SDK module, which provides OpenACC support</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="ex">module</span> load nvhpc</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co"># Compile the program with GPU offloading enabled</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="ex">nvc</span> <span class="at">-acc</span> vector_openacc.c <span class="at">-o</span> vector_openacc.exe</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co"># Check GPU availability and run the program</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="ex">nvidia-smi</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="ex">./vector_openacc.exe</span></span></code></pre>
+</div>
+<p>The main advantage of OpenACC, like OpenMP, is that it allows rapid
+GPU parallelisation with minimal code changes. It is particularly useful
+for incrementally porting existing CPU applications to GPUs. However,
+compared to lower-level frameworks like CUDA, it offers less
+fine-grained control over GPU execution and memory management. OpenACC
+is therefore well suited for scientific and engineering applications
+where productivity are more important than maximal performance.</p>
+</section><section><h2 class="section-heading" id="cuda">CUDA<a class="anchor" aria-label="anchor" href="#cuda"></a>
+</h2>
+<hr class="half-width">
+<p>The final framework we will look at is CUDA, which is essentially a
+programming language created by NVIDIA to run arbitrary code on NVIDIA
+GPUs. However, unlike OpenACC which uses compiler directives to
+automatically parallalise sections of code, CUDA is an extension of the
+C/C++ language which gives you explicit <em>fine-grained</em> control
+over the GPU. This is a much more powerful and performant approach, but
+also far more complex. You are no longer advising the compiler; you are
+directly writing the code that will run on the GPU. Given this
+complexity, we will only examine the key concepts at a very high
+level.</p>
+<p>In CUDA, you write special functions called <em>kernels</em> that are
+executed on the GPU. In the later code example below, we have two
+functions: <code>vector_add_kernel</code> and <code>vector_add</code>.
+The <code>vector_add_kernel</code> function is the code which runs on
+the GPU. The <code>__global__</code> keyword tells the compiler that
+this function should be launched from the CPU but run on the GPU. Inside
+this kernel, each thread calculates its own unique ID using special
+variables (like <code>blockIdx.x</code> and <code>threadIdx.x</code>).
+This ID determines which element <code>i</code> of the vector
+<code>c</code> that specific thread will process. This is the core
+mechanism for dividing the parallel work. You will also see an
+<code>if (i &lt; n)</code> check in the kernel. This is a crucial safety
+check. GPUs launch threads in fixed-size groups, so you often launch
+more threads than you have data (e.g., launching 1024 threads for a
+1000-element array). This <code>if</code> statement simply tells the
+“extra” threads (1000, 1001, etc.) to do nothing. Without it, they would
+try to access memory that doesn’t exist, which could corrupt your data
+or crash the program.</p>
+<p>The original <code>vector_add</code> functions runs on the CPU and
+manages the GPU, controlling when the GPU kernel is launched. It must
+now do all the work <em>manually</em> that OpenACC handled
+automatically:</p>
+<ol style="list-style-type: decimal">
+<li>Allocate Memory: <code>cudaMalloc</code> is used to allocate
+separate memory for the three vectors (<code>d_a</code>,
+<code>d_b</code>, <code>d_c</code>) <em>on the GPU’s memory</em>. The
+<code>d_</code> prefix is a common convention to mean “device”
+memory.</li>
+<li>Copy Data In: <code>cudaMemcpy</code> (with
+<code>cudaMemcpyHostToDevice</code>) is called to copy the input data
+from the CPU’s <code>a</code> and <code>b</code> arrays to the GPU’s
+<code>d_a</code> and <code>d_b</code> arrays. This is the explicit data
+transfer.</li>
+<li>Launch Kernel: The
+<code>&lt;&lt;&lt;grid, BLOCK_SIZE&gt;&gt;&gt;</code> syntax is the
+CUDA-specific command to launch the kernel. This tells the GPU to launch
+a “grid” of “blocks,” to execute the <code>vector_add_kernel</code>
+function.</li>
+<li>Copy Data Out: After the kernel finishes, <code>cudaMemcpy</code>
+(with <code>cudaMemcpyDeviceToHost</code>) copies the result from the
+GPU’s <code>d_c</code> array back to the CPU’s <code>c</code>
+array.</li>
+<li>Clean Up: <code>cudaFree</code> releases the memory on the GPU.</li>
+</ol>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">CPP<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode cpp" tabindex="0"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co">// This is the "kernel" - the code that runs on the GPU a.k.a. the device</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>__global__ <span class="dt">void</span> vector_add_kernel<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>c<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="co">// Calculate the unique ID for this thread</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>    <span class="dt">int</span> i <span class="op">=</span> blockIdx<span class="op">.</span>x <span class="op">*</span> blockDim<span class="op">.</span>x <span class="op">+</span> threadIdx<span class="op">.</span>x<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>    <span class="co">// Ensure the thread ID is within the bounds of the array</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>i <span class="op">&lt;</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>        c<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">+</span> b<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">// This is the "host" function - the code that runs on the CPU</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="dt">void</span> vector_add<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>c<span class="op">,</span> <span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>    <span class="co">// Pointers for the "device" (GPU) memory</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>    <span class="dt">int</span> <span class="op">*</span>d_a<span class="op">,</span> <span class="op">*</span>d_b<span class="op">,</span> <span class="op">*</span>d_c<span class="op">;</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a>    <span class="dt">int</span> size <span class="op">=</span> n <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">);</span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>    <span class="co">// 1. Allocate memory on the GPU</span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a>    cudaMalloc<span class="op">(&amp;</span>d_a<span class="op">,</span> size<span class="op">);</span></span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a>    cudaMalloc<span class="op">(&amp;</span>d_b<span class="op">,</span> size<span class="op">);</span></span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a>    cudaMalloc<span class="op">(&amp;</span>d_c<span class="op">,</span> size<span class="op">);</span></span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a>    <span class="co">// 2. Copy input data from CPU (host) to GPU (device)</span></span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a>    cudaMemcpy<span class="op">(</span>d_a<span class="op">,</span> a<span class="op">,</span> size<span class="op">,</span> cudaMemcpyHostToDevice<span class="op">);</span></span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a>    cudaMemcpy<span class="op">(</span>d_b<span class="op">,</span> b<span class="op">,</span> size<span class="op">,</span> cudaMemcpyHostToDevice<span class="op">);</span></span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a>    <span class="co">// 3. Launch the kernel on the GPU</span></span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a>    <span class="dt">int</span> BLOCK_SIZE <span class="op">=</span> <span class="dv">256</span><span class="op">;</span></span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a>    <span class="dt">int</span> grid <span class="op">=</span> <span class="op">(</span>n <span class="op">+</span> BLOCK_SIZE <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">/</span> BLOCK_SIZE<span class="op">;</span></span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a>    vector_add_kernel<span class="op">&lt;&lt;&lt;</span>grid<span class="op">,</span> BLOCK_SIZE<span class="op">&gt;&gt;&gt;(</span>d_a<span class="op">,</span> d_b<span class="op">,</span> d_c<span class="op">,</span> n<span class="op">);</span></span>
+<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a>    <span class="co">// 4. Copy the result from GPU (device) back to CPU (host)</span></span>
+<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a>    cudaMemcpy<span class="op">(</span>c<span class="op">,</span> d_c<span class="op">,</span> size<span class="op">,</span> cudaMemcpyDeviceToHost<span class="op">);</span></span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a>    <span class="co">// 5. Free the memory on the GPU</span></span>
+<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a>    cudaFree<span class="op">(</span>d_a<span class="op">);</span></span>
+<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a>    cudaFree<span class="op">(</span>d_b<span class="op">);</span></span>
+<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a>    cudaFree<span class="op">(</span>d_c<span class="op">);</span></span>
+<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a><span class="op">}</span></span></code></pre>
+</div>
+<p>The full program is in <a href="files/vector/vector_cuda.cu">vector_cuda.cu</a>. To compile CUDA
+code, we must use NVIDIA’s <code>nvcc</code> compiler. Note that this is
+different from the <code>nvc</code> compiler we used to build the
+OpenACC version of <code>vector_add</code>. The <code>nvcc</code>
+compiler understands the CUDA-specific syntax used to define and launch
+kernels, e.g. <code>__global__</code> and
+<code>&lt;&lt;&lt;...&gt;&gt;&gt;</code>. It separates out the
+GPU-specific and CPU-specific code, compiling the CPU code using a
+standard C++ compiler. CUDA files typically use the .cu extension.</p>
+<p>To run a CUDA program, it is launched like any other program, as the
+mechanics to communicate and launch threads on the GPU is handled inside
+the program itself. The submission script for a CUDA code is nearly
+identical to the OpenACC script from before.</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># !/bin.bash</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co"># SBATCH --partition=a100</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co"># SBATCH --nodes=1</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co"># SBATCH --ntasks=1</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co"># SBATCH --gres=gpu:1</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co"># SBATCH --time=00:01:00</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co"># Load the NVIDIA CUDA toolkit module</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="ex">module</span> load cuda</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co"># Compile the program using nvcc</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="ex">nvcc</span> vector_cuda.cu <span class="at">-o</span> vector_cuda.exe</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co"># Run the executable (no special launcher needed)</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="ex">./vector_cuda.exe</span></span></code></pre>
+</div>
+<p>The main benefit of CUDA is the total control it provides, which
+often leads to the highest possible performance. The main drawbacks are
+its complexity (requiring manual memory management and kernel writing)
+and vendor lock-in, as CUDA code will only run on NVIDIA GPUs.</p>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<span class="callout-header">Key Points</span>
+<div class="callout-inner">
+<div class="callout-content">
+<ul>
+<li>Any language can be used for HPC, however, compiled languages like
+C, C++ and Fortran are typically used for performance-critical code.
+Python is often used on HPC using libraries which are built on compiled
+languages.</li>
+<li>OpenMP is a shared-memory model, using compiler directives
+(<code>#pragma omp</code>) to easily parallelise code (often loops) to
+run on the CPU cores of a single node.</li>
+<li>MPI is a distributed-memory model, using a library of functions
+(<code>MPI_Init</code>, <code>MPI_Send</code>, etc.) to manage explicit
+communication between processes. It is complex but can scale across many
+nodes.</li>
+<li>GPUs are “many-core” processors ideal for massive, simple, parallel
+tasks (like matrix maths). Using them requires copying data between the
+CPU (host) and GPU (device).</li>
+<li>OpenACC uses compiler directives (<code>#pragma acc</code>) to
+offload work to a GPU, automating parallelisation and data
+transfers.</li>
+<li>CUDA is a complex, explicit programming model for NVIDIA GPUs. It
+requires you to write “kernels” and manually manage memory
+(<code>cudaMalloc</code>, <code>cudaMemcpy</code>) but offers the
+highest control and performance.</li>
+</ul>
+</div>
+</div>
+</div>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</section></section><section id="aio-6_parallel_scaling"><p>Content from <a href="6_parallel_scaling.html">Measuring and improving parallel performance</a></p>
+<hr>
+<p>Last updated on 2025-11-06 |
+
+        <a href="https://github.com/carpentries/workbench-template-md/edit/main/episodes/6_parallel_scaling.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>Why is it important for code to scale well on large HPC
+systems?</li>
+<li>What can go wrong if we try to optimise too early in the development
+process?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
 <li>Describe why code scalability is important when using HPC
 resources</li>
 <li>Describe the differences between strong and weak scaling</li>
@@ -2409,7 +4099,237 @@ resources</li>
 </div>
 </div>
 </div>
-<p>Lesson content goes here</p>
+<p>When we submit a job to run on a cluster, we have the option of
+specifying the amount of memory and the number of CPUs (and GPUs) that
+will be allocated. We also need to consider to what extent that the code
+is <em>scalable</em> with regards to how it uses the requested
+resources, to avoid asking for and wasting resources than cannot be used
+efficiently by the code. Before we start asking for lots of resources,
+we need to know how the performance of our code scales with the number
+of CPUs (or GPUs) made available to it. There are two primary measures
+of performance we should measure:</p>
+<ul>
+<li>
+<strong>Wall clock time (or actual time)</strong> - this is the time
+it takes to run from start of execution to the end, as measured on a
+clock. In terms of scaling measurements, this does not include any time
+waiting for the job to start.</li>
+<li>
+<strong>CPU time</strong> - this is the time actually spent running
+your code on a CPU, when it is processing instructions. This does not
+include time waiting for input or output operations, such as reading in
+an input file, or any other waiting caused by the cluster’s operating
+system.</li>
+</ul>
+<p>In most cases, measuring just the wall clock time is usually
+sufficient for working out how your code scales. But what is code
+scalability?</p>
+<section><h2 class="section-heading" id="what-is-scalability">What is scalability?<a class="anchor" aria-label="anchor" href="#what-is-scalability"></a>
+</h2>
+<hr class="half-width">
+<p>Scalability describes how efficiently a program can use additional
+resources to solve a problem faster, or to handle larger problems. A
+scalable code continues to achieve performance improvements as more
+resources are allocated to it. Programs which don’t scale well show
+diminishing returns as more resources are allocated, often due to
+bottlenecks such as serial code sections or other overheads. It’s
+important to note that not all programs need to scale perfectly or to
+hundreds of thousands of processors. Every program has a practical
+scaling limit beyond which performance gains level off or even decline.
+What matters is understanding where the limit lies for your application
+and what the bottleneck is.</p>
+<p>Bottlenecks are the parts of a program that limit its scalability.
+Even small sections of serial code or operations that require
+coordination between processors can dominate the total runtime.
+According to <a href="https://en.wikipedia.org/wiki/Amdahl%27s_law" class="external-link">Amdahl’s Law</a>,
+the speedup of a parallel program is constrained by the fraction which
+executes serially, so perfect scaling is impossible when any part of the
+program must execute sequentially. Typical bottlenecks include
+communication overhead, synchronisation delays, I/O operations, and load
+imbalance. As processor count increases, these costs can outweigh the
+benefits of parallel execution, leaving some CPUs idle whilst they wait
+for others to catchup.</p>
+<p>Scalability is measured by observing how the program’s execution time
+changes as the number of processors increases. This can be quantified
+through speedup (the ratio of single-processor runtime to
+multi-processor runtime) and efficiency (the ratio of achieved speedup
+to the number of processors used). These are calculated through
+measurements of wall clock time and plotted against the processor count
+to show how performance scales.</p>
+<p>Measuring scalability helps identify whether performance limitations
+stem from the code itself, the problem size, or the system architecture.
+Because computing resources are finite, measuring scalability is
+essential to ensure they are used efficiently. It allows you to
+determine when adding more cores no longer provides meaningful benefits,
+preventing wasted resources.</p>
+<div class="section level3">
+<h3 id="strong-scaling">Strong Scaling<a class="anchor" aria-label="anchor" href="#strong-scaling"></a>
+</h3>
+<p>Strong scaling measures how execution time changes when the problem
+size <em>stays constant</em> but the number of processors increases.
+Ideally, when doubling the processor count we should see expect for the
+runtime to be halved. In practise, performance gains are limited by
+serial code and overheads such as communication, synchronisation or I/O
+operations limited by the file or operating system. When we measure
+strong scaling, we ideally want to see that by doubling the number of
+cores, we decrease the execution time by a factor of 2; or see a factor
+2 increase in the speedup.</p>
+<figure><img src="fig/strong_scaling.png" alt="A plot showing the measured speed up against number of processors. In this example, we can see that our code scales very well up to 16 processors. However, beyond this amount the speed up starts to diverge from ideal scaling. Once we start using 128 processors we can see that it’s detrimental and the code performs worse!" class="figure mx-auto d-block"><div class="figcaption">A plot showing the measured speed up against
+number of processors. In this example, we can see that our code scales
+very well up to 16 processors. However, beyond this amount the speed up
+starts to diverge from ideal scaling. Once we start using 128 processors
+we can see that it’s detrimental and the code performs worse!</div>
+</figure>
+</div>
+<div class="section level3">
+<h3 id="weak-scaling">Weak Scaling<a class="anchor" aria-label="anchor" href="#weak-scaling"></a>
+</h3>
+<p>Weak scaling measures show runtime changes when both the problem size
+and number of processors increase proportionally, keeping the workload
+per processor constant; in contrast, when measuring strong scaling, the
+workload per processors decreases. It is measured by taking the ratio of
+the run time against the run time of serial execution. Ideally, the
+runtime should remain constant as more processors are added. Weak
+scaling is important for large simulations which would be functionally
+impossible without a large number of resources.</p>
+<figure><img src="fig/weak_scaling.png" alt="A plot showing the measured efficiency against process count. We can see in this case that this code does not scale well at all in a weak scaling test." class="figure mx-auto d-block"><div class="figcaption">A plot showing the measured efficiency against
+process count. We can see in this case that this code does not scale
+well at all in a weak scaling test.</div>
+</figure>
+</div>
+<div class="section level3">
+<h3 id="what-affects-the-scalability">What affects the scalability?<a class="anchor" aria-label="anchor" href="#what-affects-the-scalability"></a>
+</h3>
+<p>As we’ve already established, a program’s ability to scale is
+primarily limited by bottlenecks. Even a small fraction of serial code
+will eventually dominate the runtime and place a hard limit on
+performance, regardless of how many processors you add. Beyond the
+serial fraction, several other factors, often referred to as parallel
+overheads, degrade scalability:</p>
+<ul>
+<li>Communication overhead: processors running in parallel rarely work
+in isolation. They need to exchange data, which is done serially. The
+time spent sending and receiving data is an overhead. As you increase
+the processor count (especially in strong scaling), the ratio of
+computation to communication often decreases, meaning processors spend
+more time talking and less time working.</li>
+<li>Synchronisation delays: parallel tasks often need to coordinate.
+This can involve waiting at a barrier (a point where all processors must
+arrive before any can proceed) or waiting to access a shared resource.
+This waiting time is wasted time where processors are idle.</li>
+<li>Load imbalance: scalability assumes all processors are equally busy.
+If the work is distributed unevenly, some processors will finish their
+tasks long before others. These idle processors wait for the slowest
+ones to catch up, reducing overall efficiency.</li>
+<li>I/O operations: reading from or writing to disk is often a serial
+bottleneck. If 128 processors try to write to the same file, they may
+have to do so one after another, nullifying the parallel speedup for
+that part of the program.</li>
+<li>Problem size: in strong scaling, if the problem size is too small,
+breaking it across many processors means the overhead (like
+communication) quickly outweighs the tiny amount of computation each
+processor performs. In weak scaling, the program’s scalability is tested
+by how effectively the problem itself can be enlarged while keeping the
+work-per-processor constant.</li>
+</ul>
+</div>
+</section><section><h2 class="section-heading" id="the-dangers-of-premature-optimisation">The dangers of premature optimisation<a class="anchor" aria-label="anchor" href="#the-dangers-of-premature-optimisation"></a>
+</h2>
+<hr class="half-width">
+<p>If your code is still taking too long to run after parallelising it,
+or if it scales poorly, it’s tempting to dive head first in and try to
+optimise everything you think is slow! But before you do that, you need
+to think about the <a href="https://hackernoon.com/the-rules-of-optimization-why-so-many-performance-efforts-fail-cf06aad89099" class="external-link">rules
+of optimisation</a>:</p>
+<ol style="list-style-type: decimal">
+<li>Don’t,</li>
+<li>Don’t… <em>yet</em>, and,</li>
+<li>If you need to optimise your code, <em>profile</em> it first.</li>
+</ol>
+<p>For most code we write, premature optimisation is often bad practice
+which leads to long nights of debugging. Optimisation often leads to
+more complex code resulting in code which is more difficult to read,
+making it harder to understand and maintain; even with all the code
+comments in the world! Another issue is that your premature optimisation
+may change the result without you realising until much further down the
+line.</p>
+<p>It is often effort-intensive, and difficult, particularly with modern
+compilers and interpreters, to improve on or anticipate the
+optimisations that compilers already automatically implement for us. It
+is often better to focus on writing understandable code which does what
+you want and then <em>only</em> optimise if it too slow, and you have
+evidence that it is the bottleneck. You will often find that code you
+think is going to be slow, is often fast enough to not be a problem!</p>
+<p>Once you have measured the strong and weak scaling profiles of your
+code, you can also <em>profile</em> your code to find where the majority
+of time is being spent to best optimise it. Only then should you start
+thinking about optimising or even paralleling slow code. If you want to
+take this philosophy further, consider the <a href="https://perlbuzz.com/2008/02/19/the_rules_of_optimization_club/" class="external-link">Rules
+of Optimisation Club</a>.</p>
+<div id="what-is-profiling" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="what-is-profiling" class="callout-inner">
+<h3 class="callout-title">What is profiling?</h3>
+<div class="callout-content">
+<p>Profiling your code is all about understanding its complexity and
+performance characteristics. The usual intent of profiling is to work
+out how best to <em>optimise</em> your code to improve its performance
+in some way, typically in terms of speedup or memory and disk usage. In
+particular, profiling helps identify <em>where</em> bottlenecks exist in
+your code, and helps avoid summary judgments and guesses which will
+often lead to unnecessary optimisations.</p>
+<p>Each programming language will typically offer some open-source
+and/or free tools on the web, with you can use to profile your code.
+Here are some examples of tools. Note though, depending on the nature of
+the language of choice, the results can be hard or easy to interpret. In
+the following we will only list open and free tools:</p>
+<ul>
+<li>Python: <a href="https://github.com/pyutils/line_profiler" class="external-link">line_profiler</a>, <a href="https://docs.python.org/3.9/library/profile.html" class="external-link">prof</a>
+</li>
+<li>C/C++: <a href="https://llvm.org/docs/XRay.html" class="external-link">xray</a>, <a href="https://perf.wiki.kernel.org/index.php/Main_Page" class="external-link">perf</a>, <a href="https://ftp.gnu.org/old-gnu/Manuals/gprof-2.9.1/html_mono/gprof.html" class="external-link">gprof</a>
+</li>
+<li>R: <a href="https://github.com/rstudio/profvis" class="external-link">profvis</a>
+</li>
+<li>MATLAB: <a href="https://www.mathworks.com/help/matlab/ref/profile.html" class="external-link">profile</a>
+</li>
+<li>Julia: <a href="https://docs.julialang.org/en/v1/manual/profile/" class="external-link">Profile</a>
+</li>
+</ul>
+<p><a href="https://en.wikipedia.org/wiki/Donald_Knuth" class="external-link">Donald Knuth</a>
+said <em>“we should forget about small efficiencies, say about 97% of
+the time: premature optimization is the root of all evil. Yet we should
+not pass up our opportunities in that critical 3%.”</em> Optimise the
+obvious trivial things, but avoid non-trivial optimisations until you’ve
+understood what needs to change. Optimisation is often difficult and
+time consuming. Pre-mature optimization may be a waste of your time!</p>
+</div>
+</div>
+</div>
+<div id="test-test-and-test-again" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="test-test-and-test-again" class="callout-inner">
+<h3 class="callout-title">Test, test and test again</h3>
+<div class="callout-content">
+<p>Following profiling, but before you attempt any optimisation or
+parallelisation, it is critical to establish a robust test plan. This
+plan acts as a validation that changes you have made do not change the
+results of your program or part of the code you have changed. It
+typically involves a set of known inputs and their “gold standard”
+correct outputs. Optimisation, and especially parallelisation, can
+easily introduce subtle bugs, such as race conditions or slight
+variations in arithmetic, that don’t cause the program to crash but
+silently changes or corrupt the results. By running through your test
+plan after each modification, you can immediately verify that your
+changes have not compromised the correctness of the code.</p>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -2418,11 +4338,29 @@ resources</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>You need a list of key points</li>
+<li>Understanding scalability is crucial for using HPC resources
+efficiently and avoiding waste.</li>
+<li>Scalability measures how efficiently code uses additional resources
+for a fixed problem (strong scaling) or a proportionally growing problem
+(weak scaling).</li>
+<li>A program’s scalability is limited by bottlenecks, such as serial
+code (Amdahl’s Law), communication overhead, I/O, and load
+imbalance.</li>
+<li>Premature optimisation adds complexity and risks introducing
+bugs.</li>
+<li>Always profile code first to identify the actual performance
+bottlenecks before attempting optimisation.</li>
+<li>Establish a robust test plan to verify that any optimisations do not
+alter the correctness of the results.</li>
 </ul>
 </div>
 </div>
-</div></section>
+</div>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</section></section>
 </div>
     </main>
 </div>
@@ -2469,9 +4407,9 @@ resources</li>
   "creativeWorkStatus": "active",
   "url": "https://carpentries.github.io/workbench-template-md/aio.html",
   "identifier": "https://carpentries.github.io/workbench-template-md/aio.html",
-  "dateCreated": "2025-11-04",
-  "dateModified": "2025-11-04",
-  "datePublished": "2025-11-04"
+  "dateCreated": "2025-11-06",
+  "dateModified": "2025-11-06",
+  "datePublished": "2025-11-06"
 }
 
   </script><script>
