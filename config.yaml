@@ -66,7 +66,6 @@ contact: 'team@carpentries.org' # FIXME
 
 # Order of episodes in your lesson
 episodes:
-- introduction.md
 - 1_intro_to_hpc_systems.md
 - 2_using_hpc_systems.md
 - 3_job_scheduling.md
@@ -86,5 +85,4 @@ profiles:
 #
 # This space below is where custom yaml items (e.g. pinning
 # sandpaper and varnish versions) should live
-
 
