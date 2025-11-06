@@ -71,6 +71,7 @@ episodes:
 - 3_job_scheduling.md
 - 4_programmatic_parallelism.md
 - 5_hpc_technologies.md
+- 6_parallel_scaling.md
 
 # Information for Learners
 learners:
