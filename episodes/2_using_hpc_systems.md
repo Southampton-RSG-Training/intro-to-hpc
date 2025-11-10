@@ -47,6 +47,8 @@ These security requirements are most often handled through use of a tool known a
 
 For systems running an SSH server anyone on the network can attempt to log in. Usernames are quite often public, or easy to guess, which makes the password the weakest link in the security chain. Many clusters therefore forbid password-based login, requiring instead that you generate and configure a public-private key pair with a much stronger password, known as SSH keys. 
 
+Some systems, such as the national tier 1 systems, may also use multi-factor authentication using e.g. an authentication app as well as a password.
+
 While accessing Iridis can be done using your University username and password, we will quickly walk through the use of SSH keys and an SSH agent to both strengthen your security and make it more convenient to log in to remote systems.
 
 ### SSH Keys
@@ -244,7 +246,7 @@ Moving data onto and from an HPC system can be achieved in several ways. One of 
 
 ### Using SFTP in the terminal
 
-SCP is lightweight and extremely straightforward to use, however it is not very advanced in its abilities. SFTP has more advanced features, including: 
+Some extremely lightweight tools for data transfer exist, such as SFTP. It does however have some more advanced features than some of its lightweight rivals, including: 
 
 - Interactive sessions with remote file management such as renaming files, deleting files and directories and changing permissions and ownership. 
 - Providing better recovery mechanisms, such as being able to restart transfers from an interruption.
@@ -527,7 +529,7 @@ You can get in touch with the group by emailing rsg-info@soton.ac.uk.
 
 - Connections to HPC systems are made securely using SSH (Secure Shell), typically through a public-private key pair for secure authentication.
 
-- Data transfer to and from HPC systems can be done using SSH-based tools such as scp, sftp, or rsync, or through GUI tools like FileZilla or the Iridis On Demand.
+- Data transfer to and from HPC systems can be done using SSH-based tools such as sftp, or rsync, or through GUI tools like FileZilla or the Iridis On Demand.
 
 - Software on HPC systems is managed using Environment Modules, which allow users to load, unload, and switch between software packages and versions.
 
