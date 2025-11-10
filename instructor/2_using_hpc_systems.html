@@ -331,7 +331,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Accessing and Using HPC Resources</h1>
-        <p>Last updated on 2025-11-06 |
+        <p>Last updated on 2025-11-10 |
 
         <a href="https://github.com/carpentries/workbench-template-md/edit/main/episodes/2_using_hpc_systems.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -432,6 +432,9 @@ makes the password the weakest link in the security chain. Many clusters
 therefore forbid password-based login, requiring instead that you
 generate and configure a public-private key pair with a much stronger
 password, known as SSH keys.</p>
+<p>Some systems, such as the national tier 1 systems, may also use
+multi-factor authentication using e.g. an authentication app as well as
+a password.</p>
 <p>While accessing Iridis can be done using your University username and
 password, we will quickly walk through the use of SSH keys and an SSH
 agent to both strengthen your security and make it more convenient to
@@ -703,9 +706,9 @@ ways. One of the most common tools are SSH based SFTP (Secure File
 Transfer Protocol) and rsync.</p>
 <div class="section level3">
 <h3 id="using-sftp-in-the-terminal">Using SFTP in the terminal<a class="anchor" aria-label="anchor" href="#using-sftp-in-the-terminal"></a></h3>
-<p>SCP is lightweight and extremely straightforward to use, however it
-is not very advanced in its abilities. SFTP has more advanced features,
-including:</p>
+<p>Some extremely lightweight tools for data transfer exist, such as
+SFTP. It does however have some more advanced features than some of its
+lightweight rivals, including:</p>
 <ul><li>Interactive sessions with remote file management such as renaming
 files, deleting files and directories and changing permissions and
 ownership.</li>
@@ -896,7 +899,7 @@ colleagues.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The three main reasons behind this approach:</p>
 <ul><li>Software incompatibilities: Software incompatibility is a major
@@ -1141,8 +1144,8 @@ applications like Jupyter notebooks.</p></li>
 Shell), typically through a public-private key pair for secure
 authentication.</p></li>
 <li><p>Data transfer to and from HPC systems can be done using SSH-based
-tools such as scp, sftp, or rsync, or through GUI tools like FileZilla
-or the Iridis On Demand.</p></li>
+tools such as sftp, or rsync, or through GUI tools like FileZilla or the
+Iridis On Demand.</p></li>
 <li><p>Software on HPC systems is managed using Environment Modules,
 which allow users to load, unload, and switch between software packages
 and versions.</p></li>
@@ -1216,9 +1219,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://carpentries.github.io/workbench-template-md/instructor/2_using_hpc_systems.html",
   "identifier": "https://carpentries.github.io/workbench-template-md/instructor/2_using_hpc_systems.html",
-  "dateCreated": "2025-11-06",
-  "dateModified": "2025-11-06",
-  "datePublished": "2025-11-06"
+  "dateCreated": "2025-11-10",
+  "dateModified": "2025-11-10",
+  "datePublished": "2025-11-10"
 }
 
   </script><script>
