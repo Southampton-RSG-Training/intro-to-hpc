@@ -595,13 +595,13 @@ lead to race conditions and unpredictable results. To support this,
 OpenMP provides a range of directives and library functions that
 coordinate access to shared data and manage thread behaviour. The tables
 below summarise several commonly used examples.</p>
-<table class="table"><colgroup><col width="14%"><col width="85%"></colgroup><thead><tr class="header"><th>Compiler Directive</th>
+<table class="table"><colgroup><col width="14%"><col width="85%"></colgroup><thead><tr><th>Compiler Directive</th>
 <th>Description</th>
-</tr></thead><tbody><tr class="odd"><td><code>#pragma omp atomic</code></td>
+</tr></thead><tbody><tr><td><code>#pragma omp atomic</code></td>
 <td>Ensures a specific operation, such as modifying a variable, is
 executed atomically, e.g. by one thread at a time, to prevent race
 conditions.</td>
-</tr><tr class="even"><td><code>#pragma omp critical</code></td>
+</tr><tr><td><code>#pragma omp critical</code></td>
 <td>Defines a region of code that only one thread can execute at a
 time.</td>
 </tr></tbody></table><p>This list is not exhaustive. A complete reference for all OpenMP
@@ -718,23 +718,23 @@ initialising the MPI library ourselves, track process IDs, explicitly
 send and receive data, coordinate the processes so they do their own
 work, and so on. The table below gives an idea of some of the MPI
 functions we need to use and their purpose.</p>
-<table class="table"><colgroup><col width="16%"><col width="83%"></colgroup><thead><tr class="header"><th>Function</th>
+<table class="table"><colgroup><col width="16%"><col width="83%"></colgroup><thead><tr><th>Function</th>
 <th>Description</th>
-</tr></thead><tbody><tr class="odd"><td><code>MPI_Init</code></td>
+</tr></thead><tbody><tr><td><code>MPI_Init</code></td>
 <td>Initialises the MPI environment. Must be called before any other MPI
 calls.</td>
-</tr><tr class="even"><td><code>MPI_Comm_size</code></td>
+</tr><tr><td><code>MPI_Comm_size</code></td>
 <td>Returns the total number of processes in the communicator.</td>
-</tr><tr class="odd"><td><code>MPI_Comm_rank</code></td>
+</tr><tr><td><code>MPI_Comm_rank</code></td>
 <td>Returns the rank (ID) of the calling process.</td>
-</tr><tr class="even"><td>
+</tr><tr><td>
 <code>MPI_Send</code> / <code>MPI_Recv</code>
 </td>
 <td>Used for direct point-to-point communication between processes.</td>
-</tr><tr class="odd"><td><code>MPI_Barrier</code></td>
+</tr><tr><td><code>MPI_Barrier</code></td>
 <td>Used for synchronisation. A processes cannot continue past the
 barrier until all processes have reached it.</td>
-</tr><tr class="even"><td><code>MPI_Finalize</code></td>
+</tr><tr><td><code>MPI_Finalize</code></td>
 <td>Shuts down the MPI environment. Must be called before exiting the
 program, other wise background MPI tasks may not finish.</td>
 </tr></tbody></table><p>This is only a tiny glimpse into the available MPI functions, and
@@ -1375,7 +1375,7 @@ any links that you are not going to use.
   "identifier": "https://carpentries.github.io/workbench-template-md/5_hpc_technologies.html",
   "dateCreated": "2025-11-10",
   "dateModified": "2025-11-06",
-  "datePublished": "2026-04-28"
+  "datePublished": "2026-05-05"
 }
 
   </script><script>

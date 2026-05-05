@@ -438,19 +438,19 @@ limit, whilst the scavenger queue has a twelve hour limit. The *
 appended to the batch partition name indicates it is the preferred
 default queue. The NODES column indicates the number of nodes in a given
 state,</p>
-<table class="table"><thead><tr class="header"><th>Label</th>
+<table class="table"><thead><tr><th>Label</th>
 <th>State</th>
 <th>Description</th>
-</tr></thead><tbody><tr class="odd"><td>A</td>
+</tr></thead><tbody><tr><td>A</td>
 <td>Active</td>
 <td>These nodes are busy running jobs.</td>
-</tr><tr class="even"><td>I</td>
+</tr><tr><td>I</td>
 <td>Idle</td>
 <td>These nodes are not running jobs.</td>
-</tr><tr class="odd"><td>O</td>
+</tr><tr><td>O</td>
 <td>Other</td>
 <td>These nodes are down, or otherwise unavailable.</td>
-</tr><tr class="even"><td>T</td>
+</tr><tr><td>T</td>
 <td>Total</td>
 <td>The total number of nodes in the partition.</td>
 </tr></tbody></table><p>Finally, the NODELIST column is a summary of the nodes belonging to a
@@ -548,44 +548,44 @@ the minimum <em>batch directives</em> you should include to submit a
 job: the partition to run on, how long the job needs to run, the number
 of nodes we require and the number of CPUs. The table below shows a list
 of the most commonly used directives.</p>
-<table class="table"><colgroup><col width="16%"><col width="57%"><col width="26%"></colgroup><thead><tr class="header"><th>Parameter</th>
+<table class="table"><colgroup><col width="16%"><col width="57%"><col width="26%"></colgroup><thead><tr><th>Parameter</th>
 <th>Description</th>
 <th>Example Value</th>
-</tr></thead><tbody><tr class="odd"><td><code>--job-name</code></td>
+</tr></thead><tbody><tr><td><code>--job-name</code></td>
 <td>Sets a name for your job.</td>
 <td><code>--job-name=my_analysis</code></td>
-</tr><tr class="even"><td><code>--nodes</code></td>
+</tr><tr><td><code>--nodes</code></td>
 <td>Requests a specific number of compute nodes.</td>
 <td><code>--nodes=1</code></td>
-</tr><tr class="odd"><td><code>--ntasks</code></td>
+</tr><tr><td><code>--ntasks</code></td>
 <td>Requests a total number of tasks (e.g., MPI processes).</td>
 <td><code>--ntasks=16</code></td>
-</tr><tr class="even"><td><code>--ntasks-per-node</code></td>
+</tr><tr><td><code>--ntasks-per-node</code></td>
 <td>Specifies the number of tasks to run on each node.</td>
 <td><code>-ntasks-per-node=8</code></td>
-</tr><tr class="odd"><td><code>--cpus-per-task</code></td>
+</tr><tr><td><code>--cpus-per-task</code></td>
 <td>Requests a number of CPU cores for each task (e.g., for OpenMP
 threads).</td>
 <td><code>--cpus-per-task=4</code></td>
-</tr><tr class="even"><td><code>--time</code></td>
+</tr><tr><td><code>--time</code></td>
 <td>Sets the maximum wall-clock time for the job (HH:MM:SS).</td>
 <td><code>--time=01:30:00</code></td>
-</tr><tr class="odd"><td><code>--partition</code></td>
+</tr><tr><td><code>--partition</code></td>
 <td>Specifies the queue (partition) to submit the job to.</td>
 <td><code>--partition=highmem</code></td>
-</tr><tr class="even"><td><code>--gres</code></td>
+</tr><tr><td><code>--gres</code></td>
 <td>Requests generic resources, most commonly GPUs.</td>
 <td><code>--gres=gpu:1</code></td>
-</tr><tr class="odd"><td><code>--output</code></td>
+</tr><tr><td><code>--output</code></td>
 <td>Specifies the file to write the standard output (STDOUT) to.</td>
 <td><code>--output=job_output.log</code></td>
-</tr><tr class="even"><td><code>--error</code></td>
+</tr><tr><td><code>--error</code></td>
 <td>Specifies the file to write the standard error (STDERR) to.</td>
 <td><code>--error=job_error.log</code></td>
-</tr><tr class="odd"><td><code>--mail-user</code></td>
+</tr><tr><td><code>--mail-user</code></td>
 <td>Your email address for job status notifications.</td>
 <td><code>--mail-user=a.user@soton.ac.uk</code></td>
-</tr><tr class="even"><td><code>--mail-type</code></td>
+</tr><tr><td><code>--mail-type</code></td>
 <td>Specifies which events trigger an email (e.g., BEGIN, END, FAIL,
 ALL).</td>
 <td><code>--mail-type=END,FAIL</code></td>
@@ -753,20 +753,20 @@ jobs including the partition, user and also the state of the job (in the
 ST column). In this example, we can see two jobs. One is in R, or
 RUNNING, state and another is in PD, or PENDING, state. A job will
 typically go through the following states,</p>
-<table class="table"><colgroup><col width="6%"><col width="10%"><col width="83%"></colgroup><thead><tr class="header"><th>Label</th>
+<table class="table"><colgroup><col width="6%"><col width="10%"><col width="83%"></colgroup><thead><tr><th>Label</th>
 <th>State</th>
 <th>Description</th>
-</tr></thead><tbody><tr class="odd"><td>PD</td>
+</tr></thead><tbody><tr><td>PD</td>
 <td>PENDING</td>
 <td>The jobs might need to wait in a queue first before they can be
 allocated to a node to run.</td>
-</tr><tr class="even"><td>R</td>
+</tr><tr><td>R</td>
 <td>RUNNING</td>
 <td>The job is currently running.</td>
-</tr><tr class="odd"><td>CG</td>
+</tr><tr><td>CG</td>
 <td>COMPLETING</td>
 <td>The job is in the process of completing.</td>
-</tr><tr class="even"><td>CD</td>
+</tr><tr><td>CD</td>
 <td>COMPLETED</td>
 <td>The job has completed.</td>
 </tr></tbody></table><p>For pending jobs, you will usually see a reason for why the job is
@@ -1014,7 +1014,7 @@ any links that you are not going to use.
   "identifier": "https://carpentries.github.io/workbench-template-md/3_job_scheduling.html",
   "dateCreated": "2025-11-10",
   "dateModified": "2025-11-04",
-  "datePublished": "2026-04-28"
+  "datePublished": "2026-05-05"
 }
 
   </script><script>

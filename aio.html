@@ -665,62 +665,62 @@ your personal computer and an HPC cluster.</p>
 <col width="38%">
 <col width="48%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th><strong>Feature</strong></th>
 <th><strong>Local PC</strong></th>
 <th><strong>HPC Cluster</strong></th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><strong>Hardware</strong></td>
 <td>Single standalone computer</td>
 <td>Many interconnected compute nodes forming one system</td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>Processors (CPU)</strong></td>
 <td>Few cores (4–16 typical)</td>
 <td>Many CPUs per node; hundreds or thousands of cores total across the
 cluster</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>Memory (RAM)</strong></td>
 <td>Limited (8–128 GB)</td>
 <td>Large aggregated memory (hundreds GB – several TB)</td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>GPU (Accelerators)</strong></td>
 <td>Typically one consumer or workstation GPU (e.g., NVIDIA RTX)</td>
 <td>Typically can have multiple high-end GPUs on GPU nodes (e.g., NVIDIA
 A100/H100), designed for massive parallel workloads</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>Storage</strong></td>
 <td>Local SSD/HDD; limited capacity</td>
 <td>Shared large capacity high-speed parallel file system, and local SSD
 on compute nodes</td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>Networking</strong></td>
 <td>Standard Ethernet; used mainly for internet or file sharing</td>
 <td>High-speed interconnects for low-latency communication</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>Maintenance</strong></td>
 <td>User-maintained</td>
 <td>Admin-maintained; centrally monitored and secured</td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>Storage Access</strong></td>
 <td>Local file access only</td>
 <td>Shared network storage accessible to all nodes</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>Typical Use Case</strong></td>
 <td>Small-scale data analysis, development, or prototyping</td>
 <td>Large-scale simulations, data-intensive computing, ML/AI
 training</td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>User Interaction</strong></td>
 <td>Direct, interactive sessions largely GUI based</td>
 <td>Typically accessed through the command line; Batch jobs submitted to
@@ -1690,7 +1690,7 @@ colleagues.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The three main reasons behind this approach:</p>
 <ul>
@@ -2081,28 +2081,28 @@ appended to the batch partition name indicates it is the preferred
 default queue. The NODES column indicates the number of nodes in a given
 state,</p>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>Label</th>
 <th>State</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>A</td>
 <td>Active</td>
 <td>These nodes are busy running jobs.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>I</td>
 <td>Idle</td>
 <td>These nodes are not running jobs.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>O</td>
 <td>Other</td>
 <td>These nodes are down, or otherwise unavailable.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>T</td>
 <td>Total</td>
 <td>The total number of nodes in the partition.</td>
@@ -2212,69 +2212,69 @@ of the most commonly used directives.</p>
 <col width="57%">
 <col width="26%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Parameter</th>
 <th>Description</th>
 <th>Example Value</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>--job-name</code></td>
 <td>Sets a name for your job.</td>
 <td><code>--job-name=my_analysis</code></td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>--nodes</code></td>
 <td>Requests a specific number of compute nodes.</td>
 <td><code>--nodes=1</code></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>--ntasks</code></td>
 <td>Requests a total number of tasks (e.g., MPI processes).</td>
 <td><code>--ntasks=16</code></td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>--ntasks-per-node</code></td>
 <td>Specifies the number of tasks to run on each node.</td>
 <td><code>-ntasks-per-node=8</code></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>--cpus-per-task</code></td>
 <td>Requests a number of CPU cores for each task (e.g., for OpenMP
 threads).</td>
 <td><code>--cpus-per-task=4</code></td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>--time</code></td>
 <td>Sets the maximum wall-clock time for the job (HH:MM:SS).</td>
 <td><code>--time=01:30:00</code></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>--partition</code></td>
 <td>Specifies the queue (partition) to submit the job to.</td>
 <td><code>--partition=highmem</code></td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>--gres</code></td>
 <td>Requests generic resources, most commonly GPUs.</td>
 <td><code>--gres=gpu:1</code></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>--output</code></td>
 <td>Specifies the file to write the standard output (STDOUT) to.</td>
 <td><code>--output=job_output.log</code></td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>--error</code></td>
 <td>Specifies the file to write the standard error (STDERR) to.</td>
 <td><code>--error=job_error.log</code></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>--mail-user</code></td>
 <td>Your email address for job status notifications.</td>
 <td><code>--mail-user=a.user@soton.ac.uk</code></td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>--mail-type</code></td>
 <td>Specifies which events trigger an email (e.g., BEGIN, END, FAIL,
 ALL).</td>
@@ -2456,29 +2456,29 @@ typically go through the following states,</p>
 <col width="10%">
 <col width="83%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Label</th>
 <th>State</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>PD</td>
 <td>PENDING</td>
 <td>The jobs might need to wait in a queue first before they can be
 allocated to a node to run.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>R</td>
 <td>RUNNING</td>
 <td>The job is currently running.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>CG</td>
 <td>COMPLETING</td>
 <td>The job is in the process of completing.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>CD</td>
 <td>COMPLETED</td>
 <td>The job has completed.</td>
@@ -3289,18 +3289,18 @@ below summarise several commonly used examples.</p>
 <col width="14%">
 <col width="85%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Compiler Directive</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>#pragma omp atomic</code></td>
 <td>Ensures a specific operation, such as modifying a variable, is
 executed atomically, e.g. by one thread at a time, to prevent race
 conditions.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>#pragma omp critical</code></td>
 <td>Defines a region of code that only one thread can execute at a
 time.</td>
@@ -3428,36 +3428,36 @@ functions we need to use and their purpose.</p>
 <col width="16%">
 <col width="83%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Description</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>MPI_Init</code></td>
 <td>Initialises the MPI environment. Must be called before any other MPI
 calls.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>MPI_Comm_size</code></td>
 <td>Returns the total number of processes in the communicator.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>MPI_Comm_rank</code></td>
 <td>Returns the rank (ID) of the calling process.</td>
 </tr>
-<tr class="even">
+<tr>
 <td>
 <code>MPI_Send</code> / <code>MPI_Recv</code>
 </td>
 <td>Used for direct point-to-point communication between processes.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>MPI_Barrier</code></td>
 <td>Used for synchronisation. A processes cannot continue past the
 barrier until all processes have reached it.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>MPI_Finalize</code></td>
 <td>Shuts down the MPI environment. Must be called before exiting the
 program, other wise background MPI tasks may not finish.</td>
@@ -4407,8 +4407,8 @@ any links that you are not going to use.
   "url": "https://carpentries.github.io/workbench-template-md/aio.html",
   "identifier": "https://carpentries.github.io/workbench-template-md/aio.html",
   "dateCreated": "2025-11-10",
-  "dateModified": "2026-04-28",
-  "datePublished": "2026-04-28"
+  "dateModified": "2026-05-05",
+  "datePublished": "2026-05-05"
 }
 
   </script><script>
